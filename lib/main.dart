@@ -1,65 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:naturalist/fragments/home_fragment.dart';
+import 'package:naturalist/fragments/observation_fragment.dart';
+import 'package:naturalist/fragments/map_fragment.dart';
+import 'package:naturalist/fragments/mine_fragment.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const String _title = 'Open Naturalist';
+  static const String _title = 'open naturalist';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: const MyStatefulWidget(),
+      home: const BottomNav(),
       theme: ThemeData(
         primarySwatch: Colors.pink,
         useMaterial3: true,
+        splashFactory: InkSparkle.splashFactory,
       ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({super.key});
+class BottomNav extends StatefulWidget {
+  const BottomNav({super.key});
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<BottomNav> createState() => _BottomNavState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
+class _BottomNavState extends State<BottomNav> with AutomaticKeepAliveClientMixin {
+  int _selectedIndex = 0; //預設值
   final ScrollController _homeController = ScrollController();
-
-  Widget _listViewBody() {
-    return ListView.separated(
-        controller: _homeController,
-        itemBuilder: (BuildContext context, int index) {
-          return Center(
-            child: Text(
-              'Item $index',
-            ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          thickness: 1,
-        ),
-        itemCount: 50);
-  }
+  final pages = [
+    const HomeFragment(),
+    const ObservationFragment(),
+    MapFragment(),
+    const MineFragment(),
+  ];
+  @override
+  // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final boxDecoration = BoxDecoration(
         color: Colors.pink[50],
         borderRadius: BorderRadius.circular(25));
     const edgeInsets = EdgeInsets.fromLTRB(25, 5, 25, 5);
+    final pageController = PageController();
+    void onPageChanged(int index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Open Naturalist'),
+        title: const Text('open naturalist'),
       ),
-      body: _listViewBody(),
+      body: PageView(
+        children: pages,
+          controller: pageController,
+          onPageChanged: onPageChanged,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -84,7 +93,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 padding: edgeInsets,
                 child: const Icon(Icons.article)
             ),
-            label: '记录',
+            label: '观察',
           ),
           BottomNavigationBarItem(
             icon: Container(
@@ -119,25 +128,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         unselectedItemColor: Colors.black54,
         unselectedFontSize: 12,
         onTap: (int index) {
-          switch (index) {
-            case 0:
-            // only scroll to top when current index is selected.
-              if (_selectedIndex == index) {
-                _homeController.animateTo(
-                  0.0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              }
-              break;
-            case 1:
-              break;
-          }
-          setState(
-                () {
-              _selectedIndex = index;
-            },
-          );
+          setState(() {
+            pageController.jumpToPage(index);
+          });
         },
       ),
     );
