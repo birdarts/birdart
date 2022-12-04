@@ -33,22 +33,17 @@ class BottomNav extends StatefulWidget {
   State<BottomNav> createState() => _BottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> with AutomaticKeepAliveClientMixin {
+class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0; //預設值
-  final ScrollController _homeController = ScrollController();
-  final pages = [
+  final List<Widget> pages = [
     const HomeFragment(),
     const ObservationFragment(),
     MapFragment(),
     const MineFragment(),
   ];
-  @override
-  // 覆写`wantKeepAlive`返回`true`
-  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final boxDecoration = BoxDecoration(
         color: Colors.pink[50],
         borderRadius: BorderRadius.circular(25));
@@ -65,10 +60,10 @@ class _BottomNavState extends State<BottomNav> with AutomaticKeepAliveClientMixi
         title: const Text('open naturalist'),
       ),
       body: PageView(
+        controller: pageController,
+        onPageChanged: onPageChanged,
         children: pages,
-          controller: pageController,
-          onPageChanged: onPageChanged,
-      ),
+      ), // 使用 AutomaticKeepAliveClientMixin 需要将页面包装在PageView中
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
