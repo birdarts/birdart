@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
-import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
 import 'package:naturalist/entity/tianditu.dart';
@@ -19,12 +17,14 @@ class MapFragment extends StatefulWidget {
   State<MapFragment> createState() => _MapFragmentState();
 }
 
-class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClientMixin{
+class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClientMixin {
   static const _edgeInsets = EdgeInsets.fromLTRB(8, 8, 8, 8);
   var _locationText = '经度: \n纬度: \n海拔: ';
   List<Widget> tileList = TianDiTu.vecTile;
   final MapController _mapController = MapController();
   LocationMarker _currentLocationLayer = const LocationMarker(position: null,);
+  @override
+  bool get wantKeepAlive => true;  // 覆写`wantKeepAlive`返回`true`
 
   @override
   void initState() {
@@ -37,6 +37,12 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {  // onDestroy()
+    //something.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,7 +77,7 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
           alignment: Alignment.topRight,
           child: FloatingActionButton.small(
             backgroundColor: Colors.white,
-            onPressed: () => {_getCurrentPosition(animate: true)},
+            onPressed: () => {_getCurrentPosition(context, animate: true)},
             child: const IconTheme(
               data: IconThemeData(color: Colors.black54),
               child: Icon(Icons.my_location_outlined),
@@ -104,11 +110,11 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
                     ),
                     PopupMenuItem<List<Widget>>(
                       value: TianDiTu.imgTile,
-                      child: Text('卫星图'),
+                      child: const Text('卫星图'),
                     ),
                     PopupMenuItem<List<Widget>>(
                       value: TianDiTu.terTile,
-                      child: Text('地形图'),
+                      child: const Text('地形图'),
                     ),
                   ]),
         ),
@@ -144,11 +150,7 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
     );
   }
 
-  @override
-  // 覆写`wantKeepAlive`返回`true`
-  bool get wantKeepAlive => true;
-
-  Future<bool> _handleLocationPermission() async {
+  Future<bool> _handleLocationPermission(BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -177,8 +179,8 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
     return true;
   }
 
-  Future<void> _getCurrentPosition({animate = false}) async {
-    final hasPermission = await _handleLocationPermission();
+  Future<void> _getCurrentPosition(BuildContext context, {animate = false}) async {
+    final hasPermission = await _handleLocationPermission(context);
 
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
@@ -196,16 +198,5 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
     }).catchError((e) {
       debugPrint(e);
     });
-  }
-
-  // TODO: 缓存
-  initFMTC() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    FlutterMapTileCaching.initialise(await RootDirectory.normalCache);
-
-    FMTC.instance; // Now available from anywhere
-
-    FlutterMapTileCaching.instance.rootDirectory.manage;
-    FlutterMapTileCaching.instance('storeName').manage;
   }
 }

@@ -4,7 +4,21 @@ import 'package:naturalist/fragments/observation_fragment.dart';
 import 'package:naturalist/fragments/map_fragment.dart';
 import 'package:naturalist/fragments/mine_fragment.dart';
 
-void main() => runApp(const MyApp());
+import 'entity/app_dir.dart';
+import 'entity/sql_provider.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  while (AppDir.data.path.isEmpty || AppDir.cache.path.isEmpty) {
+    await AppDir.setDir();
+  }
+  while (SQLProvider.database == null) {
+    await SQLProvider.init();
+  }
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
