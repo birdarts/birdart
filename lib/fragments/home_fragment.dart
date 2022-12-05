@@ -7,9 +7,10 @@ class HomeFragment extends StatefulWidget {
   State<HomeFragment> createState() => _HomeFragmentState();
 }
 
-class _HomeFragmentState extends State<HomeFragment> with AutomaticKeepAliveClientMixin {
+class _HomeFragmentState extends State<HomeFragment>
+    with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true;  // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
 
   @override
   Widget build(BuildContext context) {

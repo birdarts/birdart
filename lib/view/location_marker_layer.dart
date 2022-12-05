@@ -16,7 +16,7 @@ class _LocationMarkerState extends State<LocationMarker> {
   @override
   Widget build(BuildContext context) {
     var position = widget.position;
-    if (position == null){
+    if (position == null) {
       return Container();
     }
     return MarkerLayer(

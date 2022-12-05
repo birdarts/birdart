@@ -7,9 +7,10 @@ class MineFragment extends StatefulWidget {
   State<MineFragment> createState() => _MineFragmentState();
 }
 
-class _MineFragmentState extends State<MineFragment> with AutomaticKeepAliveClientMixin {
+class _MineFragmentState extends State<MineFragment>
+    with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true;  // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
 
   @override
   Widget build(BuildContext context) {

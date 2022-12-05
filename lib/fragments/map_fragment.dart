@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
 import 'package:geolocator/geolocator.dart';
@@ -10,37 +11,44 @@ class MapFragment extends StatefulWidget {
   MapFragment({Key? key}) : super(key: key);
 
   Stream<Position> positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 100,
-      ));
+      locationSettings: const LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 100,
+  ));
 
   @override
   State<MapFragment> createState() => _MapFragmentState();
 }
 
-class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClientMixin {
+class _MapFragmentState extends State<MapFragment>
+    with AutomaticKeepAliveClientMixin {
   static const _edgeInsets = EdgeInsets.fromLTRB(8, 8, 8, 8);
   var _locationText = '经度: \n纬度: \n海拔: ';
   List<Widget> tileList = TianDiTu.vecTile;
   final MapController _mapController = MapController();
-  LocationMarker _currentLocationLayer = const LocationMarker(position: null,);
+  LocationMarker _currentLocationLayer = const LocationMarker(
+    position: null,
+  );
+
   @override
-  bool get wantKeepAlive => true;  // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
 
   @override
   void initState() {
     widget.positionStream.listen((Position position) {
       setState(() => {
-        _locationText = '经度: ${position.longitude.toStringAsFixed(6)}\n'
-            '纬度: ${position.latitude.toStringAsFixed(6)}\n'
-            '海拔: ${position.altitude.toStringAsFixed(3)}',
-      _currentLocationLayer = LocationMarker(position: position),
-      });
+            _locationText = '经度: ${position.longitude.toStringAsFixed(6)}\n'
+                '纬度: ${position.latitude.toStringAsFixed(6)}\n'
+                '海拔: ${position.altitude.toStringAsFixed(3)}',
+            _currentLocationLayer = LocationMarker(position: position),
+          });
     });
     super.initState();
   }
 
   @override
-  void dispose() {  // onDestroy()
+  void dispose() {
+    // onDestroy()
     //something.dispose();
     super.dispose();
   }
@@ -179,22 +187,26 @@ class _MapFragmentState extends State<MapFragment> with AutomaticKeepAliveClient
     return true;
   }
 
-  Future<void> _getCurrentPosition(BuildContext context, {animate = false}) async {
+  Future<void> _getCurrentPosition(BuildContext context,
+      {animate = false}) async {
     final hasPermission = await _handleLocationPermission(context);
 
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => {
-      _locationText = '经度: ${position.longitude.toStringAsFixed(6)}\n'
-      '纬度: ${position.latitude.toStringAsFixed(6)}\n'
-      '海拔: ${position.altitude.toStringAsFixed(3)}',
-        _currentLocationLayer = LocationMarker(position: position,),
-        if (animate)
-      {
-      _mapController.move(LatLng(position.latitude, position.longitude), 15)
-      }
-      });
+            _locationText = '经度: ${position.longitude.toStringAsFixed(6)}\n'
+                '纬度: ${position.latitude.toStringAsFixed(6)}\n'
+                '海拔: ${position.altitude.toStringAsFixed(3)}',
+            _currentLocationLayer = LocationMarker(
+              position: position,
+            ),
+            if (animate)
+              {
+                _mapController.move(
+                    LatLng(position.latitude, position.longitude), 15)
+              }
+          });
     }).catchError((e) {
       debugPrint(e);
     });

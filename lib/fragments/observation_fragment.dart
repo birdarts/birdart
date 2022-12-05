@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:naturalist/entity/app_dir.dart';
 
@@ -10,9 +8,10 @@ class ObservationFragment extends StatefulWidget {
   State<ObservationFragment> createState() => _ObservationFragmentState();
 }
 
-class _ObservationFragmentState extends State<ObservationFragment> with AutomaticKeepAliveClientMixin {
+class _ObservationFragmentState extends State<ObservationFragment>
+    with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true;  // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
 
   @override
   Widget build(BuildContext context) {

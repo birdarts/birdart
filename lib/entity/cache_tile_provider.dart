@@ -14,7 +14,7 @@ class CacheTileProvider extends NetworkNoRetryTileProvider {
   String tileName;
 
   CacheTileProvider(
-    this.tileName,{
+    this.tileName, {
     super.headers,
     super.httpClient,
   });
@@ -54,27 +54,29 @@ class NetworkImageSaverProvider extends FMNetworkNoRetryImageProvider {
 
   @override
   ImageStream createStream(ImageConfiguration configuration) {
-    ImageStream stream =  ImageStream();
+    ImageStream stream = ImageStream();
     ImageStreamListener listener = ImageStreamListener(imageListener);
     stream.addListener(listener);
     return stream;
   }
 
-  void imageListener(ImageInfo imageInfo, bool synchronousCall){
+  void imageListener(ImageInfo imageInfo, bool synchronousCall) {
     ui.Image uiImage = imageInfo.image;
     _saveImage(uiImage);
   }
 
-  Future<void> _saveImage (ui.Image uiImage) async {
+  Future<void> _saveImage(ui.Image uiImage) async {
     try {
       Directory parent = file.parent;
-      if (! await parent.exists()){
+      if (!await parent.exists()) {
         await parent.create(recursive: true);
       }
-      ByteData? bytes = await uiImage.toByteData(format: ui.ImageByteFormat.png);
+      ByteData? bytes =
+          await uiImage.toByteData(format: ui.ImageByteFormat.png);
       if (bytes != null) {
         final buffer = bytes.buffer;
-        file.writeAsBytes(buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
+        file.writeAsBytes(
+            buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
       }
     } catch (e) {
       dev.log(e.toString());

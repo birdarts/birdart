@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:naturalist/fragments/home_fragment.dart';
-import 'package:naturalist/fragments/observation_fragment.dart';
 import 'package:naturalist/fragments/map_fragment.dart';
 import 'package:naturalist/fragments/mine_fragment.dart';
+import 'package:naturalist/fragments/observation_fragment.dart';
 
 import 'entity/app_dir.dart';
 import 'entity/sql_provider.dart';
@@ -59,8 +59,7 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     final boxDecoration = BoxDecoration(
-        color: Colors.pink[50],
-        borderRadius: BorderRadius.circular(25));
+        color: Colors.pink[50], borderRadius: BorderRadius.circular(25));
     const edgeInsets = EdgeInsets.fromLTRB(25, 5, 25, 5);
     final pageController = PageController();
     void onPageChanged(int index) {
@@ -82,14 +81,13 @@ class _BottomNavState extends State<BottomNav> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
-                padding: edgeInsets,
-                child: const Icon(Icons.home_outlined),
+              padding: edgeInsets,
+              child: const Icon(Icons.home_outlined),
             ),
             activeIcon: Container(
                 decoration: boxDecoration,
                 padding: edgeInsets,
-                child: const Icon(Icons.home)
-            ),
+                child: const Icon(Icons.home)),
             label: '首页',
           ),
           BottomNavigationBarItem(
@@ -100,8 +98,7 @@ class _BottomNavState extends State<BottomNav> {
             activeIcon: Container(
                 decoration: boxDecoration,
                 padding: edgeInsets,
-                child: const Icon(Icons.article)
-            ),
+                child: const Icon(Icons.article)),
             label: '观察',
           ),
           BottomNavigationBarItem(
@@ -112,8 +109,7 @@ class _BottomNavState extends State<BottomNav> {
             activeIcon: Container(
                 decoration: boxDecoration,
                 padding: edgeInsets,
-                child: const Icon(Icons.location_on)
-            ),
+                child: const Icon(Icons.location_on)),
             label: '地图',
           ),
           BottomNavigationBarItem(
@@ -124,8 +120,7 @@ class _BottomNavState extends State<BottomNav> {
             activeIcon: Container(
                 decoration: boxDecoration,
                 padding: edgeInsets,
-                child: const Icon(Icons.face)
-            ),
+                child: const Icon(Icons.face)),
             label: '我的',
           ),
         ],
