@@ -47,7 +47,7 @@ class BottomNav extends StatefulWidget {
   State<BottomNav> createState() => _BottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> {
+class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
   int _selectedIndex = 0; //預設值
   final List<Widget> pages = [
     const HomeFragment(),
@@ -56,16 +56,45 @@ class _BottomNavState extends State<BottomNav> {
     const MineFragment(),
   ];
 
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController = AnimationController(vsync: this,
+      duration: const Duration(milliseconds: 0));
+    super.initState();
+    animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     final boxDecoration = BoxDecoration(
         color: Colors.pink[50], borderRadius: BorderRadius.circular(25));
     const edgeInsets = EdgeInsets.fromLTRB(25, 5, 25, 5);
+
     final pageController = PageController();
     void onPageChanged(int index) {
       setState(() {
         _selectedIndex = index;
       });
+    }
+
+    EdgeInsetsGeometry widthAnime(int note){
+      final double width = (5 + 2 * note).toDouble();
+      return EdgeInsets.fromLTRB(width, 5, width, 5);
+    }
+
+    AnimatedBuilder getContainer(IconData iconData) {
+      return AnimatedBuilder(
+          animation: animationController,
+          builder: (context, child) {
+            return Container(
+              //color: colorVariation((_resizableController.value *100).round()),
+              padding: widthAnime((animationController.value * 10).round()),
+              decoration: boxDecoration,
+              child: Icon(iconData),
+            );
+          });
     }
 
     return Scaffold(
@@ -84,10 +113,7 @@ class _BottomNavState extends State<BottomNav> {
               padding: edgeInsets,
               child: const Icon(Icons.home_outlined),
             ),
-            activeIcon: Container(
-                decoration: boxDecoration,
-                padding: edgeInsets,
-                child: const Icon(Icons.home)),
+            activeIcon: getContainer(Icons.home),
             label: '首页',
           ),
           BottomNavigationBarItem(
@@ -95,10 +121,7 @@ class _BottomNavState extends State<BottomNav> {
               padding: edgeInsets,
               child: const Icon(Icons.article_outlined),
             ),
-            activeIcon: Container(
-                decoration: boxDecoration,
-                padding: edgeInsets,
-                child: const Icon(Icons.article)),
+            activeIcon: getContainer(Icons.article),
             label: '观察',
           ),
           BottomNavigationBarItem(
@@ -106,10 +129,7 @@ class _BottomNavState extends State<BottomNav> {
               padding: edgeInsets,
               child: const Icon(Icons.location_on_outlined),
             ),
-            activeIcon: Container(
-                decoration: boxDecoration,
-                padding: edgeInsets,
-                child: const Icon(Icons.location_on)),
+            activeIcon: getContainer(Icons.location_on),
             label: '地图',
           ),
           BottomNavigationBarItem(
@@ -117,10 +137,7 @@ class _BottomNavState extends State<BottomNav> {
               padding: edgeInsets,
               child: const Icon(Icons.face_outlined),
             ),
-            activeIcon: Container(
-                decoration: boxDecoration,
-                padding: edgeInsets,
-                child: const Icon(Icons.face)),
+            activeIcon: getContainer(Icons.face),
             label: '我的',
           ),
         ],
@@ -133,26 +150,12 @@ class _BottomNavState extends State<BottomNav> {
         unselectedFontSize: 12,
         onTap: (int index) {
           setState(() {
+            animationController = AnimationController(vsync: this,
+              duration: const Duration(milliseconds: 300));
             pageController.jumpToPage(index);
+            animationController.forward();
           });
         },
-      ),
-    );
-  }
-
-  void showModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        content: const Text('Example Dialog'),
-        actions: <TextButton>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Close'),
-          )
-        ],
       ),
     );
   }
