@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:naturalist/entity/key_store.dart';
 
-import 'cache_title_provider.dart'; // Suitable for most situations
+import 'cache_tile_provider.dart'; // Suitable for most situations
 
 class TianDiTu {
   static const key = KeyStore.tianditu;

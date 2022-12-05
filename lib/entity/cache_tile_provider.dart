@@ -4,9 +4,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/widgets.dart' hide Image;
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/src/layer/tile_layer/tile_provider/network_no_retry_image_provider.dart';
+import 'package:flutter_map/src/layer/tile_layer/tile_provider/network_no_retry_image_provider.dart'; // this line will be warned as "Don't import Implementation files from other package", just ignore it.
 import 'package:naturalist/entity/app_dir.dart';
 import 'package:path/path.dart' as path;
 
@@ -22,7 +22,9 @@ class CacheTileProvider extends NetworkNoRetryTileProvider {
   @override
   ImageProvider getImage(Coords<num> coords, TileLayer options) {
     File file = File(path.join(
-        AppDir.cache.path, tileName,
+        AppDir.cache.path,
+        'flutter_map_tiles',
+        tileName,
         coords.z.round().toString(),
         coords.x.round().toString(),
         '${coords.y.round().toString()}.png'));
@@ -51,12 +53,11 @@ class NetworkImageSaverProvider extends FMNetworkNoRetryImageProvider {
   });
 
   @override
-  void resolveStreamForKey(ImageConfiguration configuration, ImageStream stream,
-      FMNetworkNoRetryImageProvider key, ImageErrorListener handleError) {
-    super.resolveStreamForKey(configuration, stream, key, (exception, stackTrace) { });
-
+  ImageStream createStream(ImageConfiguration configuration) {
+    ImageStream stream =  ImageStream();
     ImageStreamListener listener = ImageStreamListener(imageListener);
     stream.addListener(listener);
+    return stream;
   }
 
   void imageListener(ImageInfo imageInfo, bool synchronousCall){
