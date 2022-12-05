@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.pink,
         useMaterial3: true,
-        splashFactory: InkSparkle.splashFactory,
+        splashFactory: NoSplash.splashFactory,
       ),
       debugShowCheckedModeBanner: false,
     );
@@ -80,7 +80,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
     }
 
     EdgeInsetsGeometry widthAnime(int note){
-      final double width = (5 + 2 * note).toDouble();
+      final double width = 2.5 * note;
       return EdgeInsets.fromLTRB(width, 5, width, 5);
     }
 
@@ -151,7 +151,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
         onTap: (int index) {
           setState(() {
             animationController = AnimationController(vsync: this,
-              duration: const Duration(milliseconds: 300));
+              duration: const Duration(milliseconds: 250));
             pageController.jumpToPage(index);
             animationController.forward();
           });
