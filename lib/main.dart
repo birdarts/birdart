@@ -56,106 +56,63 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
     const MineFragment(),
   ];
 
-  late AnimationController animationController;
-
-  @override
-  void initState() {
-    animationController = AnimationController(vsync: this,
-      duration: const Duration(milliseconds: 0));
-    super.initState();
-    animationController.forward();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final boxDecoration = BoxDecoration(
-        color: Colors.pink[50], borderRadius: BorderRadius.circular(25));
-    const edgeInsets = EdgeInsets.fromLTRB(25, 5, 25, 5);
-
-    final pageController = PageController();
-    void onPageChanged(int index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-
-    EdgeInsetsGeometry widthAnime(int note){
-      final double width = 2.5 * note;
-      return EdgeInsets.fromLTRB(width, 5, width, 5);
-    }
-
-    AnimatedBuilder getContainer(IconData iconData) {
-      return AnimatedBuilder(
-          animation: animationController,
-          builder: (context, child) {
-            return Container(
-              //color: colorVariation((_resizableController.value *100).round()),
-              padding: widthAnime((animationController.value * 10).round()),
-              decoration: boxDecoration,
-              child: Icon(iconData),
-            );
-          });
-    }
+    var pageController = PageController();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('open naturalist'),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w500,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: onPageChanged,
-        children: pages,
-      ), // 使用 AutomaticKeepAliveClientMixin 需要将页面包装在PageView中
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: edgeInsets,
-              child: const Icon(Icons.home_outlined),
-            ),
-            activeIcon: getContainer(Icons.home),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            pageController.jumpToPage(index);
+            _selectedIndex = index;
+          });
+        },
+        selectedIndex: _selectedIndex,
+        elevation: 10,
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: '首页',
           ),
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: edgeInsets,
-              child: const Icon(Icons.article_outlined),
-            ),
-            activeIcon: getContainer(Icons.article),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.article),
+            icon: Icon(Icons.article_outlined),
             label: '观察',
           ),
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: edgeInsets,
-              child: const Icon(Icons.location_on_outlined),
-            ),
-            activeIcon: getContainer(Icons.location_on),
-            label: '地图',
+          NavigationDestination(
+            selectedIcon: Icon(Icons.location_on),
+            icon: Icon(Icons.location_on_outlined),
+            label: '探索',
           ),
-          BottomNavigationBarItem(
-            icon: Container(
-              padding: edgeInsets,
-              child: const Icon(Icons.face_outlined),
-            ),
-            activeIcon: getContainer(Icons.face),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.face),
+            icon: Icon(Icons.face_outlined),
             label: '我的',
           ),
         ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.pinkAccent,
-        selectedFontSize: 12,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        unselectedItemColor: Colors.black54,
-        unselectedFontSize: 12,
-        onTap: (int index) {
+      ),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        onPageChanged: (int index) {
           setState(() {
-            animationController = AnimationController(vsync: this,
-              duration: const Duration(milliseconds: 250));
-            pageController.jumpToPage(index);
-            animationController.forward();
+            _selectedIndex = index;
           });
         },
+        children: pages,
       ),
     );
   }
