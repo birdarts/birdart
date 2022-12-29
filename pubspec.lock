@@ -43,6 +43,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.1"
+  checked_yaml:
+    dependency: transitive
+    description:
+      name: checked_yaml
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.1"
+  cli_util:
+    dependency: transitive
+    description:
+      name: cli_util
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.5"
   clock:
     dependency: transitive
     description:
@@ -78,6 +92,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.2"
+  cryptography:
+    dependency: transitive
+    description:
+      name: cryptography
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.5"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -127,6 +148,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.2.3"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -139,6 +167,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0"
+  flutter_launcher_icons:
+    dependency: "direct dev"
+    description:
+      name: flutter_launcher_icons
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.11.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -240,6 +275,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.1"
+  hive:
+    dependency: "direct main"
+    description:
+      name: hive
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0-dev"
+  hive_flutter:
+    dependency: "direct main"
+    description:
+      name: hive_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0-dev"
   http:
     dependency: transitive
     description:
@@ -254,6 +303,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
+  image:
+    dependency: transitive
+    description:
+      name: image
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.2.2"
   ini:
     dependency: transitive
     description:
@@ -275,6 +331,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.6.4"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.7.0"
   latlong2:
     dependency: transitive
     description:
@@ -518,20 +581,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.9.0"
-  sqflite:
-    dependency: "direct main"
-    description:
-      name: sqflite
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.2.1"
-  sqflite_common:
-    dependency: transitive
-    description:
-      name: sqflite_common
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.4.0+2"
   stack_trace:
     dependency: transitive
     description:
@@ -567,13 +616,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.1"
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.0.0+3"
   term_glyph:
     dependency: transitive
     description:
@@ -693,6 +735,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.1.0"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.1"
 sdks:
   dart: ">=2.18.5 <3.0.0"
   flutter: ">=3.3.0"

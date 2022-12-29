@@ -5,7 +5,7 @@ import 'package:naturalist/fragments/mine_fragment.dart';
 import 'package:naturalist/fragments/observation_fragment.dart';
 
 import 'entity/app_dir.dart';
-import 'entity/sql_provider.dart';
+import 'entity/hive_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,9 +13,7 @@ void main() async {
   while (AppDir.data.path.isEmpty || AppDir.cache.path.isEmpty) {
     await AppDir.setDir();
   }
-  while (SQLProvider.database == null) {
-    await SQLProvider.init();
-  }
+   await HiveManager.init();
 
   runApp(const MyApp());
 }
