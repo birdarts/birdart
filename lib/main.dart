@@ -13,7 +13,7 @@ void main() async {
   while (AppDir.data.path.isEmpty || AppDir.cache.path.isEmpty) {
     await AppDir.setDir();
   }
-   await HiveManager.init();
+  await HiveManager.init();
 
   runApp(const MyApp());
 }
@@ -63,8 +63,8 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
         title: const Text('open naturalist'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
+          color: Colors.white,
+          fontSize: 24.0,
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.w500,
         ),

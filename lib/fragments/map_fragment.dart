@@ -2,19 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
+import 'package:location/location.dart';
 import 'package:naturalist/entity/tianditu.dart';
 import 'package:naturalist/view/location_marker_layer.dart';
 
 class MapFragment extends StatefulWidget {
   MapFragment({Key? key}) : super(key: key);
 
-  Stream<Position> positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-    accuracy: LocationAccuracy.high,
-    distanceFilter: 100,
-  ));
+  Location location = Location();
 
   @override
   State<MapFragment> createState() => _MapFragmentState();
@@ -27,7 +23,7 @@ class _MapFragmentState extends State<MapFragment>
   List<Widget> tileList = TianDiTu.vecTile;
   final MapController _mapController = MapController();
   LocationMarker _currentLocationLayer = const LocationMarker(
-    position: null,
+    locationData: null,
   );
 
   @override
@@ -35,14 +31,14 @@ class _MapFragmentState extends State<MapFragment>
 
   @override
   void initState() {
-    widget.positionStream.listen((Position position) {
-      setState(() => {
-            _locationText = '经度: ${position.longitude.toStringAsFixed(6)}\n'
-                '纬度: ${position.latitude.toStringAsFixed(6)}\n'
-                '海拔: ${position.altitude.toStringAsFixed(3)}',
-            _currentLocationLayer = LocationMarker(position: position),
-          });
+    _getCurrentLocation(context, animate: true);
+
+    //widget.location.enableBackgroundMode(enable: true);
+
+    widget.location.onLocationChanged.listen((LocationData locationData) {
+      _setMapLocation(locationData);
     });
+
     super.initState();
   }
 
@@ -85,7 +81,8 @@ class _MapFragmentState extends State<MapFragment>
           alignment: Alignment.topRight,
           child: FloatingActionButton.small(
             backgroundColor: Colors.white,
-            onPressed: () => {_getCurrentPosition(context, animate: true)},
+            onPressed: () => {_getCurrentLocation(context, animate: true)},
+            shape: const CircleBorder(),
             child: const IconTheme(
               data: IconThemeData(color: Colors.black54),
               child: Icon(Icons.my_location_outlined),
@@ -105,6 +102,7 @@ class _MapFragmentState extends State<MapFragment>
               child: const FloatingActionButton.small(
                 backgroundColor: Colors.white,
                 onPressed: null,
+                shape: CircleBorder(),
                 child: IconTheme(
                   data: IconThemeData(color: Colors.black54),
                   child: Icon(Icons.layers_outlined),
@@ -158,57 +156,78 @@ class _MapFragmentState extends State<MapFragment>
     );
   }
 
-  Future<bool> _handleLocationPermission(BuildContext context) async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  void _setMapLocation(LocationData locationData, {animate = false}) {
+    setState(() => {
+          if (locationData.latitude != null &&
+              locationData.longitude != null &&
+              locationData.heading != null)
+            {
+              _locationText =
+                  '经度: ${locationData.longitude?.toStringAsFixed(6)}\n'
+                      '纬度: ${locationData.latitude?.toStringAsFixed(6)}\n'
+                      '海拔: ${locationData.altitude?.toStringAsFixed(3)}',
+              _currentLocationLayer =
+                  LocationMarker(locationData: locationData),
+              if (animate)
+                {
+                  _mapController.move(
+                      LatLng(locationData.latitude!, locationData.longitude!),
+                      15)
+                }
+            }
+        });
+  }
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
+  Future<bool> _locationAvailabilityChecker() async {
+    bool serviceEnabled = await widget.location.serviceEnabled();
+    if (!serviceEnabled && mounted) {
       return false;
     }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
+    if (!serviceEnabled) {
+      serviceEnabled = await widget.location.requestService();
+      if (!serviceEnabled && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                'Location services are disabled. Please enable the services')));
+        return false;
+      }
+    }
+
+    PermissionStatus permission = await widget.location.hasPermission();
+    if (permission == PermissionStatus.denied) {
+      permission = await widget.location.requestPermission();
+      if (permission == PermissionStatus.denied && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Location permissions are denied')));
         return false;
       }
     }
-    if (permission == LocationPermission.deniedForever) {
+
+    if (permission == PermissionStatus.grantedLimited) {
+      permission = await widget.location.requestPermission();
+      if (permission == PermissionStatus.grantedLimited && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('High accuracy location permissions are denied')));
+        return false;
+      }
+    }
+
+    if (permission == PermissionStatus.deniedForever && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
               'Location permissions are permanently denied, we cannot request permissions.')));
       return false;
     }
+
     return true;
   }
 
-  Future<void> _getCurrentPosition(BuildContext context,
+  Future<void> _getCurrentLocation(BuildContext context,
       {animate = false}) async {
-    final hasPermission = await _handleLocationPermission(context);
+    final locationAvailable = await _locationAvailabilityChecker();
+    if (!locationAvailable) return;
 
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => {
-            _locationText = '经度: ${position.longitude.toStringAsFixed(6)}\n'
-                '纬度: ${position.latitude.toStringAsFixed(6)}\n'
-                '海拔: ${position.altitude.toStringAsFixed(3)}',
-            _currentLocationLayer = LocationMarker(
-              position: position,
-            ),
-            if (animate)
-              {
-                _mapController.move(
-                    LatLng(position.latitude, position.longitude), 15)
-              }
-          });
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    LocationData locationData = await Location().getLocation();
+    _setMapLocation(locationData, animate: animate);
   }
 }

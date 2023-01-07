@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class HiveManager{
+class HiveManager {
   static init() async {
     await Hive.initFlutter();
     await Hive.openBox('project');

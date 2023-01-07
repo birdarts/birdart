@@ -5,7 +5,8 @@ import 'package:naturalist/entity/key_store.dart';
 import 'cache_tile_provider.dart'; // Suitable for most situations
 
 class TianDiTu {
-  static const key = KeyStore.tianditu;
+  static const key =
+      KeyStore.tianditu; // static const tianditu = 'key'; in key_store.dart
   static const packageName = 'moe.sunjiao.naturalist';
 
   static List<TileLayer> vecTile = [
