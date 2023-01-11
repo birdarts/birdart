@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:naturalist/entity/shared_pref_manager.dart';
 import 'package:naturalist/fragments/home_fragment.dart';
 import 'package:naturalist/fragments/map_fragment.dart';
 import 'package:naturalist/fragments/mine_fragment.dart';
@@ -12,6 +13,9 @@ void main() async {
 
   while (AppDir.data.path.isEmpty || AppDir.cache.path.isEmpty) {
     await AppDir.setDir();
+  }
+  while (SharedPrefManager.pref == null) {
+    await SharedPrefManager.init();
   }
   await HiveManager.init();
 

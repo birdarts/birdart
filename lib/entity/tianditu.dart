@@ -9,6 +9,15 @@ class TianDiTu {
       KeyStore.tianditu; // static const tianditu = 'key'; in key_store.dart
   static const packageName = 'moe.sunjiao.naturalist';
 
+  static TileLayer ciaLayer = TileLayer(
+  tileProvider: CacheTileProvider('cia'),
+  urlTemplate:
+  'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
+  userAgentPackageName: packageName,
+  subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+  backgroundColor: Colors.transparent,
+  );
+
   static List<TileLayer> vecTile = [
     // 街道图
     TileLayer(
@@ -38,14 +47,7 @@ class TianDiTu {
       subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
       backgroundColor: Colors.transparent,
     ),
-    TileLayer(
-      tileProvider: CacheTileProvider('cia'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-    ),
+    ciaLayer,
   ];
   static List<TileLayer> terTile = [
     // 地形图
@@ -56,14 +58,8 @@ class TianDiTu {
       userAgentPackageName: packageName,
       subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
       backgroundColor: Colors.transparent,
+      maxNativeZoom: 15.0,
     ),
-    TileLayer(
-      tileProvider: CacheTileProvider('cta'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/cta_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cta&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-    ),
+    ciaLayer,
   ];
 }

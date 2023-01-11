@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
 import 'package:latlong2/latlong.dart' show LatLng;
 import 'package:location/location.dart';
+import 'package:naturalist/entity/shared_pref_manager.dart';
 import 'package:naturalist/entity/tianditu.dart';
 import 'package:naturalist/view/location_marker_layer.dart';
 
@@ -25,12 +27,15 @@ class _MapFragmentState extends State<MapFragment>
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
   );
+  final prefs = SharedPrefManager.pref!;
 
   @override
   bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
 
   @override
   void initState() {
+    _getMapStates();
+
     _getCurrentLocation(context, animate: true);
 
     //widget.location.enableBackgroundMode(enable: true);
@@ -43,10 +48,42 @@ class _MapFragmentState extends State<MapFragment>
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     // onDestroy()
     //something.dispose();
+    print("dispose");
+    LatLng center = _mapController.center;
+    double zoom = _mapController.zoom;
+    LocationData? locationData = _currentLocationLayer.locationData;
+    await _saveMapStates(center, zoom, locationData);
     super.dispose();
+  }
+
+  Future<void> _saveMapStates(LatLng center, double zoom, LocationData? locationData) async {
+    if (locationData != null &&
+        locationData.latitude != null &&
+        locationData.longitude != null &&
+        locationData.heading != null){
+      final prefs = SharedPrefManager.pref!;
+
+      await prefs.setDouble('center_latitude', center.latitude);
+      await prefs.setDouble('center_longitude', center.longitude);
+      await prefs.setDouble('zoom', zoom);
+      await prefs.setDouble('latitude', locationData.latitude!);
+      await prefs.setDouble('longitude', locationData.longitude!);
+      await prefs.setDouble('heading', locationData.heading!);
+    }
+  }
+
+  void _getMapStates() {
+    try {
+      _mapController.move(LatLng(prefs.getDouble('center_latitude')!, prefs.getDouble('center_longitude')!), prefs.getDouble('zoom')!);
+    } catch (e){
+      log(e.toString());
+    }
+    _setMapLocation(LocationData.fromMap({
+      'latitude': prefs.getDouble('latitude'), 'longitude': prefs.getDouble('longitude'), 'heading': prefs.getDouble('heading')
+    }));
   }
 
   @override
@@ -69,10 +106,9 @@ class _MapFragmentState extends State<MapFragment>
               InteractiveFlag.drag |
               InteractiveFlag.doubleTapZoom,
           onPositionChanged: (MapPosition position, bool hasGesture) {
-            // Your logic here. `hasGesture` dictates whether the change
-            // was due to a user interaction or something else. `position` is
-            // the new position of the map.
-          }),
+
+          },
+      ),
       mapController: _mapController,
       nonRotatedChildren: [
         AttributionWidget.defaultWidget(source: '天地图'),
@@ -98,6 +134,7 @@ class _MapFragmentState extends State<MapFragment>
                 setState(() {
                   tileList = list;
                 });
+
               },
               child: const FloatingActionButton.small(
                 backgroundColor: Colors.white,
