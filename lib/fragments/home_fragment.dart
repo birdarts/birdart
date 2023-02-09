@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeFragment extends StatefulWidget {
   const HomeFragment({Key? key}) : super(key: key);
@@ -15,9 +16,9 @@ class _HomeFragmentState extends State<HomeFragment>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    return const Center(
-      child: Text("首頁"),
+    return SvgPicture.asset(
+        'assets/svg/shorebird.svg',
+        semanticsLabel: 'Acme Logo'
     );
   }
 }

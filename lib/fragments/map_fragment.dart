@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
+import 'package:geolocator/geolocator.dart';
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
-import 'package:location/location.dart';
-import 'package:naturalist/entity/shared_pref_manager.dart';
-import 'package:naturalist/entity/tianditu.dart';
-import 'package:naturalist/view/location_marker_layer.dart';
+
+import '../entity/sharedpref.dart';
+import '../pages/track_page.dart';
+import '../tianditu/tianditu.dart';
+import '../tool/coordinator_tool.dart';
+import '../tool/location_tool.dart';
+import '../widget/location_marker_layer.dart';
 
 class MapFragment extends StatefulWidget {
-  MapFragment({Key? key}) : super(key: key);
-
-  Location location = Location();
+  const MapFragment({Key? key}) : super(key: key);
 
   @override
   State<MapFragment> createState() => _MapFragmentState();
@@ -27,7 +31,8 @@ class _MapFragmentState extends State<MapFragment>
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
   );
-  final prefs = SharedPrefManager.pref!;
+  final prefs = Shared.pref;
+  StreamSubscription? subscription;
 
   @override
   bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
@@ -37,52 +42,78 @@ class _MapFragmentState extends State<MapFragment>
     _getMapStates();
 
     _getCurrentLocation(context, animate: true);
-
-    //widget.location.enableBackgroundMode(enable: true);
-
-    widget.location.onLocationChanged.listen((LocationData locationData) {
-      _setMapLocation(locationData);
-    });
-
+    startSubscription();
     super.initState();
+  }
+
+  Future<LocationSettings> getLocationSettings() async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final availability = await GoogleApiAvailability.instance
+          .checkGooglePlayServicesAvailability();
+      return AndroidSettings(
+        forceLocationManager:
+        availability != GooglePlayServicesAvailability.success,
+      );
+    } else {
+      return const LocationSettings();
+    }
+  }
+
+  startSubscription() async {
+    subscription = Geolocator.getPositionStream(
+        locationSettings: await getLocationSettings())
+        .listen((position) {
+      _setMapLocation(position);
+    });
+  }
+
+  stopSubscription() {
+    subscription?.cancel();
+    subscription = null;
   }
 
   @override
   Future<void> dispose() async {
     // onDestroy()
     //something.dispose();
-    print("dispose");
+    if (kDebugMode) {
+      print("dispose");
+    }
+    stopSubscription();
     LatLng center = _mapController.center;
     double zoom = _mapController.zoom;
-    LocationData? locationData = _currentLocationLayer.locationData;
+    Position? locationData = _currentLocationLayer.locationData;
     await _saveMapStates(center, zoom, locationData);
     super.dispose();
   }
 
-  Future<void> _saveMapStates(LatLng center, double zoom, LocationData? locationData) async {
-    if (locationData != null &&
-        locationData.latitude != null &&
-        locationData.longitude != null &&
-        locationData.heading != null){
-      final prefs = SharedPrefManager.pref!;
+  Future<void> _saveMapStates(
+      LatLng center, double zoom, Position? locationData) async {
+    if (locationData != null) {
+      final prefs = Shared.pref!;
 
       await prefs.setDouble('center_latitude', center.latitude);
       await prefs.setDouble('center_longitude', center.longitude);
       await prefs.setDouble('zoom', zoom);
-      await prefs.setDouble('latitude', locationData.latitude!);
-      await prefs.setDouble('longitude', locationData.longitude!);
-      await prefs.setDouble('heading', locationData.heading!);
+      await prefs.setDouble('latitude', locationData.latitude);
+      await prefs.setDouble('longitude', locationData.longitude);
+      await prefs.setDouble('heading', locationData.heading);
     }
   }
 
   void _getMapStates() {
     try {
-      _mapController.move(LatLng(prefs.getDouble('center_latitude')!, prefs.getDouble('center_longitude')!), prefs.getDouble('zoom')!);
-    } catch (e){
+      _mapController.move(
+          LatLng(prefs.getDouble('center_latitude')!,
+              prefs.getDouble('center_longitude')!),
+          prefs.getDouble('zoom')!);
+    } catch (e) {
       log(e.toString());
     }
-    _setMapLocation(LocationData.fromMap({
-      'latitude': prefs.getDouble('latitude'), 'longitude': prefs.getDouble('longitude'), 'heading': prefs.getDouble('heading')
+    _setMapLocation(Position.fromMap({
+      'latitude': prefs.getDouble('latitude') ?? 0.0,
+      'longitude': prefs.getDouble('longitude') ?? 0.0,
+      'heading': prefs.getDouble('heading') ?? 0.0
     }));
   }
 
@@ -92,22 +123,20 @@ class _MapFragmentState extends State<MapFragment>
 
     return FlutterMap(
       options: MapOptions(
-          center: LatLng(0, 120),
-          zoom: 2,
-          maxZoom: 18.0,
-          minZoom: 2,
-          maxBounds: LatLngBounds(
-            LatLng(-90, -180),
-            LatLng(90, 180),
-          ),
-          keepAlive: true,
-          rotation: 0,
-          interactiveFlags: InteractiveFlag.pinchZoom |
-              InteractiveFlag.drag |
-              InteractiveFlag.doubleTapZoom,
-          onPositionChanged: (MapPosition position, bool hasGesture) {
-
-          },
+        center: LatLng(30.6, 114.3),
+        zoom: 10,
+        maxZoom: 18.0,
+        minZoom: 2,
+        maxBounds: LatLngBounds(
+          LatLng(31.5, 115.1),
+          LatLng(29.9, 113.7),
+        ),
+        keepAlive: true,
+        rotation: 0,
+        interactiveFlags: InteractiveFlag.pinchZoom |
+        InteractiveFlag.drag |
+        InteractiveFlag.doubleTapZoom,
+        onPositionChanged: (MapPosition position, bool hasGesture) {},
       ),
       mapController: _mapController,
       nonRotatedChildren: [
@@ -116,6 +145,7 @@ class _MapFragmentState extends State<MapFragment>
           margin: const EdgeInsets.fromLTRB(0, 20, 15, 0),
           alignment: Alignment.topRight,
           child: FloatingActionButton.small(
+            heroTag: Icons.my_location_outlined,
             backgroundColor: Colors.white,
             onPressed: () => {_getCurrentLocation(context, animate: true)},
             shape: const CircleBorder(),
@@ -129,14 +159,14 @@ class _MapFragmentState extends State<MapFragment>
           margin: const EdgeInsets.fromLTRB(0, 75, 15, 0),
           alignment: Alignment.topRight,
           child: PopupMenuButton<List<Widget>>(
-              // Callback that sets the selected popup menu item.
+            // Callback that sets the selected popup menu item.
               onSelected: (List<Widget> list) {
                 setState(() {
                   tileList = list;
                 });
-
               },
               child: const FloatingActionButton.small(
+                heroTag: Icons.layers_outlined,
                 backgroundColor: Colors.white,
                 onPressed: null,
                 shape: CircleBorder(),
@@ -146,20 +176,37 @@ class _MapFragmentState extends State<MapFragment>
                 ),
               ),
               itemBuilder: (BuildContext context) =>
-                  <PopupMenuEntry<List<Widget>>>[
-                    PopupMenuItem<List<Widget>>(
-                      value: TianDiTu.vecTile,
-                      child: const Text('街道图'),
-                    ),
-                    PopupMenuItem<List<Widget>>(
-                      value: TianDiTu.imgTile,
-                      child: const Text('卫星图'),
-                    ),
-                    PopupMenuItem<List<Widget>>(
-                      value: TianDiTu.terTile,
-                      child: const Text('地形图'),
-                    ),
-                  ]),
+              <PopupMenuEntry<List<Widget>>>[
+                PopupMenuItem<List<Widget>>(
+                  value: TianDiTu.vecTile,
+                  child: const Text('街道图'),
+                ),
+                PopupMenuItem<List<Widget>>(
+                  value: TianDiTu.imgTile,
+                  child: const Text('卫星图'),
+                ),
+              ]),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(0, 130, 15, 0),
+          alignment: Alignment.topRight,
+          child: FloatingActionButton.small(
+            heroTag: Icons.timeline_rounded,
+            backgroundColor: Colors.white,
+            onPressed: () {
+              stopSubscription();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TrackPage()))
+                  .then((value) => startSubscription());
+            },
+            shape: const CircleBorder(),
+            child: const IconTheme(
+              data: IconThemeData(color: Colors.black54),
+              child: Icon(Icons.timeline_rounded),
+            ),
+          ),
         ),
         Container(
           alignment: Alignment.bottomLeft,
@@ -186,85 +233,32 @@ class _MapFragmentState extends State<MapFragment>
         ),
       ],
       children: [
-        tileList[0],
-        tileList[1],
+        ...tileList,
         _currentLocationLayer,
       ],
     );
   }
 
-  void _setMapLocation(LocationData locationData, {animate = false}) {
+  void _setMapLocation(Position locationData, {animate = false}) {
     setState(() => {
-          if (locationData.latitude != null &&
-              locationData.longitude != null &&
-              locationData.heading != null)
-            {
-              _locationText =
-                  '经度: ${locationData.longitude?.toStringAsFixed(6)}\n'
-                      '纬度: ${locationData.latitude?.toStringAsFixed(6)}\n'
-                      '海拔: ${locationData.altitude?.toStringAsFixed(3)}',
-              _currentLocationLayer =
-                  LocationMarker(locationData: locationData),
-              if (animate)
-                {
-                  _mapController.move(
-                      LatLng(locationData.latitude!, locationData.longitude!),
-                      15)
-                }
-            }
-        });
-  }
-
-  Future<bool> _locationAvailabilityChecker() async {
-    bool serviceEnabled = await widget.location.serviceEnabled();
-    if (!serviceEnabled && mounted) {
-      return false;
-    }
-    if (!serviceEnabled) {
-      serviceEnabled = await widget.location.requestService();
-      if (!serviceEnabled && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-                'Location services are disabled. Please enable the services')));
-        return false;
-      }
-    }
-
-    PermissionStatus permission = await widget.location.hasPermission();
-    if (permission == PermissionStatus.denied) {
-      permission = await widget.location.requestPermission();
-      if (permission == PermissionStatus.denied && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
-      }
-    }
-
-    if (permission == PermissionStatus.grantedLimited) {
-      permission = await widget.location.requestPermission();
-      if (permission == PermissionStatus.grantedLimited && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('High accuracy location permissions are denied')));
-        return false;
-      }
-    }
-
-    if (permission == PermissionStatus.deniedForever && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-
-    return true;
+      _locationText =
+      '经度: ${CoordinateTool().degreeToDms(locationData.longitude.toString())}\n'
+          '纬度: ${CoordinateTool().degreeToDms(locationData.latitude.toString())}\n'
+          '海拔: ${locationData.altitude.toStringAsFixed(3)}',
+      _currentLocationLayer = LocationMarker(locationData: locationData),
+      if (animate)
+        {
+          _mapController.move(
+              LatLng(locationData.latitude, locationData.longitude), 15)
+        }
+    });
   }
 
   Future<void> _getCurrentLocation(BuildContext context,
       {animate = false}) async {
-    final locationAvailable = await _locationAvailabilityChecker();
-    if (!locationAvailable) return;
-
-    LocationData locationData = await Location().getLocation();
-    _setMapLocation(locationData, animate: animate);
+    Position? locationData = await getCurrentLocation(context);
+    if (locationData != null) {
+      _setMapLocation(locationData, animate: animate);
+    }
   }
 }

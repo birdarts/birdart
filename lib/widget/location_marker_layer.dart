@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
-import 'package:location/location.dart';
-import 'package:naturalist/view/triangle_clipper.dart';
 
 class LocationMarker extends StatefulWidget {
   const LocationMarker({Key? key, required this.locationData})
       : super(key: key);
-  final LocationData? locationData;
+  final Position? locationData;
 
   @override
   State<LocationMarker> createState() => _LocationMarkerState();
@@ -17,18 +16,15 @@ class _LocationMarkerState extends State<LocationMarker> {
   @override
   Widget build(BuildContext context) {
     var locationData = widget.locationData;
-    if (locationData == null ||
-        locationData.latitude == null ||
-        locationData.longitude == null ||
-        locationData.heading == null) {
+    if (locationData == null) {
       return Container();
     }
     return MarkerLayer(
       markers: [
         Marker(
-          point: LatLng(locationData.latitude!, locationData.longitude!),
+          point: LatLng(locationData.latitude, locationData.longitude),
           builder: (context) => Transform.rotate(
-            angle: 180 + locationData.heading!,
+            angle: 180 + locationData.heading,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -76,4 +72,18 @@ class _LocationMarkerState extends State<LocationMarker> {
       ],
     );
   }
+}
+
+class TriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(size.width, 0.0);
+    path.lineTo(size.width / 2, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TriangleClipper oldClipper) => false;
 }

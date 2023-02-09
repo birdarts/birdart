@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:naturalist/entity/key_store.dart';
+import 'package:naturalist/tianditu/key_store.dart';
 
 import 'cache_tile_provider.dart'; // Suitable for most situations
 
 class TianDiTu {
-  static const key =
-      KeyStore.tianditu; // static const tianditu = 'key'; in key_store.dart
+  // static const tianditu = 'key'; in key_store.dart
+  static const key = KeyStore.tianditu;
   static const packageName = 'moe.sunjiao.naturalist';
-
-  static TileLayer ciaLayer = TileLayer(
-  tileProvider: CacheTileProvider('cia'),
-  urlTemplate:
-  'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
-  userAgentPackageName: packageName,
-  subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-  backgroundColor: Colors.transparent,
-  );
 
   static List<TileLayer> vecTile = [
     // 街道图
@@ -37,6 +28,16 @@ class TianDiTu {
       backgroundColor: Colors.transparent,
     ),
   ];
+
+  static TileLayer ciaLayer = TileLayer(
+    tileProvider: CacheTileProvider('cia'),
+    urlTemplate:
+    'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
+    userAgentPackageName: packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
+
   static List<TileLayer> imgTile = [
     // 卫星图
     TileLayer(
@@ -49,6 +50,7 @@ class TianDiTu {
     ),
     ciaLayer,
   ];
+
   static List<TileLayer> terTile = [
     // 地形图
     TileLayer(

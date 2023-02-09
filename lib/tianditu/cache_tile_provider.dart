@@ -37,6 +37,7 @@ class CacheTileProvider extends NetworkNoRetryTileProvider {
         file,
         headers: headers,
         httpClient: httpClient,
+        fallbackUrl: null,
       );
     }
   }
@@ -50,6 +51,7 @@ class NetworkImageSaverProvider extends FMNetworkNoRetryImageProvider {
     this.file, {
     HttpClient? httpClient,
     super.headers = const {},
+    required super.fallbackUrl,
   });
 
   @override

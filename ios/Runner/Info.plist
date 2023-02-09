@@ -52,5 +52,17 @@
     <string>This app needs access to location to show birding hotspot list and nearby highlight bird species.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app needs access to location when in the background to record tracks.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+   	<string>Your description why you should use NSLocationAlwaysAndWhenInUseUsageDescription</string>
+   	<key>UIBackgroundModes</key>
+    	<array>
+    		<string>location</string>
+    	</array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <key>NSCameraUsageDescription</key>
+    <string>your usage description here</string>
+    <array>
+        <string>dev.flutter.background.refresh</string>
+    </array>
 </dict>
 </plist>

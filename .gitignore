@@ -43,4 +43,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/lib/entity/key_store.dart
+/lib/tianditu/key_store.dart
+/lib/db/on_db.g.dart
