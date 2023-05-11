@@ -20,20 +20,20 @@ class CacheTileProvider extends NetworkNoRetryTileProvider {
   });
 
   @override
-  ImageProvider getImage(Coords<num> coords, TileLayer options) {
+  ImageProvider getImage(TileCoordinates coordinates, TileLayer options) {
     File file = File(path.join(
         AppDir.cache.path,
         'flutter_map_tiles',
         tileName,
-        coords.z.round().toString(),
-        coords.x.round().toString(),
-        '${coords.y.round().toString()}.png'));
+        coordinates.z.round().toString(),
+        coordinates.x.round().toString(),
+        '${coordinates.y.round().toString()}.png'));
 
     if (file.existsSync()) {
       return FileImage(file);
     } else {
       return NetworkImageSaverProvider(
-        getTileUrl(coords, options),
+        getTileUrl(coordinates, options),
         file,
         headers: headers,
         httpClient: httpClient,

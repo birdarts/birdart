@@ -140,7 +140,7 @@ class _MapFragmentState extends State<MapFragment>
       ),
       mapController: _mapController,
       nonRotatedChildren: [
-        AttributionWidget.defaultWidget(source: '天地图'),
+        const RichAttributionWidget(attributions: [TextSourceAttribution('天地图')],),
         Container(
           margin: const EdgeInsets.fromLTRB(0, 20, 15, 0),
           alignment: Alignment.topRight,

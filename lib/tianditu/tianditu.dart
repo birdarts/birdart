@@ -60,7 +60,7 @@ class TianDiTu {
       userAgentPackageName: packageName,
       subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
       backgroundColor: Colors.transparent,
-      maxNativeZoom: 15.0,
+      maxNativeZoom: 15,
     ),
     ciaLayer,
   ];
