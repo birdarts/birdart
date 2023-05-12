@@ -5,11 +5,10 @@ import 'dart:io' show Directory, File, Platform;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geoxml/geoxml.dart';
 import 'package:google_api_availability/google_api_availability.dart';
-import 'package:gpx/gpx.dart';
 import 'package:objectid/objectid.dart';
 import 'package:optimize_battery/optimize_battery.dart';
 import 'package:path/path.dart' as path;
@@ -424,9 +423,9 @@ class _TrackPageState extends State<TrackPage>
     TrackTool.track = Track.empty();
     TrackTool.track.id = ObjectId();
 
-    TrackTool.gpx = Gpx();
-    TrackTool.gpx.creator = 'Wuhan Plant Protection';
-    TrackTool.gpx.wpts = [];
+    TrackTool.geoxml = GeoXml();
+    TrackTool.geoxml.creator = 'Wuhan Plant Protection';
+    TrackTool.geoxml.wpts = [];
     TrackTool.subscription = Geolocator.getPositionStream(
             locationSettings: await getLocationSettings())
         .listen((Position locationData) async {
@@ -438,7 +437,7 @@ class _TrackPageState extends State<TrackPage>
         print(time);
       }
       // create gpx object
-      TrackTool.gpx.wpts.add(Wpt(
+      TrackTool.geoxml.wpts.add(Wpt(
         lat: locationData.latitude,
         lon: locationData.longitude,
         ele: locationData.altitude,
@@ -479,11 +478,11 @@ class _TrackPageState extends State<TrackPage>
         Fluttertoast.showToast(msg: '轨迹记录期间未收到任何位置信息，请检查定位服务。');
         return;
       }
-      var kmlString = KmlWriter().asString(TrackTool.gpx, pretty: true);
+      var gpxString = TrackTool.geoxml.toGpxString(pretty: true);
       TrackTool.track.file = path.join(
         AppDir.data.path,
         'files',
-        '${TrackTool.track.id.hexString}.kml',
+        '${TrackTool.track.id.hexString}.gpx',
       );
       final file = File(TrackTool.track.file);
       Directory parent = file.parent;
@@ -491,7 +490,7 @@ class _TrackPageState extends State<TrackPage>
         await parent.create(recursive: true);
       }
       await file.create();
-      file.writeAsStringSync(kmlString);
+      file.writeAsStringSync(gpxString);
       await db.trackDao.insertOne(TrackTool.track);
       setState(() {
         _future = db.trackDao.getAll();
