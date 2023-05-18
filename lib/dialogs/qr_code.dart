@@ -17,7 +17,7 @@ class QrCodeDialog extends StatelessWidget {
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: QrImage(
+        child: QrImageView(
           data: text,
         ),
       ),

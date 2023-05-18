@@ -9,7 +9,6 @@ import 'package:photo_manager/photo_manager.dart';
 import '../db/db_manager.dart';
 import '../db/image.dart';
 import '../db/record.dart';
-import '../dialogs/get_species.dart';
 import '../tianditu/geocoder.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/image_tool.dart';
@@ -149,30 +148,17 @@ class _EditRecordState extends State<EditRecord> {
     );
   }
 
-  Widget _getSpeciesSelector() => ListTile(
-    leading: const Icon(Icons.search_rounded),
-    trailing: const Icon(Icons.edit_rounded),
-    title: Text(record.species.isEmpty ? '物种名称' : record.species),
-    onTap: () {
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext dContext) => SearchDialog(
-          onTap: (name) {
-            Navigator.pop(dContext);
-            setState(() {
-              record.species = name;
-            });
-          },
-          onSelect: (data) {
-            Navigator.pop(dContext);
-            setState(() {
-              record.species = data['name'];
-              record.speciesRef = data['number'];
-            });
-          },
-        ),
-      );
+  Widget _getSpeciesSelector() => TextFormField(
+    onSaved: (val) => {
+      if (val != null) {record.species = val}
     },
+    validator: (val) => val == null || val.isEmpty
+        ? '本项不能为空'
+        : null,
+    enabled: true,
+    initialValue: record.species,
+    decoration:
+    const InputDecoration(labelText: '物种'),
   );
 
   Future<void> emptyFuture() async {}
@@ -190,11 +176,7 @@ class _EditRecordState extends State<EditRecord> {
             if (snapshot.connectionState == ConnectionState.done) {
               return pictureGrid;
             } else {
-              return SizedBox(
-                  width: (WidgetsBinding.instance.window.physicalSize.width /
-                          WidgetsBinding.instance.window.devicePixelRatio) -
-                      100,
-                  child: const LinearProgressIndicator());
+              return const LinearProgressIndicator();
             }
           }));
 
@@ -212,92 +194,54 @@ class _EditRecordState extends State<EditRecord> {
       );
 
   Widget _getLocationItem() => StatefulBuilder(
-      builder: (context, setState) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.location_on_rounded,
-                    color: Colors.purple,
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  FutureBuilder(
-                    future: _geoFuture,
-                    builder: (_, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                '经度: ${CoordinateTool().degreeToDms(record.lat.toString())}',
-                                style: const TextStyle(fontSize: 18)),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Text(
-                                '纬度: ${CoordinateTool().degreeToDms(record.lon.toString())}',
-                                style: const TextStyle(fontSize: 18)),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Text('海拔: ${record.ele.toStringAsFixed(3)}',
-                                style: const TextStyle(fontSize: 18)),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Text('${record.country} ${record.province} ${record.city} ${record.county}',
-                                style: const TextStyle(fontSize: 18)),
-                            SizedBox(
-                              width: (WidgetsBinding
-                                          .instance.window.physicalSize.width /
-                                      WidgetsBinding
-                                          .instance.window.devicePixelRatio) -
-                                  100,
-                              child: TextFormField(
-                                onSaved: (val) => {
-                                  if (val != null) {record.poi = val}
-                                },
-                                validator: (val) => val == null || val.isEmpty
-                                    ? '本项不能为空'
-                                    : null,
-                                enabled: true,
-                                initialValue: record.poi,
-                                decoration:
-                                    const InputDecoration(labelText: '地址'),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return SizedBox(
-                            width: (WidgetsBinding
-                                        .instance.window.physicalSize.width /
-                                    WidgetsBinding
-                                        .instance.window.devicePixelRatio) -
-                                100,
-                            child: const LinearProgressIndicator());
-                      }
-                    },
-                  ),
-                ],
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _geoFuture = getCurrentLocation(context);
-                  });
-                },
-                child: const Icon(Icons.my_location),
-              ),
-            ],
-          ));
+      builder: (context, setState) => FutureBuilder(
+        future: _geoFuture,
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    '经度: ${CoordinateTool().degreeToDms(record.lat.toString())}',
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(
+                  height: 12,
+                ),
+                Text(
+                    '纬度: ${CoordinateTool().degreeToDms(record.lon.toString())}',
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(
+                  height: 12,
+                ),
+                Text('海拔: ${record.ele.toStringAsFixed(3)}',
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(
+                  height: 12,
+                ),
+                Text('${record.country} ${record.province} ${record.city} ${record.county}',
+                    style: const TextStyle(fontSize: 18)),
+                TextFormField(
+                  onSaved: (val) => {
+                    if (val != null) {record.poi = val}
+                  },
+                  validator: (val) => val == null || val.isEmpty
+                      ? '本项不能为空'
+                      : null,
+                  enabled: true,
+                  initialValue: record.poi,
+                  decoration:
+                  const InputDecoration(labelText: '地址'),
+                ),
+              ],
+            );
+          } else {
+            return const LinearProgressIndicator();
+          }
+        },
+      ),
+  );
 
   Widget _getNoteItem() => StatefulBuilder(builder: (context, setState) {
         return Row(
