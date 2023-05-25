@@ -1,16 +1,5 @@
-# naturalist
+# Birdart: The Artful Birdwatching App
 
-A Flutter app for Open Naturalist
+**Birdart** is an open-source birdwatching application that celebrates the art of observing our feathered friends in their natural habitats. The name **birdart** can be broken down into two parts: "bird art," signifying that birdwatching is a form of art, and "bird dart," highlighting that the app is built using the Dart programming language, Flutter mobile and web app with Dart back-end.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Birdart aims to provide bird enthusiasts with a comprehensive platform for identifying, tracking, and sharing their sightings of various bird species. With an extensive database of bird species, detailed descriptions, and high-quality images, users can quickly and accurately identify the birds they encounter.
