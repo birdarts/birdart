@@ -1,1 +1,1 @@
-const String appName = 'open naturalist';
+const String appName = 'Birdart';

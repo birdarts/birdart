@@ -80,7 +80,7 @@ class _MineFragmentState extends State<MineFragment>
               onTap: () { }),
           getSettingsItem(Icons.code_rounded, '查看源代码', context,
               onTap: () async {
-            final url = Uri.parse('https://github.com/sun-jiao/naturalist');
+            final url = Uri.parse('https://github.com/birdarts/birdart');
             if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
               throw Exception('Could not launch $url');
             }

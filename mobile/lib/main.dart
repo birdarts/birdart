@@ -101,7 +101,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('open naturalist'),
+        title: const Text(appName),
         centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.white,
