@@ -1,16 +1,20 @@
 import 'dart:io';
-
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf_static/shelf_static.dart';
 
-var currentDir = Directory.current.path;
+final directoryCurrent = Directory.current;
+final currentDir = directoryCurrent.path;
+final parentDir = directoryCurrent.parent.path;
 
 // Configure routes.
 final _router = Router()
-  ..get('/', _rootHandler)
+  ..get('/test', _rootHandler)
   ..get('/echo/<message>', _echoHandler)
-  ..get('/favicon.ico', _faviconHandler);
+  ..get('/favicon.<ico>', _faviconHandler)
+  ..get('/', _staticHandler)
+  ..mount('/web', _staticHandler);
 
 Response _rootHandler(Request req) {
   return Response.ok('Hello, World!\n');
@@ -31,6 +35,15 @@ Future<Response> _faviconHandler(Request request) async {
     'Content-Type': 'image/ico',
     'Content-Length': bytes.length.toString(),
   });
+}
+
+// serving flutter web application
+// execute before run server: flutter build web --release --base-href=/web/
+get _staticHandler {
+  var cascade = Cascade().add(createStaticHandler('$parentDir/web/build/web',
+      defaultDocument: 'index.html'));
+
+  return cascade.handler;
 }
 
 void main(List<String> args) async {
