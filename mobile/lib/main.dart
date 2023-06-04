@@ -4,7 +4,7 @@ import 'entity/consts.dart';
 import 'fragments/home_fragment.dart';
 import 'fragments/map_fragment.dart';
 import 'fragments/mine_fragment.dart';
-import 'fragments/observation_fragment.dart';
+import 'fragments/list_fragment.dart';
 import 'db/db_manager.dart';
 import 'entity/app_dir.dart';
 import 'entity/server.dart';
@@ -90,7 +90,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
   int _selectedIndex = 0; //預設值
   final List<Widget> pages = [
     const HomeFragment(),
-    const ObservationFragment(),
+    const ListFragment(),
     const MapFragment(),
     const MineFragment(),
   ];
@@ -135,7 +135,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
               color: Colors.white,
             ),
             icon: Icon(Icons.article_outlined),
-            label: '观察',
+            label: '记录',
           ),
           NavigationDestination(
             selectedIcon: Icon(

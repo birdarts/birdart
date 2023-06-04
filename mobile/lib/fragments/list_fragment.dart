@@ -16,14 +16,14 @@ import '../pages/edit_project_page.dart';
 import '../pages/project_page.dart';
 import '../widget/expandable_fab.dart';
 
-class ObservationFragment extends StatefulWidget {
-  const ObservationFragment({Key? key}) : super(key: key);
+class ListFragment extends StatefulWidget {
+  const ListFragment({Key? key}) : super(key: key);
 
   @override
-  State<ObservationFragment> createState() => _ObservationFragmentState();
+  State<ListFragment> createState() => _ListFragmentState();
 }
 
-class _ObservationFragmentState extends State<ObservationFragment>
+class _ListFragmentState extends State<ListFragment>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
