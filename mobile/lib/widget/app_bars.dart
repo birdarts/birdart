@@ -5,12 +5,14 @@ import '../entity/consts.dart';
 
 AppBar anAppBar({
   Widget? title,
+  PreferredSizeWidget? bottom,
   List<Widget>? actions,
 }) =>
     AppBar(
       title: title ?? const Text(appName),
       centerTitle: true,
       backgroundColor: primaryColor,
+      bottom: bottom,
       titleTextStyle: const TextStyle(
         color: Colors.white,
         fontSize: 20.0,

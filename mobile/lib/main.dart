@@ -1,5 +1,7 @@
+import 'package:birdart/widget/app_bars.dart';
 import 'package:flutter/material.dart';
 
+import 'entity/color_scheme.dart';
 import 'entity/consts.dart';
 import 'fragments/home_fragment.dart';
 import 'fragments/map_fragment.dart';
@@ -100,17 +102,6 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
     var pageController = PageController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(appName),
-        centerTitle: true,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 24.0,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.w500,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {

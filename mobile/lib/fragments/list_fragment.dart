@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:birdart/widget/app_bars.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../db/db_manager.dart';
 import '../db/bird_list.dart';
@@ -12,9 +12,7 @@ import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
 import '../entity/color_scheme.dart';
 import '../entity/server.dart';
-import '../pages/edit_project_page.dart';
 import '../pages/project_page.dart';
-import '../widget/expandable_fab.dart';
 
 class ListFragment extends StatefulWidget {
   const ListFragment({Key? key}) : super(key: key);
@@ -49,7 +47,8 @@ class _ListFragmentState extends State<ListFragment>
           List<BirdList> projectList = List.generate(
               dataList.length, (index) => BirdList.fromJson(dataList[index]));
           for (var item in projectList) {
-            final oldProject = await DbManager.db.projectDao.getById(item.id.hexString);
+            final oldProject =
+                await DbManager.db.projectDao.getById(item.id.hexString);
             if (oldProject.isNotEmpty) {
               projectList.remove(item);
             } else {
@@ -88,46 +87,7 @@ class _ListFragmentState extends State<ListFragment>
     super.build(context);
 
     return Scaffold(
-      floatingActionButton: ExpandableFab(
-        distance: 112.0,
-        children: [
-          ActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const EditProject()))
-                  .then((value) => setState(() {
-                _future = DbManager.db.projectDao.getAll();
-              }));
-              },
-            icon: const Icon(Icons.add_rounded),
-          ),
-          ActionButton(
-            onPressed: () {
-              showDialog<String>(
-                  context: context,
-                  builder: (BuildContext dContext) => QrScanDialog(
-                    onScan: (result) {
-                      final codes = result.split('@');
-                      final shareId = codes[0];
-                      final projectId = codes[1];
-                      _joinProject(shareId, projectId);
-                    },
-                    validator: (result) {
-                      final codes = result.split('@');
-                      if (codes.length != 2) {
-                        Fluttertoast.showToast(msg: '二维码格式错误');
-                        return false;
-                      }
-                      return true;
-                    },
-                  ));
-              },
-            icon: const Icon(Icons.qr_code_scanner_rounded),
-          ),
-        ],
-      ),
+      appBar: anAppBar(title: const Text('我的观鸟记录')),
       body: RefreshIndicator(
         onRefresh: () => _fetchProjects(),
         child: Container(
@@ -141,22 +101,22 @@ class _ListFragmentState extends State<ListFragment>
                   return ListView.builder(
                       itemCount: projects.length,
                       itemBuilder: (context, index) => InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProjectPage(
-                                      project: projects[index])))
-                              .then((value) {
-                            if (value) {
-                              setState(() {
-                                _future = DbManager.db.projectDao.getAll();
+                            onTap: () {
+                              Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ProjectPage(
+                                              project: projects[index])))
+                                  .then((value) {
+                                if (value) {
+                                  setState(() {
+                                    _future = DbManager.db.projectDao.getAll();
+                                  });
+                                }
                               });
-                            }
-                          });
-                        },
-                        child: getProjectItem(projects[index]),
-                      ));
+                            },
+                            child: getProjectItem(projects[index]),
+                          ));
                 }
                 return const Center(child: Text('数据库错误'));
               } else {
@@ -170,65 +130,65 @@ class _ListFragmentState extends State<ListFragment>
   }
 
   Widget getProjectItem(BirdList project) => ClipRRect(
-    borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-    child: Card(
-      child: SizedBox(
-        height: 100,
-        child: Row(
-          children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  image: DecorationImage(
-                      image: FileImage(File(project.coverImg)),
-                      fit: BoxFit.cover),
+        borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+        child: Card(
+          child: SizedBox(
+            height: 100,
+            child: Row(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                          image: FileImage(File(project.coverImg)),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    project.name,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        project.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        project.notes,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 14, color: primaryColor),
+                      ),
+                    ],
                   ),
-                  Text(
-                    project.notes,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(fontSize: 14, color: primaryColor),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  child: const Icon(
+                    Icons.qr_code_rounded,
+                    size: 30,
                   ),
-                ],
-              ),
+                  onTap: () => _showQrCode(project.id.hexString),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            InkWell(
-              child: const Icon(
-                Icons.qr_code_rounded,
-                size: 30,
-              ),
-              onTap: () => _showQrCode(project.id.hexString),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   _showQrCode(String projectId) async {
     if (projectId.isEmpty) {
@@ -299,7 +259,8 @@ class _ListFragmentState extends State<ListFragment>
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
           BirdList project = BirdList.fromJson(data['data']);
-          final oldProject = await DbManager.db.projectDao.getById(project.id.hexString);
+          final oldProject =
+              await DbManager.db.projectDao.getById(project.id.hexString);
           if (oldProject.isNotEmpty) {
             _qrCodeGetFailed('项目已存在');
             return;

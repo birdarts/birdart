@@ -234,16 +234,29 @@ class _HomeFragmentState extends State<HomeFragment>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Expanded(child: _dateWidget(context)),
-        _divider,
-        Expanded(child: _timeWidget(context)),
-        _divider,
-        _trackSwitch(),
-        _divider,
-        Expanded(child: _button()),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(appName),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w500,
+        ),
+        backgroundColor: primaryColor,
+      ),
+      body: Column(
+        children: [
+          Expanded(child: _dateWidget(context)),
+          _divider,
+          Expanded(child: _timeWidget(context)),
+          _divider,
+          _trackSwitch(),
+          _divider,
+          Expanded(child: _button()),
+        ],
+      ),
     );
   }
 }
