@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:floor/floor.dart';
 import 'package:objectid/objectid.dart';
+import 'package:package/model/image.dart';
 
 import '../entity/user_profile.dart';
 
@@ -13,16 +14,24 @@ String userModelToJson(List<DbImage> data) =>
 
 
 @Entity(tableName: 'IMAGE')
-class DbImage {
+class DbImage implements BaseImage{
+  @override
   @primaryKey
   ObjectId id;
+  @override
   ObjectId record;
+  @override
   ObjectId author;
 
+  @override
   String imagePath;
+  @override
   String imageId;
+  @override
   int imageSize;
+  @override
   String exif;
+  @override
   bool sync;
 
   DbImage({
@@ -58,6 +67,7 @@ class DbImage {
     sync: true,
   );
 
+  @override
   Map<String, dynamic> toJson() => {
     '_id': id.hexString,
     'record': record.hexString,

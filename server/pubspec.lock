@@ -193,6 +193,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  package:
+    dependency: "direct main"
+    description:
+      path: "../package"
+      relative: true
+    source: path
+    version: "1.0.0"
   package_config:
     dependency: transitive
     description:

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../db/db_manager.dart';
-import '../db/project.dart';
+import '../db/bird_list.dart';
 import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
 import '../entity/color_scheme.dart';
@@ -46,8 +46,8 @@ class _ObservationFragmentState extends State<ObservationFragment>
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
           List<dynamic> dataList = data['data']['list'];
-          List<Project> projectList = List.generate(
-              dataList.length, (index) => Project.fromJson(dataList[index]));
+          List<BirdList> projectList = List.generate(
+              dataList.length, (index) => BirdList.fromJson(dataList[index]));
           for (var item in projectList) {
             final oldProject = await DbManager.db.projectDao.getById(item.id.hexString);
             if (oldProject.isNotEmpty) {
@@ -169,7 +169,7 @@ class _ObservationFragmentState extends State<ObservationFragment>
     );
   }
 
-  Widget getProjectItem(Project project) => ClipRRect(
+  Widget getProjectItem(BirdList project) => ClipRRect(
     borderRadius: const BorderRadius.all(Radius.circular(20.0)),
     child: Card(
       child: SizedBox(
@@ -298,7 +298,7 @@ class _ObservationFragmentState extends State<ObservationFragment>
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
-          Project project = Project.fromJson(data['data']);
+          BirdList project = BirdList.fromJson(data['data']);
           final oldProject = await DbManager.db.projectDao.getById(project.id.hexString);
           if (oldProject.isNotEmpty) {
             _qrCodeGetFailed('项目已存在');

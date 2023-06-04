@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:floor/floor.dart';
 import 'package:objectid/objectid.dart';
+import 'package:package/model/track.dart';
 
 import '../entity/user_profile.dart';
 
@@ -12,26 +13,40 @@ String userModelToJson(List<Track> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 @entity
-class Track {
+class Track implements BaseTrack {
   @primaryKey
+  @override
   ObjectId id;
+  @override
   ObjectId author;
 
+  @override
   double startLon = 0.0;
+  @override
   double startLat = 0.0;
+  @override
   double startEle = 0.0;
+  @override
   double endLon = 0.0;
+  @override
   double endLat = 0.0;
+  @override
   double endEle = 0.0;
 
+  @override
   DateTime startTime;
+  @override
   DateTime endTime;
 
+  @override
   int pointCount = 0;
+  @override
   bool sync;
 
+  @override
   String file = '';
 
+  @override
   bool isSelected = false;
 
   Track({
@@ -74,6 +89,7 @@ class Track {
     file: json['file'],
   );
 
+  @override
   Map<String, dynamic> toJson() => {
     '_id': id.hexString,
     'author': author.hexString,

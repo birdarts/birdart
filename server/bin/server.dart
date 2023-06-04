@@ -10,14 +10,20 @@ final parentDir = directoryCurrent.parent.path;
 
 // Configure routes.
 final _router = Router()
-  ..get('/test', _rootHandler)
+  ..get('/', _rootHandler)
+  ..get('/test', _testHandler)
   ..get('/echo/<message>', _echoHandler)
-  ..get('/favicon.<ico>', _faviconHandler)
-  ..get('/', _staticHandler)
+  ..get('/<web|.*>/favicon.<ico>', _faviconHandler)
+  ..all('/user/login', _loginHandler)
+  ..all('/user/register', _registerHandler)
   ..mount('/web', _staticHandler);
 
-Response _rootHandler(Request req) {
+Response _testHandler(Request req) {
   return Response.ok('Hello, World!\n');
+}
+
+Response _rootHandler(Request req) {
+  return Response.movedPermanently('/web/#/');
 }
 
 Response _echoHandler(Request request) {
@@ -26,11 +32,11 @@ Response _echoHandler(Request request) {
 }
 
 Future<Response> _faviconHandler(Request request) async {
-  // 读取图片文件
+  // read image file
   var file = File('$currentDir/assets/favicon.ico');
   var bytes = await file.readAsBytes();
 
-  // 创建一个HTTP响应，将图片数据作为响应体返回
+  // create a http response to return the image
   return Response.ok(bytes, headers: {
     'Content-Type': 'image/ico',
     'Content-Length': bytes.length.toString(),
@@ -39,11 +45,43 @@ Future<Response> _faviconHandler(Request request) async {
 
 // serving flutter web application
 // execute before run server: flutter build web --release --base-href=/web/
-get _staticHandler {
-  var cascade = Cascade().add(createStaticHandler('$parentDir/web/build/web',
-      defaultDocument: 'index.html'));
+Handler _staticHandler = Cascade()
+    .add(createStaticHandler('$parentDir/web/build/web',
+        defaultDocument: 'index.html'))
+    .handler;
 
-  return cascade.handler;
+Map users = {};
+// Handler for registration
+Future<Response> _registerHandler(Request request) async {
+  Map data = {};
+  final String query = await request.readAsString();
+  data.addAll(Uri(query: query).queryParameters);
+  data.addAll(request.url.queryParameters);
+
+  if (data.containsKey('name') &&
+      data.containsKey('password')) {
+    users[data['name']] = data['password'];
+    return Response.ok('Registered successfully!');
+  } else {
+    return Response.unauthorized('Invalid parameters');
+  }
+}
+
+// Handler for login
+Future<Response> _loginHandler(Request request) async {
+  Map data = {};
+  final String query = await request.readAsString();
+  data.addAll(Uri(query: query).queryParameters);
+  data.addAll(request.url.queryParameters);
+
+  if (data.containsKey('name') &&
+      data.containsKey('password') &&
+      users.containsKey(data['name']) &&
+      users[data['name']] == data['password']) {
+    return Response.ok('Login Successful!');
+  } else {
+    return Response.unauthorized('Invalid credentials');
+  }
 }
 
 void main(List<String> args) async {
