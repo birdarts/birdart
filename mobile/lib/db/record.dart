@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:floor/floor.dart';
+import 'package:package/model/record.dart';
 import '../entity/user_profile.dart';
 import 'package:objectid/objectid.dart';
 
@@ -12,29 +13,45 @@ String userModelToJson(List<DbRecord> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 @Entity(tableName: 'RECORD')
-class DbRecord {
-  @primaryKey
-  ObjectId id;
-  ObjectId project;
-  ObjectId author;
+class DbRecord implements BaseRecord{
+    @primaryKey
+    @override
+    ObjectId id;
+    @override
+    ObjectId project;
+    @override
+    ObjectId author;
 
-  double lon;
-  double lat;
-  double ele;
+    @override
+    double lon;
+    @override
+    double lat;
+    @override
+    double ele;
 
-  String species;
-  String speciesRef;
+    @override
+    String species;
+    @override
+    String speciesRef;
 
-  String country;
-  String province;
-  String city;
-  String county;
-  String poi;
+    @override
+    String country;
+    @override
+    String province;
+    @override
+    String city;
+    @override
+    String county;
+    @override
+    String poi;
 
-  String notes;
-  bool sync; // if changes already uploaded.
+    @override
+    String notes;
+    @override
+    bool sync; // if changes already uploaded.
 
-  DateTime observeTime;
+    @override
+    DateTime observeTime;
 
   DbRecord({
     required this.id,
@@ -93,6 +110,7 @@ class DbRecord {
     observeTime: DateTime.fromMillisecondsSinceEpoch(json['observeTime']),
   );
 
+  @override
   Map<String, dynamic> toJson() => {
     '_id': id.hexString,
     'project': project.hexString,

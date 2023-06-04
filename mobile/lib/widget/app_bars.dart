@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../entity/color_scheme.dart';
+import '../entity/consts.dart';
 
 AppBar anAppBar({
   Widget? title,
   List<Widget>? actions,
 }) =>
     AppBar(
-      title: title ?? const Text('naturalist'),
+      title: title ?? const Text(appName),
       centerTitle: true,
       backgroundColor: primaryColor,
       titleTextStyle: const TextStyle(

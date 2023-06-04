@@ -4,7 +4,7 @@ import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 import 'image.dart';
-import 'project.dart';
+import 'bird_list.dart';
 import 'record.dart';
 import 'track.dart';
 import 'type_converter.dart';
@@ -16,12 +16,12 @@ part 'on_db.g.dart';
   entities: [
     DbImage,
     DbRecord,
-    Project,
+    BirdList,
     Track
   ],
   version: 1,
 )
-@TypeConverters([ObjectIdConverter, DateTimeConverter])
+@TypeConverters([ObjectIdDbConverter, DateTimeDbConverter])
 abstract class OnDb extends FloorDatabase {
   DbImageDao get imageDao;
   ProjectDao get projectDao;

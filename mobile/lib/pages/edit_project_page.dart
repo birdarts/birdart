@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-import '../db/project.dart';
+import '../db/bird_list.dart';
 import '../db/db_manager.dart';
 import '../entity/color_scheme.dart';
 import '../widget/picture_grid.dart';
 
 class EditProject extends StatefulWidget {
-  final Project? project;
+  final BirdList? project;
 
   const EditProject({Key? key, this.project}) : super(key: key);
 
@@ -22,7 +22,7 @@ class EditProject extends StatefulWidget {
 class _EditProjectState extends State<EditProject> {
   final _formKey = GlobalKey<FormState>();
   var _isNew = false;
-  late Project project;
+  late BirdList project;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _EditProjectState extends State<EditProject> {
       project = widget.project!;
     } else {
       _isNew = true;
-      project = Project.add(name: '', notes: '', coverImg: '');
+      project = BirdList.add(name: '', notes: '', coverImg: '');
     }
     super.initState();
   }

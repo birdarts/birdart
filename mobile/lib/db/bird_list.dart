@@ -1,22 +1,31 @@
 import 'package:floor/floor.dart';
 import 'package:objectid/objectid.dart';
+import 'package:package/package.dart';
 
 import '../entity/user_profile.dart';
 
 @entity
-class Project {
+class BirdList implements BaseBirdList {
+  @override
   @primaryKey
   ObjectId id;
+  @override
   ObjectId author;
+  @override
   String name;
+  @override
   String notes;
+  @override
   String coverImg;
+  @override
   DateTime createTime;
+  @override
   bool sync;
 
+  @override
   String type = ''; // for future usage
 
-  Project({
+  BirdList({
     required this.id,
     required this.author,
     required this.name,
@@ -26,7 +35,7 @@ class Project {
     required this.sync,
   });
 
-  Project.add({
+  BirdList.add({
     required this.name,
     required this.notes,
     required this.coverImg,
@@ -36,7 +45,7 @@ class Project {
     createTime = DateTime.now(),
     sync = false;
 
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
+  factory BirdList.fromJson(Map<String, dynamic> json) => BirdList(
     id: ObjectId.fromHexString(json['_id']),
     author: ObjectId.fromHexString(json['author']),
     name: json['name'],
@@ -46,6 +55,7 @@ class Project {
     coverImg: '',
   );
 
+  @override
   Map<String, dynamic> toJson() => {
     '_id': id.hexString,
     'author': author.hexString,
@@ -59,26 +69,26 @@ class Project {
 @dao
 abstract class ProjectDao {
   @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Project project);
+  Future<int> insertOne(BirdList project);
 
   @Insert(onConflict: OnConflictStrategy.abort)
-  Future<List<int>> insertList(List<Project> project);
+  Future<List<int>> insertList(List<BirdList> project);
 
   @delete
-  Future<int> deleteOne(Project project);
+  Future<int> deleteOne(BirdList project);
 
   @delete
-  Future<int> deleteList(List<Project> projects);
+  Future<int> deleteList(List<BirdList> projects);
 
   @update
-  Future<int> updateOne(Project project);
+  Future<int> updateOne(BirdList project);
 
   @update
-  Future<int> updateList(List<Project> projects);
+  Future<int> updateList(List<BirdList> projects);
 
   @Query("SELECT * FROM project")
-  Future<List<Project>> getAll();
+  Future<List<BirdList>> getAll();
 
   @Query("SELECT * FROM project WHERE id = :projectId")
-  Future<List<Project>> getById(String projectId);
+  Future<List<BirdList>> getById(String projectId);
 }

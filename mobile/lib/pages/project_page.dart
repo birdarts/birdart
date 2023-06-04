@@ -7,14 +7,14 @@ import '../pages/edit_record_page.dart';
 import '../pages/record_page.dart';
 
 import '../db/db_manager.dart';
-import '../db/project.dart';
+import '../db/bird_list.dart';
 import '../entity/color_scheme.dart';
 import '../pages/edit_project_page.dart';
 import '../widget/app_bars.dart';
 import '../widget/empty_box.dart';
 
 class ProjectPage extends StatefulWidget {
-  final Project project;
+  final BirdList project;
 
   const ProjectPage({Key? key, required this.project}) : super(key: key);
 
