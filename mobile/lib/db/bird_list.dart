@@ -23,6 +23,24 @@ class BirdList implements BaseBirdList {
   bool sync;
 
   @override
+  double lon;
+  @override
+  double lat;
+  @override
+  double ele;
+
+  @override
+  String country;
+  @override
+  String province;
+  @override
+  String city;
+  @override
+  String county;
+  @override
+  String poi;
+
+  @override
   String type = ''; // for future usage
 
   BirdList({
@@ -33,12 +51,28 @@ class BirdList implements BaseBirdList {
     required this.coverImg,
     required this.createTime,
     required this.sync,
+    required this.lon,
+    required this.lat,
+    required this.ele,
+    required this.country,
+    required this.province,
+    required this.city,
+    required this.county,
+    required this.poi,
   });
 
   BirdList.add({
     required this.name,
     required this.notes,
     required this.coverImg,
+    required this.lon,
+    required this.lat,
+    required this.ele,
+    required this.country,
+    required this.province,
+    required this.city,
+    required this.county,
+    required this.poi,
   })
   : id = ObjectId(),
     author = ObjectId.fromHexString(UserProfile.id),
@@ -53,6 +87,14 @@ class BirdList implements BaseBirdList {
     createTime: DateTime.fromMillisecondsSinceEpoch(json['createTime']),
     sync: true,
     coverImg: '',
+    lon: double.parse(json['lon']),
+    lat: double.parse(json['lat']),
+    ele: double.parse(json['ele']),
+    country: json['country'],
+    province: json['province'],
+    city: json['city'],
+    county: json['county'],
+    poi: json['poi'],
   );
 
   @override
@@ -63,6 +105,14 @@ class BirdList implements BaseBirdList {
     'notes': notes,
     'coverImg': coverImg,
     'createTime': createTime.millisecondsSinceEpoch,
+    'lon': lon,
+    'lat': lat,
+    'ele': ele,
+    'country': country,
+    'province': province,
+    'city': city,
+    'county': county,
+    'poi': poi,
   };
 }
 

@@ -9,6 +9,16 @@ class BaseBirdList {
   DateTime createTime;
   bool sync;
 
+  double lon;
+  double lat;
+  double ele;
+
+  String country;
+  String province;
+  String city;
+  String county;
+  String poi;
+
   String type = ''; // for future usage
 
   BaseBirdList({
@@ -19,6 +29,14 @@ class BaseBirdList {
     required this.coverImg,
     required this.createTime,
     required this.sync,
+    required this.lon,
+    required this.lat,
+    required this.ele,
+    required this.country,
+    required this.province,
+    required this.city,
+    required this.county,
+    required this.poi,
   });
 
   factory BaseBirdList.fromJson(Map<String, dynamic> json) => BaseBirdList(
@@ -29,6 +47,14 @@ class BaseBirdList {
     createTime: DateTime.fromMillisecondsSinceEpoch(json['createTime']),
     sync: true,
     coverImg: '',
+    lon: double.parse(json['lon']),
+    lat: double.parse(json['lat']),
+    ele: double.parse(json['ele']),
+    country: json['country'],
+    province: json['province'],
+    city: json['city'],
+    county: json['county'],
+    poi: json['poi'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -38,5 +64,13 @@ class BaseBirdList {
     'notes': notes,
     'coverImg': coverImg,
     'createTime': createTime.millisecondsSinceEpoch,
+    'lon': lon,
+    'lat': lat,
+    'ele': ele,
+    'country': country,
+    'province': province,
+    'city': city,
+    'county': county,
+    'poi': poi,
   };
 }

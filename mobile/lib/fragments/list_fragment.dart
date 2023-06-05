@@ -12,7 +12,7 @@ import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
 import '../entity/color_scheme.dart';
 import '../entity/server.dart';
-import '../pages/project_page.dart';
+import '../pages/list_page.dart';
 
 class ListFragment extends StatefulWidget {
   const ListFragment({Key? key}) : super(key: key);
@@ -105,8 +105,8 @@ class _ListFragmentState extends State<ListFragment>
                               Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ProjectPage(
-                                              project: projects[index])))
+                                          builder: (context) => ListPage(
+                                              birdList: projects[index])))
                                   .then((value) {
                                 if (value) {
                                   setState(() {

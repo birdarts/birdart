@@ -94,11 +94,6 @@ class _RecordPageState extends State<RecordPage>
             const SizedBox(
               height: 4,
             ),
-            Text(
-                '经度: ${CoordinateTool().degreeToDms(record.lat.toString())}     纬度: ${CoordinateTool().degreeToDms(record.lon.toString())}'),
-            Wrap(children: [
-              Text('${record.country} ${record.province} ${record.city} ${record.county} ${record.poi}'),
-            ]),
           ],
         ),
       );

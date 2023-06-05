@@ -1,4 +1,5 @@
 import 'package:birdart/entity/color_scheme.dart';
+import 'package:birdart/pages/edit_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -202,7 +203,7 @@ class _HomeFragmentState extends State<HomeFragment>
           color: primaryColor,
           child: InkWell(
             onTap: () {
-              // TODO open watching list
+              Navigator.push(context, MaterialPageRoute(builder: (context) => EditList()));
             },
             child: Container(
               padding: const EdgeInsets.all(16),

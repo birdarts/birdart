@@ -3,36 +3,41 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../db/bird_list.dart';
 import '../db/db_manager.dart';
 import '../entity/color_scheme.dart';
+import '../tianditu/geocoder.dart';
+import '../tool/coordinator_tool.dart';
+import '../tool/location_tool.dart';
 import '../widget/picture_grid.dart';
 
-class EditProject extends StatefulWidget {
-  final BirdList? project;
+class EditList extends StatefulWidget {
+  final BirdList? birdList;
 
-  const EditProject({Key? key, this.project}) : super(key: key);
+  const EditList({Key? key, this.birdList}) : super(key: key);
 
   @override
-  State<EditProject> createState() => _EditProjectState();
+  State<EditList> createState() => _EditListState();
 }
 
-class _EditProjectState extends State<EditProject> {
+class _EditListState extends State<EditList> {
   final _formKey = GlobalKey<FormState>();
   var _isNew = false;
-  late BirdList project;
+  late BirdList birdList;
 
   @override
   void initState() {
-    if (widget.project != null) {
-      project = widget.project!;
+    if (widget.birdList != null) {
+      birdList = widget.birdList!;
     } else {
       _isNew = true;
-      project = BirdList.add(name: '', notes: '', coverImg: '');
+      birdList = BirdList.add(name: '', notes: '', coverImg: '', lon: 0.0, lat: 0.0, ele: 0.0, country: '', province: '', city: '', county: '', poi: '', );
     }
     super.initState();
+    _getCurrentLocation(context);
   }
 
   Widget _showTitle() {
@@ -42,11 +47,70 @@ class _EditProjectState extends State<EditProject> {
     );
   }
 
+  Widget _getLocationItem() => Column(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+          '经度: ${CoordinateTool().degreeToDms(birdList.lat.toString())}',
+          style: const TextStyle(fontSize: 18)),
+      const SizedBox(
+        height: 12,
+      ),
+      Text(
+          '纬度: ${CoordinateTool().degreeToDms(birdList.lon.toString())}',
+          style: const TextStyle(fontSize: 18)),
+      const SizedBox(
+        height: 12,
+      ),
+      Text('海拔: ${birdList.ele.toStringAsFixed(3)}',
+          style: const TextStyle(fontSize: 18)),
+      const SizedBox(
+        height: 12,
+      ),
+      Text('${birdList.country} ${birdList.province} ${birdList.city} ${birdList.county}',
+          style: const TextStyle(fontSize: 18)),
+      TextFormField(
+        onSaved: (val) => {
+          if (val != null) {birdList.poi = val}
+        },
+        validator: (val) => val == null || val.isEmpty
+            ? '本项不能为空'
+            : null,
+        enabled: true,
+        initialValue: birdList.poi,
+        decoration:
+        const InputDecoration(labelText: '地址'),
+      ),
+    ],
+  );
+
+  Future<void> _getCurrentLocation(BuildContext context) async {
+    Position? locationData = await getCurrentLocation(context);
+
+    if (locationData != null) {
+      birdList.lat = locationData.latitude;
+      birdList.lon = locationData.longitude;
+      birdList.ele = locationData.altitude;
+      final addresses = await Geocoder.getFromLocation(
+          locationData.latitude, locationData.longitude);
+      if (addresses.isNotEmpty) {
+        birdList.country = addresses[0].nation;
+        birdList.province = addresses[0].province;
+        birdList.city = addresses[0].city;
+        birdList.county = addresses[0].county;
+        birdList.poi = addresses[0].address;
+      }
+      return;
+    }
+  }
+
   Widget _showProjectInput() {
     return TextFormField(
-      initialValue: project.name,
+      initialValue: birdList.name,
       onSaved: (val) => {
-        if (val != null) {project.name = val}
+        if (val != null) {birdList.name = val}
       },
       validator: (val) =>
           val == null || val.length < 4 ? '项目名过短，请至少包含4个字符' : null,
@@ -59,9 +123,9 @@ class _EditProjectState extends State<EditProject> {
 
   Widget _showRemarkInput() {
     return TextFormField(
-      initialValue: project.notes,
+      initialValue: birdList.notes,
       onSaved: (val) => {
-        if (val != null) {project.notes = val}
+        if (val != null) {birdList.notes = val}
       },
       decoration: const InputDecoration(
         labelText: '备注',
@@ -110,7 +174,7 @@ class _EditProjectState extends State<EditProject> {
                       String? path = (await result.first.file)?.path;
                       if (path != null) {
                         setState(() {
-                          project.coverImg = path;
+                          birdList.coverImg = path;
                         });
                       }
                     }
@@ -172,17 +236,17 @@ class _EditProjectState extends State<EditProject> {
   }
 
   ImageProvider _getImageProvider() {
-    if (project.coverImg.isEmpty) {
+    if (birdList.coverImg.isEmpty) {
       return const CachedNetworkImageProvider(
           'https://www.inaturalist.org/assets/homepage-science-aaf702330877209eb4380c3021f9e8176e48fcd9006ac6e317919332901176cd.jpg');
     } else {
-      return FileImage(File(project.coverImg));
+      return FileImage(File(birdList.coverImg));
     }
   }
 
   Future<void> _submitForm(BuildContext context) async {
     final form = _formKey.currentState;
-    if (project.coverImg.isEmpty) {
+    if (birdList.coverImg.isEmpty) {
       Fluttertoast.showToast(
         msg: "请点击封面图设置项目封面。",
         toastLength: Toast.LENGTH_SHORT,
@@ -192,11 +256,11 @@ class _EditProjectState extends State<EditProject> {
     if (form != null && form.validate()) {
       form.save();
       final db = DbManager.db;
-      project.sync = false;
+      birdList.sync = false;
       if (_isNew) {
-        db.projectDao.insertOne(project);
+        db.projectDao.insertOne(birdList);
       } else {
-        db.projectDao.updateOne(project);
+        db.projectDao.updateOne(birdList);
       }
       if (context.mounted) {
         Navigator.pop(context, true);

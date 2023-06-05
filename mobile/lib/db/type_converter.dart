@@ -17,3 +17,11 @@ class DateTimeDbConverter extends TypeConverter<DateTime, int> {
   @override
   int encode(DateTime value) => DateTimeConverter.encode(value);
 }
+
+class StringListDbConverter extends TypeConverter<List<String>, String> {
+  @override
+  List<String> decode(String databaseValue) => StringListConverter.decode(databaseValue);
+
+  @override
+  String encode(List<String> value) => StringListConverter.encode(value);
+}

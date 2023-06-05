@@ -9,20 +9,21 @@ import '../pages/record_page.dart';
 import '../db/db_manager.dart';
 import '../db/bird_list.dart';
 import '../entity/color_scheme.dart';
-import '../pages/edit_project_page.dart';
+import '../pages/edit_list_page.dart';
+import '../tool/coordinator_tool.dart';
 import '../widget/app_bars.dart';
 import '../widget/empty_box.dart';
 
-class ProjectPage extends StatefulWidget {
-  final BirdList project;
+class ListPage extends StatefulWidget {
+  final BirdList birdList;
 
-  const ProjectPage({Key? key, required this.project}) : super(key: key);
+  const ListPage({Key? key, required this.birdList}) : super(key: key);
 
   @override
-  State<ProjectPage> createState() => _ProjectPageState();
+  State<ListPage> createState() => _ListPageState();
 }
 
-class _ProjectPageState extends State<ProjectPage>
+class _ListPageState extends State<ListPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
@@ -31,7 +32,7 @@ class _ProjectPageState extends State<ProjectPage>
 
   @override
   void initState() {
-    _future = DbManager.db.recordDao.getByProject(widget.project.id.hexString);
+    _future = DbManager.db.recordDao.getByProject(widget.birdList.id.hexString);
     super.initState();
   }
 
@@ -49,7 +50,7 @@ class _ProjectPageState extends State<ProjectPage>
             ),
           ),
           subtitle: Text(
-            widget.project.name,
+            widget.birdList.name,
             style: const TextStyle(
               color: Colors.white,
             ),
@@ -61,8 +62,8 @@ class _ProjectPageState extends State<ProjectPage>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => EditProject(
-                        project: widget.project,
+                      builder: (context) => EditList(
+                        birdList: widget.birdList,
                       ))).then((value) {
                 if (value) {
                   updateParent = updateParent || value;
@@ -79,8 +80,8 @@ class _ProjectPageState extends State<ProjectPage>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => EditProject(
-                        project: widget.project,
+                      builder: (context) => EditList(
+                        birdList: widget.birdList,
                       ))).then((value) {
                 if (value) {
                   updateParent = updateParent || value;
@@ -101,10 +102,10 @@ class _ProjectPageState extends State<ProjectPage>
               context,
               MaterialPageRoute(
                   builder: (context) => EditRecord(
-                    project: widget.project.id.hexString,
+                    project: widget.birdList.id.hexString,
                   ))).then((value) => setState(() {
             _future =
-                DbManager.db.recordDao.getByProject(widget.project.id.hexString);
+                DbManager.db.recordDao.getByProject(widget.birdList.id.hexString);
           }));
         },
       ),
@@ -154,7 +155,7 @@ class _ProjectPageState extends State<ProjectPage>
                 if (value) {
                   setState(() {
                     _future =
-                        DbManager.db.recordDao.getByProject(widget.project.id.hexString);
+                        DbManager.db.recordDao.getByProject(widget.birdList.id.hexString);
                   });
                 }
               });
@@ -208,13 +209,6 @@ class _ProjectPageState extends State<ProjectPage>
                             Icons.place_rounded,
                             color: accentColor,
                           ),
-                          Expanded(
-                            child: Text(
-                              record.poi,
-                              style:
-                                  TextStyle(fontSize: 14, color: accentColor),
-                            ),
-                          ),
                         ],
                       ),
                       Text(
@@ -229,4 +223,10 @@ class _ProjectPageState extends State<ProjectPage>
           ),
         ),
       );
+
+  //Text(
+  //'经度: ${CoordinateTool().degreeToDms(birdList.lat.toString())}     纬度: ${CoordinateTool().degreeToDms(record.lon.toString())}'),
+  //Wrap(children: [
+  //Text('${record.country} ${record.province} ${record.city} ${record.county} ${record.poi}'),
+  //]),
 }
