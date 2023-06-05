@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/user_profile.dart';
@@ -46,17 +47,26 @@ class _MineFragmentState extends State<MineFragment>
               },
               child: Row(
                 children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    margin: const EdgeInsets.all(20.0),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage('assets/icon/icon.png'),
-                          fit: BoxFit.fill),
+                  if (UserProfile.logged)
+                    Container(
+                      width: 72,
+                      height: 72,
+                      margin: const EdgeInsets.all(16.0),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: AssetImage('assets/icon/icon.png'),
+                            fit: BoxFit.fill),
+                      ),
+                    )
+                  else
+                    Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: ClipOval(
+                        child: SvgPicture.asset('assets/svg/robin.svg',
+                            width: 72, height: 72, semanticsLabel: 'icon'),
+                      ),
                     ),
-                  ),
                   if (UserProfile.logged)
                     Text(
                       UserProfile.name,
