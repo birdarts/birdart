@@ -123,14 +123,10 @@ class _MapFragmentState extends State<MapFragment>
 
     return FlutterMap(
       options: MapOptions(
-        center: LatLng(30.6, 114.3),
+        center: LatLng(30, 120),
         zoom: 10,
         maxZoom: 18.0,
         minZoom: 2,
-        maxBounds: LatLngBounds(
-          LatLng(31.5, 115.1),
-          LatLng(29.9, 113.7),
-        ),
         keepAlive: true,
         rotation: 0,
         interactiveFlags: InteractiveFlag.pinchZoom |
