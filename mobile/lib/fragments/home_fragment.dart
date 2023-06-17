@@ -1,11 +1,9 @@
-import 'package:birdart/entity/color_scheme.dart';
-import 'package:birdart/pages/edit_list_page.dart';
-import 'package:birdart/pages/new_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../entity/consts.dart';
+import '../pages/new_list_page.dart';
 
 class HomeFragment extends StatefulWidget {
   const HomeFragment({Key? key}) : super(key: key);
@@ -201,7 +199,7 @@ class _HomeFragmentState extends State<HomeFragment>
 
   Widget _button() => Center(
         child: Card(
-          color: primaryColor,
+          color: Theme.of(context).primaryColor,
           child: InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const NewListPage()));
@@ -246,7 +244,7 @@ class _HomeFragmentState extends State<HomeFragment>
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.w500,
         ),
-        backgroundColor: primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [

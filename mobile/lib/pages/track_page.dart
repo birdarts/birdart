@@ -20,9 +20,7 @@ import '../db/track.dart';
 import '../db/on_db.dart';
 import '../entity/app_dir.dart';
 import '../entity/server.dart';
-import '../entity/color_scheme.dart';
 import '../tool/track_tool.dart';
-import '../widget/app_bars.dart';
 import '../widget/track_circle_animation.dart';
 
 class TrackPage extends StatefulWidget {
@@ -122,7 +120,7 @@ class _TrackPageState extends State<TrackPage>
     super.build(context);
 
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: const Text('轨迹记录'),
       ),
       floatingActionButton: FloatingActionButton(
@@ -235,12 +233,12 @@ class _TrackPageState extends State<TrackPage>
                   children: [
                     Icon(
                       Icons.timeline_rounded,
-                      color: accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     Expanded(
                       child: Text(
                         track.id.hexString,
-                        style: TextStyle(fontSize: 14, color: accentColor),
+                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],
@@ -249,12 +247,12 @@ class _TrackPageState extends State<TrackPage>
                   children: [
                     Icon(
                       Icons.cloud_upload_rounded,
-                      color: accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     Expanded(
                       child: Text(
                         track.sync ? '已上传' : '未上传',
-                        style: TextStyle(fontSize: 14, color: accentColor),
+                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],
@@ -286,7 +284,7 @@ class _TrackPageState extends State<TrackPage>
         mainAxisAlignment:
             MainAxisAlignment.spaceBetween, // 将空白空间均匀地分配在子组件之间和两端
         children: [
-          getBottomItem(Icons.timeline_rounded, accentColor, '开始轨迹记录', () {
+          getBottomItem(Icons.timeline_rounded, Theme.of(context).colorScheme.secondary, '开始轨迹记录', () {
           }),
           getBottomItem(Icons.stop_circle_rounded, Colors.red, '结束轨迹记录', () {
             if (TrackTool.subscription != null) {

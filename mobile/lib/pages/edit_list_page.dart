@@ -8,7 +8,6 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../db/bird_list.dart';
 import '../db/db_manager.dart';
-import '../entity/color_scheme.dart';
 import '../tianditu/geocoder.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/location_tool.dart';
@@ -164,7 +163,7 @@ class _EditListState extends State<EditList> {
                             const CameraPickerIcon(),
                         textDelegate: const AssetPickerTextDelegate(),
                         pickerTheme: AssetPicker.themeData(
-                          primaryColor,
+                          Theme.of(context).primaryColor,
                           light: true,
                         ),
                         pathNameBuilder: path2Name,
@@ -222,7 +221,7 @@ class _EditListState extends State<EditList> {
                       Icons.save_rounded,
                       color: Colors.white,
                       shadows: [
-                        Shadow(color: primaryColor, blurRadius: 8),
+                        Shadow(color: Theme.of(context).primaryColor, blurRadius: 8),
                       ],
                     ),
                   ),

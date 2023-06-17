@@ -13,7 +13,6 @@ import '../pages/track_page.dart';
 import '../tianditu/tianditu.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/location_tool.dart';
-import '../widget/app_bars.dart';
 import '../widget/location_marker_layer.dart';
 
 class MapFragment extends StatefulWidget {
@@ -123,7 +122,7 @@ class _MapFragmentState extends State<MapFragment>
     super.build(context);
 
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: const Text('探索周边'),
         //bottom: const PreferredSize(
         //  preferredSize: Size.zero,

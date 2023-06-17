@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
-import '/entity/color_scheme.dart';
-
 class PictureGrid extends StatefulWidget {
   const PictureGrid({Key? key, this.initialImages}) : super(key: key);
 
@@ -53,7 +51,7 @@ class PictureGridState extends State<PictureGrid> {
                       const CameraPickerIcon(),
                   textDelegate: const AssetPickerTextDelegate(),
                   pickerTheme: AssetPicker.themeData(
-                    primaryColor,
+                    Theme.of(context).primaryColor,
                     light: true,
                   ),
                   pathNameBuilder: path2Name,

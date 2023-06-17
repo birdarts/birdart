@@ -6,7 +6,6 @@ import '../entity/user_profile.dart';
 import '../pages/login_page.dart';
 import '../pages/settings_page.dart';
 import '../pages/user_info_page.dart';
-import '../widget/app_bars.dart';
 
 class MineFragment extends StatefulWidget {
   const MineFragment({Key? key}) : super(key: key);
@@ -25,7 +24,7 @@ class _MineFragmentState extends State<MineFragment>
     super.build(context);
 
     return Scaffold(
-      appBar: anAppBar(title: const Text('个人中心')),
+      appBar: AppBar(title: const Text('个人中心')),
       body: Center(
         child: Column(
           children: [

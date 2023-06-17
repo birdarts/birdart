@@ -8,10 +8,8 @@ import '../pages/record_page.dart';
 
 import '../db/db_manager.dart';
 import '../db/bird_list.dart';
-import '../entity/color_scheme.dart';
 import '../pages/edit_list_page.dart';
 import '../tool/coordinator_tool.dart';
-import '../widget/app_bars.dart';
 import '../widget/empty_box.dart';
 
 class ListPage extends StatefulWidget {
@@ -41,7 +39,7 @@ class _ListPageState extends State<ListPage>
     super.build(context);
 
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: ListTile(
           title: const Text(
             '调查项目',
@@ -207,13 +205,13 @@ class _ListPageState extends State<ListPage>
                         children: [
                           Icon(
                             Icons.place_rounded,
-                            color: accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ],
                       ),
                       Text(
                         record.observeTime.toString(),
-                        style: TextStyle(fontSize: 14, color: primaryColor),
+                        style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ))

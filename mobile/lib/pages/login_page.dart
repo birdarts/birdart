@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../entity/server.dart';
 import '../entity/user_profile.dart';
-import '../widget/app_bars.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -287,7 +286,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: Text(_isLoginForm ? '登陆' : '注册'),
       ),
       body: Container(

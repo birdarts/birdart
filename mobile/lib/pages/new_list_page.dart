@@ -1,8 +1,4 @@
-import 'package:birdart/entity/color_scheme.dart';
-import 'package:birdart/widget/track_circle_animation.dart';
 import 'package:flutter/material.dart';
-
-import '../widget/app_bars.dart';
 
 class NewListPage extends StatefulWidget {
   const NewListPage({super.key});
@@ -21,7 +17,7 @@ class _NewListPageState extends State<NewListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         titleTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 14.0,
@@ -29,7 +25,7 @@ class _NewListPageState extends State<NewListPage> {
         ),
         title: Row(
           children: [
-            TrackCircleAnimation(),
+            Icon(Icons.my_location_rounded),
             SizedBox(width: 8),
             Text('10 min'),
             SizedBox(width: 8),
@@ -41,9 +37,9 @@ class _NewListPageState extends State<NewListPage> {
           ],
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(70),
+          preferredSize: Size.fromHeight(Theme.of(context).appBarTheme.toolbarHeight ?? 65),
           child: Container(
-            color: lightColor,
+            color: Colors.pink.shade50, // todo use theme color scheme
             child: ListTile(
               leading: IconButton(
                 icon: Icon(Icons.add),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:birdart/widget/app_bars.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import '../db/db_manager.dart';
 import '../db/bird_list.dart';
 import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
-import '../entity/color_scheme.dart';
 import '../entity/server.dart';
 import '../pages/list_page.dart';
 
@@ -87,7 +85,7 @@ class _ListFragmentState extends State<ListFragment>
     super.build(context);
 
     return Scaffold(
-      appBar: anAppBar(title: const Text('我的观鸟记录')),
+      appBar: AppBar(title: const Text('我的观鸟记录')),
       body: RefreshIndicator(
         onRefresh: () => _fetchProjects(),
         child: Container(
@@ -166,7 +164,7 @@ class _ListFragmentState extends State<ListFragment>
                         project.notes,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 14, color: primaryColor),
+                        style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),

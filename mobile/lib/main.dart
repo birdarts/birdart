@@ -1,7 +1,5 @@
-import 'package:birdart/widget/app_bars.dart';
 import 'package:flutter/material.dart';
 
-import 'entity/color_scheme.dart';
 import 'entity/consts.dart';
 import 'fragments/home_fragment.dart';
 import 'fragments/map_fragment.dart';
@@ -63,20 +61,43 @@ class MyApp extends StatelessWidget {
       title: appName,
       home: const BottomNav(),
       theme: ThemeData(
-        colorScheme: const ColorScheme.light(
-          primary: Colors.pink,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.pinkAccent,
+          primary: Colors.pinkAccent,
           secondary: Colors.redAccent,
           onPrimary: Colors.white,
           onSecondary: Colors.white,
         ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.pinkAccent[5],
+          surfaceTintColor: Colors.pinkAccent[5],
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.pinkAccent,
+          foregroundColor: Colors.white,
+        ),
+        appBarTheme: AppBarTheme(
+          color: Colors.pinkAccent,
+          centerTitle: true,
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w500,
+          ),
+          actionsIconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         useMaterial3: true,
-        splashFactory: NoSplash.splashFactory,
         navigationBarTheme: NavigationBarThemeData(
-          indicatorColor: Colors.pink,
-          backgroundColor: Colors.pink[10],
+          indicatorColor: Colors.pinkAccent,
+          backgroundColor: Colors.pinkAccent[5],
         ),
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

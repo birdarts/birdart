@@ -13,7 +13,6 @@ import '../tianditu/geocoder.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/image_tool.dart';
 import '../tool/location_tool.dart';
-import '../widget/app_bars.dart';
 import '../widget/picture_grid.dart';
 
 class EditRecord extends StatefulWidget {
@@ -197,7 +196,7 @@ class _EditRecordState extends State<EditRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: _showTitle(),
         actions: [
           IconButton(
