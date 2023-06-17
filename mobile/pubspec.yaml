@@ -108,7 +108,7 @@ flutter:
     - assets/icon/fore.png
     - assets/icon/back.png
     - assets/icon/icon.png
-    - assets/svg/robin.svg # Sun Jiao, CC BY 4.0, based on dall·e AI generated content: https://www.bing.com/images/create/a-simple-birdwatching-app-icon-that-looks-like-the/647ca324a02c4675b2278c9c4d8aa673?id=yJELd2R5tJXcKRkb%2f1f6%2bw%3d%3d&view=detailv2&idpp=genimg&idpclose=1&FORM=SYDBIC
+    - assets/svg/robin.svg # Sun Jiao, CC BY 4.0, take dall·e AI generated image as a reference: https://www.bing.com/images/create/a-simple-birdwatching-app-icon-that-looks-like-the/647ca324a02c4675b2278c9c4d8aa673?id=yJELd2R5tJXcKRkb%2f1f6%2bw%3d%3d&view=detailv2&idpp=genimg&idpclose=1&FORM=SYDBIC
     - assets/svg/shorebird.svg # Sun Jiao, CC BY 4.0
     - assets/svg/binoculars.svg # Unlicense: https://iconduck.com/icons/19815/binoculars
 

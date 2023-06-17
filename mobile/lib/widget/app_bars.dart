@@ -7,13 +7,14 @@ AppBar anAppBar({
   Widget? title,
   PreferredSizeWidget? bottom,
   List<Widget>? actions,
+  TextStyle? titleTextStyle,
 }) =>
     AppBar(
       title: title ?? const Text(appName),
       centerTitle: true,
       backgroundColor: primaryColor,
       bottom: bottom,
-      titleTextStyle: const TextStyle(
+      titleTextStyle: titleTextStyle ?? const TextStyle(
         color: Colors.white,
         fontSize: 20.0,
         fontStyle: FontStyle.normal,
