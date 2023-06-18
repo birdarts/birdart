@@ -23,7 +23,7 @@ class _NewListPageState extends State<NewListPage> {
           fontSize: 14.0,
           fontStyle: FontStyle.normal,
         ),
-        title: Row(
+        title: const Row(
           children: [
             Icon(Icons.my_location_rounded),
             SizedBox(width: 8),
@@ -31,7 +31,7 @@ class _NewListPageState extends State<NewListPage> {
             SizedBox(width: 8),
             Text('10.0 km'),
             SizedBox(width: 8),
-            Icon(Icons.add_location),
+            Icon(Icons.add_location_rounded),
             SizedBox(width: 8),
             Text('观鸟点名称'),
           ],
@@ -42,10 +42,10 @@ class _NewListPageState extends State<NewListPage> {
             color: Colors.pink.shade50, // todo use theme color scheme
             child: ListTile(
               leading: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add_rounded),
                 onPressed: () {},
               ),
-              title: TextField(
+              title: const TextField(
                 decoration: InputDecoration(
                   hintText: '输入关键字搜索',
                   border: InputBorder.none,
@@ -56,12 +56,12 @@ class _NewListPageState extends State<NewListPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            IconButton(icon: Icon(Icons.comment), onPressed: () {}),
-            IconButton(icon: Icon(Icons.settings), onPressed: () {}),
-            IconButton(icon: Icon(Icons.check), onPressed: _onCompleted),
+            IconButton(icon: const Icon(Icons.comment_rounded), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.settings_rounded), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.check_rounded), onPressed: _onCompleted),
           ],
         ),
       ),
@@ -79,7 +79,7 @@ class _NewListPageState extends State<NewListPage> {
             leading: IconButton(
               icon: records.containsKey(name)
                   ? Text(records[name].toString())
-                  : Icon(Icons.add),
+                  : const Icon(Icons.add_rounded),
               onPressed: () {
                 setState(() {
                   if (records.containsKey(name)) {
