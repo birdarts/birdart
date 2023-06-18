@@ -36,20 +36,22 @@ class _NewListPageState extends State<NewListPage> {
             Text('观鸟点名称'),
           ],
         ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(Theme.of(context).appBarTheme.toolbarHeight ?? 65),
-          child: Container(
-            color: Colors.pink.shade50, // todo use theme color scheme
-            child: ListTile(
-              leading: IconButton(
-                icon: const Icon(Icons.add_rounded),
-                onPressed: () {},
-              ),
-              title: const TextField(
-                decoration: InputDecoration(
-                  hintText: '输入关键字搜索',
-                  border: InputBorder.none,
-                ),
+        bottom: AppBar(
+          backgroundColor: Colors.pink.shade50, // todo use theme color scheme,
+          leading: null,
+          leadingWidth: 0,
+          centerTitle: false,
+          titleSpacing: 0,
+          automaticallyImplyLeading: false,
+          title: ListTile(
+            leading: IconButton(
+              icon: const Icon(Icons.add_rounded),
+              onPressed: () {},
+            ),
+            title: const TextField(
+              decoration: InputDecoration(
+                hintText: '输入关键字搜索',
+                border: InputBorder.none,
               ),
             ),
           ),

@@ -76,23 +76,25 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.pinkAccent,
           foregroundColor: Colors.white,
         ),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           color: Colors.pinkAccent,
+          surfaceTintColor: Colors.transparent,
           centerTitle: true,
-          titleTextStyle: const TextStyle(
+          titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 20.0,
             fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w500,
           ),
-          actionsIconTheme: const IconThemeData(
+          actionsIconTheme: IconThemeData(
             color: Colors.white,
           ),
-          iconTheme: const IconThemeData(
+          iconTheme: IconThemeData(
             color: Colors.white,
           ),
         ),
         useMaterial3: true,
+        splashFactory: InkRipple.splashFactory,
         navigationBarTheme: NavigationBarThemeData(
           indicatorColor: Colors.pinkAccent,
           backgroundColor: Colors.pinkAccent[5],
