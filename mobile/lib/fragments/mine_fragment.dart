@@ -82,25 +82,35 @@ class _MineFragmentState extends State<MineFragment>
             const Divider(
               color: Colors.black12,
             ),
-            getSettingsItem(Icons.settings_rounded, '设置', context, onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsPage()));
-            }),
-            getSettingsItem(Icons.cloud_download_rounded, '数据管理', context,
-                onTap: () {}),
-            getSettingsItem(Icons.info_rounded, '关于', context, onTap: () {}),
-            getSettingsItem(Icons.code_rounded, '查看源代码', context,
-                onTap: () async {
-              final url = Uri.parse('https://github.com/birdarts/birdart');
-              if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-                throw Exception('Could not launch $url');
-              }
-            }),
+            buildButtons(),
+            const Divider(
+              color: Colors.black12,
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  // 构建按钮部分
+  Widget buildButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        getSettingsItem(Icons.settings_rounded, '设置', context, onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SettingsPage()));
+        }),
+        getSettingsItem(Icons.cloud_download_rounded, '数据管理', context,
+            onTap: () {}),
+        getSettingsItem(Icons.info_rounded, '关于', context, onTap: () {}),
+        getSettingsItem(Icons.code_rounded, '查看源代码', context, onTap: () async {
+          final url = Uri.parse('https://github.com/birdarts/birdart');
+          if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+            throw Exception('Could not launch $url');
+          }
+        }),
+      ],
     );
   }
 
@@ -108,17 +118,23 @@ class _MineFragmentState extends State<MineFragment>
           {Function()? onTap}) =>
       InkWell(
         onTap: onTap,
-        child: Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 15.0),
-              child: Icon(
-                iconData,
-                color: Theme.of(context).colorScheme.primary,
+        child: Expanded(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    iconData,
+                    size: 30,
+                    color: Colors.black87,
+                  ),
+                  Text(title),
+                ],
               ),
             ),
-            Text(title),
-          ],
+          ),
         ),
       );
 }
