@@ -21,6 +21,7 @@ import '../db/on_db.dart';
 import '../entity/app_dir.dart';
 import '../entity/server.dart';
 import '../tool/track_tool.dart';
+import '../tool/coordinator_tool.dart';
 import '../widget/track_circle_animation.dart';
 
 class TrackPage extends StatefulWidget {
@@ -446,6 +447,12 @@ class _TrackPageState extends State<TrackPage>
         TrackTool.track.startLon = locationData.longitude;
         TrackTool.track.startEle = locationData.altitude;
         TrackTool.track.startTime = time ?? DateTime.now();
+        TrackTool.track.distance = 0;
+      } else {
+        TrackTool.track.distance += CoordinateTool.distance(
+          TrackTool.track.endLat, TrackTool.track.endLon,
+          locationData.latitude, locationData.longitude
+        );
       }
 
       TrackTool.track.endLat = locationData.latitude;

@@ -28,7 +28,7 @@ class _ListFragmentState extends State<ListFragment>
 
   @override
   void initState() {
-    _future = DbManager.db.projectDao.getAll();
+    _future = DbManager.db.birdListDao.getAll();
     super.initState();
     _fetchProjects();
   }
@@ -46,16 +46,16 @@ class _ListFragmentState extends State<ListFragment>
               dataList.length, (index) => BirdList.fromJson(dataList[index]));
           for (var item in projectList) {
             final oldProject =
-                await DbManager.db.projectDao.getById(item.id.hexString);
+                await DbManager.db.birdListDao.getById(item.id.hexString);
             if (oldProject.isNotEmpty) {
               projectList.remove(item);
             } else {
               item.coverImg = await downloadAndSaveImage(item.coverImg);
             }
           }
-          await DbManager.db.projectDao.insertList(projectList);
+          await DbManager.db.birdListDao.insertList(projectList);
           setState(() {
-            _future = DbManager.db.projectDao.getAll();
+            _future = DbManager.db.birdListDao.getAll();
           });
         }
       } else {}
@@ -108,7 +108,7 @@ class _ListFragmentState extends State<ListFragment>
                                   .then((value) {
                                 if (value) {
                                   setState(() {
-                                    _future = DbManager.db.projectDao.getAll();
+                                    _future = DbManager.db.birdListDao.getAll();
                                   });
                                 }
                               });
@@ -258,15 +258,15 @@ class _ListFragmentState extends State<ListFragment>
         if (data['success'] = true) {
           BirdList project = BirdList.fromJson(data['data']);
           final oldProject =
-              await DbManager.db.projectDao.getById(project.id.hexString);
+              await DbManager.db.birdListDao.getById(project.id.hexString);
           if (oldProject.isNotEmpty) {
             _qrCodeGetFailed('项目已存在');
             return;
           } else {
             project.coverImg = await downloadAndSaveImage(project.coverImg);
-            await DbManager.db.projectDao.insertOne(project);
+            await DbManager.db.birdListDao.insertOne(project);
             setState(() {
-              _future = DbManager.db.projectDao.getAll();
+              _future = DbManager.db.birdListDao.getAll();
             });
           }
           return;

@@ -17,6 +17,7 @@ class BaseTrack {
   DateTime endTime;
 
   int pointCount = 0;
+  double distance = 0.0;
   bool sync;
 
   String file = '';
@@ -38,6 +39,7 @@ class BaseTrack {
     this.endLat = 0.0,
     this.endEle = 0.0,
     this.pointCount = 0,
+    this.distance = 0.0,
   });
 
   factory BaseTrack.fromJson(Map<String, dynamic> json) => BaseTrack(
@@ -52,6 +54,7 @@ class BaseTrack {
     startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
     endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
     pointCount: int.parse(json['pointCount']),
+    distance: double.parse(json['distance']),
     sync: true,
     file: json['file'],
   );
@@ -68,5 +71,6 @@ class BaseTrack {
     'startTime': startTime.millisecondsSinceEpoch,
     'endTime': endTime.millisecondsSinceEpoch,
     'pointCount': pointCount,
+    'distance': distance,
   };
 }

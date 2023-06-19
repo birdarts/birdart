@@ -117,7 +117,7 @@ class BirdList implements BaseBirdList {
 }
 
 @dao
-abstract class ProjectDao {
+abstract class BirdListDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertOne(BirdList project);
 
@@ -136,9 +136,9 @@ abstract class ProjectDao {
   @update
   Future<int> updateList(List<BirdList> projects);
 
-  @Query("SELECT * FROM project")
+  @Query("SELECT * FROM BirdList")
   Future<List<BirdList>> getAll();
 
-  @Query("SELECT * FROM project WHERE id = :projectId")
+  @Query("SELECT * FROM BirdList WHERE id = :projectId")
   Future<List<BirdList>> getById(String projectId);
 }

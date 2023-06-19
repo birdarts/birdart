@@ -52,13 +52,13 @@ class _EditListState extends State<EditList> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-          '经度: ${CoordinateTool().degreeToDms(birdList.lat.toString())}',
+          '经度: ${CoordinateTool.degreeToDms(birdList.lat.toString())}',
           style: const TextStyle(fontSize: 18)),
       const SizedBox(
         height: 12,
       ),
       Text(
-          '纬度: ${CoordinateTool().degreeToDms(birdList.lon.toString())}',
+          '纬度: ${CoordinateTool.degreeToDms(birdList.lon.toString())}',
           style: const TextStyle(fontSize: 18)),
       const SizedBox(
         height: 12,
@@ -257,9 +257,9 @@ class _EditListState extends State<EditList> {
       final db = DbManager.db;
       birdList.sync = false;
       if (_isNew) {
-        db.projectDao.insertOne(birdList);
+        db.birdListDao.insertOne(birdList);
       } else {
-        db.projectDao.updateOne(birdList);
+        db.birdListDao.updateOne(birdList);
       }
       if (context.mounted) {
         Navigator.pop(context, true);

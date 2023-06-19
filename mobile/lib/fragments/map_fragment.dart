@@ -254,8 +254,8 @@ class _MapFragmentState extends State<MapFragment>
   void _setMapLocation(Position locationData, {animate = false}) {
     setState(() => {
           _locationText =
-              '经度: ${CoordinateTool().degreeToDms(locationData.longitude.toString())}\n'
-                  '纬度: ${CoordinateTool().degreeToDms(locationData.latitude.toString())}\n'
+              '经度: ${CoordinateTool.degreeToDms(locationData.longitude.toString())}\n'
+                  '纬度: ${CoordinateTool.degreeToDms(locationData.latitude.toString())}\n'
                   '海拔: ${locationData.altitude.toStringAsFixed(3)}',
           _currentLocationLayer = LocationMarker(locationData: locationData),
           if (animate)

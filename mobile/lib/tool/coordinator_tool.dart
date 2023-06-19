@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CoordinateTool {
   /// 将 112/1,58/1,390971/10000 格式的经纬度转换成 112.99434397362694格式
   /// @param dms 度分秒
   /// @return 度
-  double dmsToDegree(String dms) {
+  static double dmsToDegree(String dms) {
     var dimensionality = 0.0;
 
     //用 ，将数值分成3份
@@ -22,13 +23,13 @@ class CoordinateTool {
   }
 
   //获取小数部分
-  double _getDPoint(double num) {
+  static double _getDPoint(double num) {
     var fInt = num.toInt();
     return (num - fInt).toDouble();
   }
 
   //double 经纬度 获取度分秒
-  String degreeToDms(String str) {
+  static String degreeToDms(String str) {
     var num = 0.0;
     try {
       num = double.parse(str);
@@ -41,4 +42,13 @@ class CoordinateTool {
     final second = _getDPoint(temp) * 60;
     return "$degree°$minute′${second.toStringAsFixed(2)}″";
   }
+
+  static double distance(double lat1, double lon1, double lat2, double lon2) =>
+      acos(sin(lat1.rad) * sin(lat2.rad) +
+           cos(lat1.rad) * cos(lat2.rad) *
+           cos(lon2.rad - lon1.rad)) * 6371.0;
+}
+
+extension _DegToRad on double {
+  double get rad => this * pi / 180;
 }
