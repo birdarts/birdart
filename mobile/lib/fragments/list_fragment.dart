@@ -10,7 +10,6 @@ import '../db/bird_list.dart';
 import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
 import '../entity/server.dart';
-import '../pages/list_page.dart';
 
 class ListFragment extends StatefulWidget {
   const ListFragment({Key? key}) : super(key: key);
@@ -49,8 +48,6 @@ class _ListFragmentState extends State<ListFragment>
                 await DbManager.db.birdListDao.getById(item.id.hexString);
             if (oldProject.isNotEmpty) {
               projectList.remove(item);
-            } else {
-              item.coverImg = await downloadAndSaveImage(item.coverImg);
             }
           }
           await DbManager.db.birdListDao.insertList(projectList);
@@ -100,18 +97,18 @@ class _ListFragmentState extends State<ListFragment>
                       itemCount: projects.length,
                       itemBuilder: (context, index) => InkWell(
                             onTap: () {
-                              Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ListPage(
-                                              birdList: projects[index])))
-                                  .then((value) {
-                                if (value) {
-                                  setState(() {
-                                    _future = DbManager.db.birdListDao.getAll();
-                                  });
-                                }
-                              });
+                              //Navigator.push(
+                              //        context,
+                              //        MaterialPageRoute(
+                              //            builder: (context) => ListPage(
+                              //                birdList: projects[index])))
+                              //    .then((value) {
+                              //  if (value) {
+                              //    setState(() {
+                              //      _future = DbManager.db.birdListDao.getAll();
+                              //    });
+                              //  }
+                              //});
                             },
                             child: getProjectItem(projects[index]),
                           ));
@@ -134,17 +131,6 @@ class _ListFragmentState extends State<ListFragment>
             height: 100,
             child: Row(
               children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      image: DecorationImage(
-                          image: FileImage(File(project.coverImg)),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
                 const SizedBox(
                   width: 16,
                 ),
@@ -263,7 +249,6 @@ class _ListFragmentState extends State<ListFragment>
             _qrCodeGetFailed('项目已存在');
             return;
           } else {
-            project.coverImg = await downloadAndSaveImage(project.coverImg);
             await DbManager.db.birdListDao.insertOne(project);
             setState(() {
               _future = DbManager.db.birdListDao.getAll();

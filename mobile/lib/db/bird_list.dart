@@ -16,9 +16,21 @@ class BirdList implements BaseBirdList {
   @override
   String notes;
   @override
-  String coverImg;
-  @override
   DateTime createTime;
+  @override
+  int birders;
+  @override
+  String comment;
+  @override
+  bool complete;
+  @override
+  double distance;
+  @override
+  int time;
+
+  @override
+  ObjectId track;
+
   @override
   bool sync;
 
@@ -48,7 +60,6 @@ class BirdList implements BaseBirdList {
     required this.author,
     required this.name,
     required this.notes,
-    required this.coverImg,
     required this.createTime,
     required this.sync,
     required this.lon,
@@ -59,12 +70,18 @@ class BirdList implements BaseBirdList {
     required this.city,
     required this.county,
     required this.poi,
+    required this.track,
+    required this.comment,
+    required this.type,
+    required this.time,
+    required this.birders,
+    required this.distance,
+    required this.complete,
   });
 
   BirdList.add({
     required this.name,
     required this.notes,
-    required this.coverImg,
     required this.lon,
     required this.lat,
     required this.ele,
@@ -73,11 +90,18 @@ class BirdList implements BaseBirdList {
     required this.city,
     required this.county,
     required this.poi,
+    required this.track,
   })
   : id = ObjectId(),
     author = ObjectId.fromHexString(UserProfile.id),
     createTime = DateTime.now(),
-    sync = false;
+    sync = false,
+    comment = '',
+    type = '偶然记录',
+    time = 0,
+    birders = 1,
+    distance = 0,
+    complete = false;
 
   factory BirdList.fromJson(Map<String, dynamic> json) => BirdList(
     id: ObjectId.fromHexString(json['_id']),
@@ -86,7 +110,6 @@ class BirdList implements BaseBirdList {
     notes: json['notes'],
     createTime: DateTime.fromMillisecondsSinceEpoch(json['createTime']),
     sync: true,
-    coverImg: '',
     lon: double.parse(json['lon']),
     lat: double.parse(json['lat']),
     ele: double.parse(json['ele']),
@@ -95,6 +118,13 @@ class BirdList implements BaseBirdList {
     city: json['city'],
     county: json['county'],
     poi: json['poi'],
+    track: json['track'],
+    comment: json['comment'],
+    type: json['type'],
+    time: json['time'],
+    birders: json['birders'],
+    distance: json['distance'],
+    complete: json['complete'],
   );
 
   @override
@@ -103,7 +133,6 @@ class BirdList implements BaseBirdList {
     'author': author.hexString,
     'name': name,
     'notes': notes,
-    'coverImg': coverImg,
     'createTime': createTime.millisecondsSinceEpoch,
     'lon': lon,
     'lat': lat,
@@ -113,6 +142,13 @@ class BirdList implements BaseBirdList {
     'city': city,
     'county': county,
     'poi': poi,
+    'track': track,
+    'comment': comment,
+    'type': type,
+    'time': time,
+    'birders': birders,
+    'distance': distance,
+    'complete': complete,
   };
 }
 

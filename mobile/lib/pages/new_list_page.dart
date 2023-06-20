@@ -10,6 +10,8 @@ class NewListPage extends StatefulWidget {
 class _NewListPageState extends State<NewListPage> {
   Map<String, int> records = {};
 
+  List<String> birds = List.generate(20, (index) => '鸟 $index');
+
   void _onCompleted() {
     // TODO: 处理完成按钮点击事件
   }
@@ -76,7 +78,7 @@ class _NewListPageState extends State<NewListPage> {
       body: ListView.builder(
         itemCount: 20,
         itemBuilder: (context, index) {
-          final name = '鸟 $index';
+          final name = birds[index];
           return ListTile(
             leading: IconButton(
               icon: records.containsKey(name)

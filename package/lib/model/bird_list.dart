@@ -5,8 +5,12 @@ class BaseBirdList {
   ObjectId author;
   String name;
   String notes;
-  String coverImg;
   DateTime createTime;
+  int time; // in minutes
+  int birders; // birder amount
+  double distance;
+  String type = ''; // list type
+  bool complete;
   bool sync;
 
   double lon;
@@ -18,15 +22,15 @@ class BaseBirdList {
   String city;
   String county;
   String poi;
+  ObjectId track;
 
-  String type = ''; // for future usage
+  String comment = '';
 
   BaseBirdList({
     required this.id,
     required this.author,
     required this.name,
     required this.notes,
-    required this.coverImg,
     required this.createTime,
     required this.sync,
     required this.lon,
@@ -37,6 +41,13 @@ class BaseBirdList {
     required this.city,
     required this.county,
     required this.poi,
+    required this.track,
+    required this.comment,
+    required this.type,
+    required this.time,
+    required this.birders,
+    required this.distance,
+    required this.complete,
   });
 
   factory BaseBirdList.fromJson(Map<String, dynamic> json) => BaseBirdList(
@@ -46,7 +57,6 @@ class BaseBirdList {
     notes: json['notes'],
     createTime: DateTime.fromMillisecondsSinceEpoch(json['createTime']),
     sync: true,
-    coverImg: '',
     lon: double.parse(json['lon']),
     lat: double.parse(json['lat']),
     ele: double.parse(json['ele']),
@@ -55,6 +65,13 @@ class BaseBirdList {
     city: json['city'],
     county: json['county'],
     poi: json['poi'],
+    track: json['track'],
+    comment: json['comment'],
+    type: json['type'],
+    time: json['time'],
+    birders: json['birders'],
+    distance: json['distance'],
+    complete: json['complete'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -62,7 +79,6 @@ class BaseBirdList {
     'author': author.hexString,
     'name': name,
     'notes': notes,
-    'coverImg': coverImg,
     'createTime': createTime.millisecondsSinceEpoch,
     'lon': lon,
     'lat': lat,
@@ -72,5 +88,12 @@ class BaseBirdList {
     'city': city,
     'county': county,
     'poi': poi,
+    'track': track,
+    'comment': comment,
+    'type': type,
+    'time': time,
+    'birders': birders,
+    'distance': distance,
+    'complete': complete,
   };
 }
