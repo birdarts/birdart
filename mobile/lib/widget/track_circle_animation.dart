@@ -71,7 +71,7 @@ class CirclePainter extends CustomPainter {
   }
 
   Paint getPaint(int index) => Paint()
-    ..color = Color.fromRGBO(33, 150, 243, (3 - index - value) / 3)
+    ..color = Color.fromRGBO(255, 255, 255, (3 - index - value) / 3)
     ..style = PaintingStyle.fill;
 
   double getRadius(int index, Size size) =>

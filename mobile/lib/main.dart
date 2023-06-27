@@ -61,20 +61,45 @@ class MyApp extends StatelessWidget {
       title: appName,
       home: const BottomNav(),
       theme: ThemeData(
-        colorScheme: const ColorScheme.light(
-          primary: Colors.pink,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.pinkAccent,
+          primary: Colors.pinkAccent,
           secondary: Colors.redAccent,
           onPrimary: Colors.white,
           onSecondary: Colors.white,
         ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Colors.pinkAccent[5],
+          surfaceTintColor: Colors.pinkAccent[5],
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.pinkAccent,
+          foregroundColor: Colors.white,
+        ),
+        appBarTheme: const AppBarTheme(
+          color: Colors.pinkAccent,
+          surfaceTintColor: Colors.transparent,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w500,
+          ),
+          actionsIconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         useMaterial3: true,
-        splashFactory: NoSplash.splashFactory,
+        splashFactory: InkRipple.splashFactory,
         navigationBarTheme: NavigationBarThemeData(
-          indicatorColor: Colors.pink,
-          backgroundColor: Colors.pink[10],
+          indicatorColor: Colors.pinkAccent,
+          backgroundColor: Colors.pinkAccent[5],
         ),
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -100,17 +125,6 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
     var pageController = PageController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(appName),
-        centerTitle: true,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 24.0,
-          fontStyle: FontStyle.italic,
-          fontWeight: FontWeight.w500,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {

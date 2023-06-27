@@ -41,6 +41,8 @@ class Track implements BaseTrack {
   @override
   int pointCount = 0;
   @override
+  double distance = 0.0;
+  @override
   bool sync;
 
   @override
@@ -64,6 +66,7 @@ class Track implements BaseTrack {
     this.endLat = 0.0,
     this.endEle = 0.0,
     this.pointCount = 0,
+    this.distance = 0.0,
   });
 
   Track.empty()
@@ -85,6 +88,7 @@ class Track implements BaseTrack {
     startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
     endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
     pointCount: int.parse(json['pointCount']),
+    distance: double.parse(json['distance']),
     sync: true,
     file: json['file'],
   );
@@ -102,6 +106,7 @@ class Track implements BaseTrack {
     'startTime': startTime.millisecondsSinceEpoch,
     'endTime': endTime.millisecondsSinceEpoch,
     'pointCount': pointCount,
+    'distance': distance,
   };
 }
 

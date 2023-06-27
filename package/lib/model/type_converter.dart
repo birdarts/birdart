@@ -11,3 +11,24 @@ class DateTimeConverter {
 
   static int encode(DateTime value) => value.millisecondsSinceEpoch;
 }
+
+class StringListConverter {
+  static List<String> decode(String databaseValue) {
+    if (databaseValue.isEmpty) {
+      return [];
+    } else {
+      databaseValue = databaseValue
+          .toString()
+          .replaceAll('[', '')
+          .replaceAll(']', '');
+
+      if (databaseValue.isEmpty) {
+        return [];
+      } else {
+        return databaseValue.split(', ');
+      }
+    }
+  }
+
+  static String encode(List<String> value) => value.toString();
+}

@@ -13,7 +13,6 @@ import '../tianditu/geocoder.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/image_tool.dart';
 import '../tool/location_tool.dart';
-import '../widget/app_bars.dart';
 import '../widget/picture_grid.dart';
 
 class EditRecord extends StatefulWidget {
@@ -37,7 +36,6 @@ class _EditRecordState extends State<EditRecord> {
   late final Widget pictureGrid;
   var _isNew = false;
   late DbRecord record;
-  late Future<void>? _geoFuture;
   late Future<void>? _imageFuture;
   late final TextEditingController noteController;
 
@@ -50,13 +48,11 @@ class _EditRecordState extends State<EditRecord> {
 
     if (widget.record != null) {
       record = widget.record!;
-      _geoFuture = emptyFuture();
       _imageFuture = imageGridFuture();
     } else {
       _isNew = true;
-      record = DbRecord.add(project: ObjectId.fromHexString(widget.project), lon: 0.0, lat: 0.0, ele: 0.0, species: '', speciesRef: '', country: '', province: '', city: '', county: '', poi: '', notes: '');
+      record = DbRecord.add(project: ObjectId.fromHexString(widget.project), species: '', speciesRef: '', notes: '', tags: []);
 
-      _geoFuture = _getCurrentLocation(context);
       _imageFuture = emptyFuture();
     }
     noteController = TextEditingController(text: record.notes);
@@ -69,26 +65,6 @@ class _EditRecordState extends State<EditRecord> {
     // 清理控制器资源
     noteController.dispose();
     super.dispose();
-  }
-
-  Future<void> _getCurrentLocation(BuildContext context) async {
-    Position? locationData = await getCurrentLocation(context);
-
-    if (locationData != null) {
-      record.lat = locationData.latitude;
-      record.lon = locationData.longitude;
-      record.ele = locationData.altitude;
-      final addresses = await Geocoder.getFromLocation(
-          locationData.latitude, locationData.longitude);
-      if (addresses.isNotEmpty) {
-        record.country = addresses[0].nation;
-        record.province = addresses[0].province;
-        record.city = addresses[0].city;
-        record.county = addresses[0].county;
-        record.poi = addresses[0].address;
-      }
-      return;
-    }
   }
 
   Future<void> _submitForm(BuildContext context) async {
@@ -193,56 +169,6 @@ class _EditRecordState extends State<EditRecord> {
         ],
       );
 
-  Widget _getLocationItem() => StatefulBuilder(
-      builder: (context, setState) => FutureBuilder(
-        future: _geoFuture,
-        builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    '经度: ${CoordinateTool().degreeToDms(record.lat.toString())}',
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text(
-                    '纬度: ${CoordinateTool().degreeToDms(record.lon.toString())}',
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text('海拔: ${record.ele.toStringAsFixed(3)}',
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text('${record.country} ${record.province} ${record.city} ${record.county}',
-                    style: const TextStyle(fontSize: 18)),
-                TextFormField(
-                  onSaved: (val) => {
-                    if (val != null) {record.poi = val}
-                  },
-                  validator: (val) => val == null || val.isEmpty
-                      ? '本项不能为空'
-                      : null,
-                  enabled: true,
-                  initialValue: record.poi,
-                  decoration:
-                  const InputDecoration(labelText: '地址'),
-                ),
-              ],
-            );
-          } else {
-            return const LinearProgressIndicator();
-          }
-        },
-      ),
-  );
-
   Widget _getNoteItem() => StatefulBuilder(builder: (context, setState) {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -270,7 +196,7 @@ class _EditRecordState extends State<EditRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: _showTitle(),
         actions: [
           IconButton(
@@ -299,7 +225,6 @@ class _EditRecordState extends State<EditRecord> {
               const SizedBox(
                 height: 12,
               ),
-              _getLocationItem(),
               const SizedBox(
                 height: 12,
               ),

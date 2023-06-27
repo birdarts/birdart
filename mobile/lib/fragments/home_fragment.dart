@@ -1,9 +1,9 @@
-import 'package:birdart/entity/color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import '../entity/consts.dart';
+import '../pages/new_list_page.dart';
 
 class HomeFragment extends StatefulWidget {
   const HomeFragment({Key? key}) : super(key: key);
@@ -14,7 +14,6 @@ class HomeFragment extends StatefulWidget {
 
 class _HomeFragmentState extends State<HomeFragment>
     with AutomaticKeepAliveClientMixin {
-
   // override `wantKeepAlive` as `true` to keep page alive
   @override
   bool get wantKeepAlive => true;
@@ -46,7 +45,8 @@ class _HomeFragmentState extends State<HomeFragment>
   }
 
   updateSwitcher() {
-    final error = DateTime.now().millisecondsSinceEpoch - dateTime.millisecondsSinceEpoch;
+    final error =
+        DateTime.now().millisecondsSinceEpoch - dateTime.millisecondsSinceEpoch;
 
     showRecent = error < 3600000; // 1 hour
     showCurrent = error < 60000; // 1 minute
@@ -85,94 +85,94 @@ class _HomeFragmentState extends State<HomeFragment>
       );
 
   Widget _timeWidget(BuildContext context) => Stack(
-    children: [
-      Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              child: Column(
-                children: [
-                  const Text(
-                    '时间',
-                    style: TextStyle(fontSize: 16),
+        children: [
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  child: Column(
+                    children: [
+                      const Text(
+                        '时间',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        DateFormat('HH:mm').format(dateTime),
+                        style: const TextStyle(fontSize: 42),
+                      ),
+                    ],
                   ),
-                  Text(
-                    DateFormat('HH:mm').format(dateTime),
-                    style: const TextStyle(fontSize: 42),
-                  ),
-                ],
-              ),
-              onTap: () async {
-                final time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(dateTime));
-                if (time != null) {
+                  onTap: () async {
+                    final time = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(dateTime));
+                    if (time != null) {
+                      setState(() {
+                        dateTime = DateTime(dateTime.year, dateTime.month,
+                            dateTime.day, time.hour, time.minute);
+                        updateSwitcher();
+                      });
+                    }
+                  },
+                ),
+                _controlButton(),
+              ],
+            ),
+          ),
+          if (!showCurrent)
+            Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 16),
+              child: IconButton(
+                onPressed: () {
                   setState(() {
-                    dateTime = DateTime(dateTime.year, dateTime.month,
-                        dateTime.day, time.hour, time.minute);
+                    dateTime = DateTime.now();
                     updateSwitcher();
                   });
-                }
-              },
+                },
+                icon: const Icon(Icons.restore_rounded),
+                iconSize: 36,
+                color: Colors.blueGrey,
+              ),
             ),
-            _controlButton(),
-          ],
-        ),
-      ),
-      if (!showCurrent)
-        Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 16),
-          child: IconButton(
+        ],
+      );
+
+  Widget _controlButton() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
             onPressed: () {
               setState(() {
-                dateTime = DateTime.now();
+                dateTime = DateTime.fromMillisecondsSinceEpoch(
+                    dateTime.millisecondsSinceEpoch - 60000); // 1 minute
                 updateSwitcher();
               });
             },
-            icon: const Icon(Icons.restore_rounded),
+            icon: const Icon(Icons.remove_circle_rounded),
             iconSize: 36,
             color: Colors.blueGrey,
           ),
-        ),
-    ],
-  );
-  
-  Widget _controlButton() => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      IconButton(
-        onPressed: () {
-          setState(() {
-            dateTime = DateTime.fromMillisecondsSinceEpoch(
-                dateTime.millisecondsSinceEpoch - 60000); // 1 minute
-            updateSwitcher();
-          });
-        },
-        icon: const Icon(Icons.remove_circle_rounded),
-        iconSize: 36,
-        color: Colors.blueGrey,
-      ),
-      IconButton(
-        onPressed: () {
-          if (DateTime.now().millisecondsSinceEpoch -
-              dateTime.millisecondsSinceEpoch >=
-              60000) {
-            // 1 minute
-            setState(() {
-              dateTime = DateTime.fromMillisecondsSinceEpoch(
-                  dateTime.millisecondsSinceEpoch + 60000); // 1 minute
-              updateSwitcher();
-            });
-          }
-        },
-        icon: const Icon(Icons.add_circle_rounded),
-        iconSize: 36,
-        color: Colors.blueGrey,
-      ),
-    ],
-  );
+          IconButton(
+            onPressed: () {
+              if (DateTime.now().millisecondsSinceEpoch -
+                      dateTime.millisecondsSinceEpoch >=
+                  60000) {
+                // 1 minute
+                setState(() {
+                  dateTime = DateTime.fromMillisecondsSinceEpoch(
+                      dateTime.millisecondsSinceEpoch + 60000); // 1 minute
+                  updateSwitcher();
+                });
+              }
+            },
+            icon: const Icon(Icons.add_circle_rounded),
+            iconSize: 36,
+            color: Colors.blueGrey,
+          ),
+        ],
+      );
 
   Widget _trackSwitch() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -197,53 +197,79 @@ class _HomeFragmentState extends State<HomeFragment>
         ],
       );
 
-  Widget _button() => Center(
-        child: Card(
-          color: primaryColor,
-          child: InkWell(
-            onTap: () {
-              // TODO open watching list
-            },
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  showRecent
-                      ? SvgPicture.asset('assets/svg/binoculars.svg',
-                      width: 42, height: 42, semanticsLabel: 'Acme Logo')
-                      : const Icon(
-                    Icons.edit_note_rounded,
-                    size: 48,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    showRecent ? '去观鸟!' : '输入观鸟记录',
-                    style: TextStyle(
-                        fontSize: showRecent ? 32 : 24, color: Colors.white),
-                  )
-                ],
-              ),
-            ),
+  Widget _buttons() => Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buttonNew(),
+          const SizedBox(height: 16,),
+          _buttonJoin(),
+        ],
+      );
+
+  Widget _buttonNew() => ElevatedButton.icon(
+        style: TextButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 32,
+            vertical: 16,
           ),
+        ),
+        icon: showRecent
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: SvgPicture.asset('assets/svg/binoculars.svg',
+                    width: 40, height: 40, semanticsLabel: 'Acme Logo'),
+              )
+            : const Icon(
+                Icons.edit_note_rounded,
+                size: 48,
+                color: Colors.white,
+              ),
+        label: Text(
+          showRecent ? '去观鸟!' : '输入记录',
+          style: const TextStyle(fontSize: 24, color: Colors.white),
+        ),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewListPage()));
+        },
+      );
+
+  Widget _buttonJoin() => TextButton(
+        onPressed: () {},
+        child: const Text(
+          '加入观鸟队伍',
+          style: TextStyle(fontSize: 16),
         ),
       );
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Expanded(child: _dateWidget(context)),
-        _divider,
-        Expanded(child: _timeWidget(context)),
-        _divider,
-        _trackSwitch(),
-        _divider,
-        Expanded(child: _button()),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(appName),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w500,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: Column(
+        children: [
+          Expanded(child: _dateWidget(context)),
+          _divider,
+          Expanded(child: _timeWidget(context)),
+          _divider,
+          _trackSwitch(),
+          _divider,
+          Expanded(child: _buttons()),
+        ],
+      ),
     );
   }
 }

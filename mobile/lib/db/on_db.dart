@@ -21,10 +21,10 @@ part 'on_db.g.dart';
   ],
   version: 1,
 )
-@TypeConverters([ObjectIdDbConverter, DateTimeDbConverter])
+@TypeConverters([ObjectIdDbConverter, DateTimeDbConverter, StringListDbConverter])
 abstract class OnDb extends FloorDatabase {
   DbImageDao get imageDao;
-  ProjectDao get projectDao;
+  BirdListDao get birdListDao;
   DbRecordDao get recordDao;
   TrackDao get trackDao;
 }

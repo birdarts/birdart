@@ -1,17 +1,26 @@
 import 'dart:convert';
 
+import 'package:floor_annotation/floor_annotation.dart';
 import 'package:objectid/objectid.dart';
 
 class BaseImage {
-  ObjectId id;
-  ObjectId record;
-  ObjectId author;
+    @ignore
+ObjectId id;
+    @ignore
+ObjectId record;
+    @ignore
+ObjectId author;
 
-  String imagePath;
-  String imageId;
-  int imageSize;
-  String exif;
-  bool sync;
+    @ignore
+String imagePath;
+    @ignore
+String imageId;
+    @ignore
+int imageSize;
+    @ignore
+String exif;
+    @ignore
+bool sync;
 
   BaseImage({
     required this.id,

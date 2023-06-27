@@ -52,7 +52,7 @@ class _MapFragmentState extends State<MapFragment>
           .checkGooglePlayServicesAvailability();
       return AndroidSettings(
         forceLocationManager:
-        availability != GooglePlayServicesAvailability.success,
+            availability != GooglePlayServicesAvailability.success,
       );
     } else {
       return const LocationSettings();
@@ -61,7 +61,7 @@ class _MapFragmentState extends State<MapFragment>
 
   startSubscription() async {
     subscription = Geolocator.getPositionStream(
-        locationSettings: await getLocationSettings())
+            locationSettings: await getLocationSettings())
         .listen((position) {
       _setMapLocation(position);
     });
@@ -121,133 +121,149 @@ class _MapFragmentState extends State<MapFragment>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return FlutterMap(
-      options: MapOptions(
-        center: LatLng(30, 120),
-        zoom: 10,
-        maxZoom: 18.0,
-        minZoom: 2,
-        keepAlive: true,
-        rotation: 0,
-        interactiveFlags: InteractiveFlag.pinchZoom |
-        InteractiveFlag.drag |
-        InteractiveFlag.doubleTapZoom,
-        onPositionChanged: (MapPosition position, bool hasGesture) {},
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('探索周边'),
+        //bottom: const PreferredSize(
+        //  preferredSize: Size.zero,
+        //  child: Text("Title 2", style: TextStyle(color: Colors.white),)
+        //),
       ),
-      mapController: _mapController,
-      nonRotatedChildren: [
-        const RichAttributionWidget(attributions: [TextSourceAttribution('天地图')],),
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 20, 15, 0),
-          alignment: Alignment.topRight,
-          child: FloatingActionButton.small(
-            heroTag: Icons.my_location_outlined,
-            backgroundColor: Colors.white,
-            onPressed: () => {_getCurrentLocation(context, animate: true)},
-            shape: const CircleBorder(),
-            child: const IconTheme(
-              data: IconThemeData(color: Colors.black54),
-              child: Icon(Icons.my_location_outlined),
-            ),
+      body: FlutterMap(
+        options: MapOptions(
+          center: LatLng(30.6, 114.3),
+          zoom: 10,
+          maxZoom: 18.0,
+          minZoom: 2,
+          maxBounds: LatLngBounds(
+            LatLng(31.5, 115.1),
+            LatLng(29.9, 113.7),
           ),
+          keepAlive: true,
+          rotation: 0,
+          interactiveFlags: InteractiveFlag.pinchZoom |
+              InteractiveFlag.drag |
+              InteractiveFlag.doubleTapZoom,
+          onPositionChanged: (MapPosition position, bool hasGesture) {},
         ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 75, 15, 0),
-          alignment: Alignment.topRight,
-          child: PopupMenuButton<List<Widget>>(
-            // Callback that sets the selected popup menu item.
-              onSelected: (List<Widget> list) {
-                setState(() {
-                  tileList = list;
-                });
-              },
-              child: const FloatingActionButton.small(
-                heroTag: Icons.layers_outlined,
-                backgroundColor: Colors.white,
-                onPressed: null,
-                shape: CircleBorder(),
-                child: IconTheme(
-                  data: IconThemeData(color: Colors.black54),
-                  child: Icon(Icons.layers_outlined),
-                ),
+        mapController: _mapController,
+        nonRotatedChildren: [
+          const RichAttributionWidget(
+            attributions: [TextSourceAttribution('天地图')],
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 20, 15, 0),
+            alignment: Alignment.topRight,
+            child: FloatingActionButton.small(
+              heroTag: Icons.my_location_outlined,
+              backgroundColor: Colors.white,
+              onPressed: () => {_getCurrentLocation(context, animate: true)},
+              shape: const CircleBorder(),
+              child: const IconTheme(
+                data: IconThemeData(color: Colors.black54),
+                child: Icon(Icons.my_location_outlined),
               ),
-              itemBuilder: (BuildContext context) =>
-              <PopupMenuEntry<List<Widget>>>[
-                PopupMenuItem<List<Widget>>(
-                  value: TianDiTu.vecTile,
-                  child: const Text('街道图'),
-                ),
-                PopupMenuItem<List<Widget>>(
-                  value: TianDiTu.imgTile,
-                  child: const Text('卫星图'),
-                ),
-              ]),
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 130, 15, 0),
-          alignment: Alignment.topRight,
-          child: FloatingActionButton.small(
-            heroTag: Icons.timeline_rounded,
-            backgroundColor: Colors.white,
-            onPressed: () {
-              stopSubscription();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const TrackPage()))
-                  .then((value) => startSubscription());
-            },
-            shape: const CircleBorder(),
-            child: const IconTheme(
-              data: IconThemeData(color: Colors.black54),
-              child: Icon(Icons.timeline_rounded),
             ),
           ),
-        ),
-        Container(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white70, borderRadius: BorderRadius.circular(8)),
-            padding: _edgeInsets,
-            margin: _edgeInsets,
-            transformAlignment: Alignment.bottomLeft,
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              direction: Axis.vertical,
-              children: [
-                Text(
-                  _locationText,
-                  textAlign: TextAlign.left,
-                  key: const Key('location_text'),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 75, 15, 0),
+            alignment: Alignment.topRight,
+            child: PopupMenuButton<List<Widget>>(
+                // Callback that sets the selected popup menu item.
+                onSelected: (List<Widget> list) {
+                  setState(() {
+                    tileList = list;
+                  });
+                },
+                child: const FloatingActionButton.small(
+                  heroTag: Icons.layers_outlined,
+                  backgroundColor: Colors.white,
+                  onPressed: null,
+                  shape: CircleBorder(),
+                  child: IconTheme(
+                    data: IconThemeData(color: Colors.black54),
+                    child: Icon(Icons.layers_outlined),
+                  ),
                 ),
-              ],
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<List<Widget>>>[
+                      PopupMenuItem<List<Widget>>(
+                        value: TianDiTu.vecTile,
+                        child: const Text('街道图'),
+                      ),
+                      PopupMenuItem<List<Widget>>(
+                        value: TianDiTu.imgTile,
+                        child: const Text('卫星图'),
+                      ),
+                    ]),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 130, 15, 0),
+            alignment: Alignment.topRight,
+            child: FloatingActionButton.small(
+              heroTag: Icons.timeline_rounded,
+              backgroundColor: Colors.white,
+              onPressed: () {
+                stopSubscription();
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TrackPage()))
+                    .then((value) => startSubscription());
+              },
+              shape: const CircleBorder(),
+              child: const IconTheme(
+                data: IconThemeData(color: Colors.black54),
+                child: Icon(Icons.timeline_rounded),
+              ),
             ),
           ),
-        ),
-      ],
-      children: [
-        ...tileList,
-        _currentLocationLayer,
-      ],
+          Container(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white70,
+                  borderRadius: BorderRadius.circular(8)),
+              padding: _edgeInsets,
+              margin: _edgeInsets,
+              transformAlignment: Alignment.bottomLeft,
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                runAlignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                direction: Axis.vertical,
+                children: [
+                  Text(
+                    _locationText,
+                    textAlign: TextAlign.left,
+                    key: const Key('location_text'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        children: [
+          ...tileList,
+          _currentLocationLayer,
+        ],
+      ),
     );
   }
 
   void _setMapLocation(Position locationData, {animate = false}) {
     setState(() => {
-      _locationText =
-      '经度: ${CoordinateTool().degreeToDms(locationData.longitude.toString())}\n'
-          '纬度: ${CoordinateTool().degreeToDms(locationData.latitude.toString())}\n'
-          '海拔: ${locationData.altitude.toStringAsFixed(3)}',
-      _currentLocationLayer = LocationMarker(locationData: locationData),
-      if (animate)
-        {
-          _mapController.move(
-              LatLng(locationData.latitude, locationData.longitude), 15)
-        }
-    });
+          _locationText =
+              '经度: ${CoordinateTool.degreeToDms(locationData.longitude.toString())}\n'
+                  '纬度: ${CoordinateTool.degreeToDms(locationData.latitude.toString())}\n'
+                  '海拔: ${locationData.altitude.toStringAsFixed(3)}',
+          _currentLocationLayer = LocationMarker(locationData: locationData),
+          if (animate)
+            {
+              _mapController.move(
+                  LatLng(locationData.latitude, locationData.longitude), 15)
+            }
+        });
   }
 
   Future<void> _getCurrentLocation(BuildContext context,

@@ -84,6 +84,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
 
+# dart run flutter_launcher_icons
 flutter_icons:
   android: "launcher_icon"
   ios: true
@@ -108,8 +109,9 @@ flutter:
     - assets/icon/fore.png
     - assets/icon/back.png
     - assets/icon/icon.png
-    - assets/svg/shorebird.svg
-    - assets/svg/binoculars.svg # https://iconduck.com/icons/19815/binoculars
+    - assets/svg/robin.svg # Sun Jiao, CC BY 4.0, take dall·e AI generated image as a reference: https://www.bing.com/images/create/a-simple-birdwatching-app-icon-that-looks-like-the/647ca324a02c4675b2278c9c4d8aa673?id=yJELd2R5tJXcKRkb%2f1f6%2bw%3d%3d&view=detailv2&idpp=genimg&idpclose=1&FORM=SYDBIC
+    - assets/svg/shorebird.svg # Sun Jiao, CC BY 4.0
+    - assets/svg/binoculars.svg # Unlicense: https://iconduck.com/icons/19815/binoculars
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

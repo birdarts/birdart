@@ -3,7 +3,6 @@ import '../pages/edit_record_page.dart';
 
 import '../db/record.dart';
 import '../tool/coordinator_tool.dart';
-import '../widget/app_bars.dart';
 
 class RecordPage extends StatefulWidget {
   final DbRecord place;
@@ -32,7 +31,7 @@ class _RecordPageState extends State<RecordPage>
     super.build(context);
 
     return Scaffold(
-      appBar: anAppBar(
+      appBar: AppBar(
         title: ListTile(
           title: const Text(
             '观察记录',
@@ -94,11 +93,6 @@ class _RecordPageState extends State<RecordPage>
             const SizedBox(
               height: 4,
             ),
-            Text(
-                '经度: ${CoordinateTool().degreeToDms(record.lat.toString())}     纬度: ${CoordinateTool().degreeToDms(record.lon.toString())}'),
-            Wrap(children: [
-              Text('${record.country} ${record.province} ${record.city} ${record.county} ${record.poi}'),
-            ]),
           ],
         ),
       );
