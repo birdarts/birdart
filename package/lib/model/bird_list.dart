@@ -1,29 +1,51 @@
+import 'package:floor_annotation/floor_annotation.dart';
 import 'package:objectid/objectid.dart';
 
 class BaseBirdList {
+  @ignore
   ObjectId id;
+  @ignore
   ObjectId author;
+  @ignore
   String name;
+  @ignore
   String notes;
+  @ignore
   DateTime createTime;
+  @ignore
   int time; // in minutes
+  @ignore
   int birders; // birder amount
+  @ignore
   double distance;
+  @ignore
   String type = ''; // list type
+  @ignore
   bool complete;
+  @ignore
   bool sync;
 
+  @ignore
   double lon;
+  @ignore
   double lat;
+  @ignore
   double ele;
 
+  @ignore
   String country;
+  @ignore
   String province;
+  @ignore
   String city;
+  @ignore
   String county;
+  @ignore
   String poi;
+  @ignore
   ObjectId track;
 
+  @ignore
   String comment = '';
 
   BaseBirdList({

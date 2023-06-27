@@ -1,19 +1,27 @@
-import 'dart:convert';
-
+import 'package:floor_annotation/floor_annotation.dart';
 import 'package:objectid/objectid.dart';
 
 class BaseRecord {
+  @ignore
   ObjectId id;
+  @ignore
   ObjectId project;
+  @ignore
   ObjectId author;
-  
+
+  @ignore
   String species;
+  @ignore
   String speciesRef;
 
+  @ignore
   List<String> tags;
+  @ignore
   String notes;
+  @ignore
   bool sync; // if changes already uploaded.
 
+  @ignore
   DateTime observeTime;
 
   BaseRecord({
