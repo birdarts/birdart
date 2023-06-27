@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 // Modified based on following url, originally distributed under MIT license,
@@ -27,7 +27,7 @@ class CustomSlider extends StatefulWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   image: DecorationImage(
-                      image: CachedNetworkImageProvider(titleImageList[index].image),
+                      image: ExtendedNetworkImageProvider(titleImageList[index].image, cache: true),
                       fit: BoxFit.cover),
                 ),
               ),

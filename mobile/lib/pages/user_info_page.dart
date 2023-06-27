@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/user_profile.dart';
@@ -32,7 +32,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundImage: CachedNetworkImageProvider(avatarUrl),
+                backgroundImage: ExtendedNetworkImageProvider(avatarUrl, cache: true),
               ),
               IconButton(
                 icon: const Icon(Icons.edit),

@@ -9,7 +9,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   # path: ^1.8.0
-  objectid: ^2.1.0
+  objectid: ^3.0.0
   floor_annotation: ^1.4.2
 
 dev_dependencies:

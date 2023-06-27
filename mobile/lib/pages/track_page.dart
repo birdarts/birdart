@@ -220,10 +220,10 @@ class _TrackPageState extends State<TrackPage>
                 TextButton(
                   onPressed: () {
                     List<LatLng> latlngList = List.generate(
-                        TrackTool.geoxml.wpts.length,
+                        ListTool.geoxml.wpts.length,
                             (index) => LatLng(
-                                TrackTool.geoxml.wpts[index].lat!,
-                                TrackTool.geoxml.wpts[index].lon!));
+                                ListTool.geoxml.wpts[index].lat!,
+                                ListTool.geoxml.wpts[index].lon!));
                     Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
                   },
                   child: const Text('查看已记录轨迹'),
@@ -265,8 +265,8 @@ class _TrackPageState extends State<TrackPage>
                     ),
                     Expanded(
                       child: Text(
-                        track.startTime.toString(),
-                        style: TextStyle(fontSize: 14, color: accentColor),
+                        track.id.hexString,
+                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],

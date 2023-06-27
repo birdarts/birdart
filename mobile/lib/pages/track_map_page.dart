@@ -1,4 +1,3 @@
-import 'package:birdart/widget/app_bars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -14,7 +13,7 @@ class TrackMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: anAppBar(),
+      appBar: AppBar(),
       body: FlutterMap(
         options: MapOptions(
           bounds: boundEnlarge(layer.polylines[0].boundingBox, 0.075),
