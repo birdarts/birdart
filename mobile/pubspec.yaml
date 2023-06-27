@@ -84,6 +84,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
 
+# dart run flutter_launcher_icons
 flutter_icons:
   android: "launcher_icon"
   ios: true
