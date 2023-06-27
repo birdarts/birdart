@@ -2,13 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 
+import 'package:birdart/entity/consts.dart';
+import 'package:birdart/pages/track_map_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geoxml/geoxml.dart';
 import 'package:google_api_availability/google_api_availability.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:objectid/objectid.dart';
 import 'package:optimize_battery/optimize_battery.dart';
 import 'package:path/path.dart' as path;
@@ -213,19 +217,42 @@ class _TrackPageState extends State<TrackPage>
             Column(
               children: [
                 const Text('轨迹记录正在进行中'),
-                TextButton(onPressed: () {}, child: const Text('点击查看已记录轨迹'))
+                TextButton(
+                  onPressed: () {
+                    List<LatLng> latlngList = List.generate(
+                        TrackTool.geoxml.wpts.length,
+                            (index) => LatLng(
+                                TrackTool.geoxml.wpts[index].lat!,
+                                TrackTool.geoxml.wpts[index].lon!));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
+                  },
+                  child: const Text('查看已记录轨迹'),
+                ),
               ],
             )
           ],
         ),
       );
 
+
+  PolylineLayer getLayer(List<LatLng> latlngList) {
+    return PolylineLayer(
+      polylineCulling: true,
+      polylines: [
+        Polyline(
+          points: latlngList,
+          color: Colors.blue,
+          strokeWidth: 3,
+        ),
+      ],
+    );
+  }
+
   Widget getTrackItem(Track track) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
           child: Container(
             padding: const EdgeInsets.all(12),
-            height: 100,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,8 +265,8 @@ class _TrackPageState extends State<TrackPage>
                     ),
                     Expanded(
                       child: Text(
-                        track.id.hexString,
-                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
+                        track.startTime.toString(),
+                        style: TextStyle(fontSize: 14, color: accentColor),
                       ),
                     ),
                   ],
@@ -257,6 +284,20 @@ class _TrackPageState extends State<TrackPage>
                       ),
                     ),
                   ],
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final geoxml = await GeoXml.fromGpxStream(File(track.file).openRead().transform(utf8.decoder));
+                    List<LatLng> latlngList = List.generate(
+                        geoxml.wpts.length,
+                            (index) => LatLng(
+                            geoxml.wpts[index].lat!,
+                            geoxml.wpts[index].lon!));
+                    if (mounted) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
+                    }
+                  },
+                  child: const Text('查看已记录轨迹'),
                 ),
               ],
             ),
@@ -396,7 +437,7 @@ class _TrackPageState extends State<TrackPage>
           //when going to the background
           foregroundNotificationConfig: const ForegroundNotificationConfig(
             notificationText: "正在运行后台轨迹记录",
-            notificationTitle: "园林卫士",
+            notificationTitle: appName,
             notificationIcon: AndroidResource(name: 'ic_map'),
             enableWakeLock: true,
           ));
