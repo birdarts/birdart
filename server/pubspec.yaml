@@ -1,19 +1,22 @@
 name: birdart_server
 description: A server app using the shelf package and Docker.
 version: 1.0.0
+publish_to: none
 # repository: https://github.com/birdarts/birdart
 
 environment:
   sdk: '>=2.19.6 <4.0.0'
 
 dependencies:
-  package:
-    path: ../package
+  shared:
+    path: ../shared
 
   args: ^2.3.0
+  mongo_dart: ^0.9.1
   shelf: ^1.4.1
   shelf_router: ^1.1.4
   shelf_static: ^1.1.2
+  xml2json: ^6.1.0
 
 dev_dependencies:
   http: ^1.0.0

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/edit_record_page.dart';
+import 'package:shared/shared.dart';
 
-import '../db/record.dart';
 import '../tool/coordinator_tool.dart';
 
 class RecordPage extends StatefulWidget {

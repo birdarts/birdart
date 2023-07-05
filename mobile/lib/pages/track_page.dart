@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 
 import 'package:birdart/entity/consts.dart';
+import 'package:birdart/entity/user_profile.dart';
 import 'package:birdart/pages/track_map_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -18,9 +19,9 @@ import 'package:optimize_battery/optimize_battery.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared/shared.dart';
 
 import '../db/db_manager.dart';
-import '../db/track.dart';
 import '../db/on_db.dart';
 import '../entity/app_dir.dart';
 import '../entity/server.dart';
@@ -460,7 +461,7 @@ class _TrackPageState extends State<TrackPage>
   }
 
   startTrack() async {
-    ListTool.track = Track.empty();
+    ListTool.track = Track.empty(UserProfile.id);
     ListTool.track.id = ObjectId();
 
     ListTool.geoxml = GeoXml();

@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/shared.dart';
 
 import '../db/db_manager.dart';
-import '../db/bird_list.dart';
 import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
 import '../entity/server.dart';
