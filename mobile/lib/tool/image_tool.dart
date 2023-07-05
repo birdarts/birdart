@@ -85,7 +85,7 @@ Future<int> imageMapForEach(
             imageId: img.id,
             imageSize: (img.size.width * img.size.height).toInt(),
             exif: imageTool.asStringExif(),
-            userId: UserProfile.id,
+            author: UserProfile.id,
           );
           addImages.add(dbImage);
         } catch (e) {

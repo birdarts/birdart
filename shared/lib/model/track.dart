@@ -74,9 +74,8 @@ class Track {
         'distance': distance,
       };
 
-  Track.empty(String userId)
+  Track.empty(this.author)
       : id = ObjectId(),
-        author = ObjectId.fromHexString(userId),
         startTime = DateTime.fromMillisecondsSinceEpoch(0),
         endTime = DateTime.fromMillisecondsSinceEpoch(0),
         sync = false;

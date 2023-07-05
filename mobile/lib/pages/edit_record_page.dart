@@ -3,16 +3,12 @@ import 'dart:async';
 import 'package:birdart/entity/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:objectid/objectid.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shared/shared.dart';
 
 import '../db/db_manager.dart';
-import '../tianditu/geocoder.dart';
-import '../tool/coordinator_tool.dart';
 import '../tool/image_tool.dart';
-import '../tool/location_tool.dart';
 import '../widget/picture_grid.dart';
 
 class EditRecord extends StatefulWidget {
@@ -51,7 +47,7 @@ class _EditRecordState extends State<EditRecord> {
       _imageFuture = imageGridFuture();
     } else {
       _isNew = true;
-      record = DbRecord.add(project: ObjectId.fromHexString(widget.project), species: '', speciesRef: '', notes: '', tags: [], userId: UserProfile.id);
+      record = DbRecord.add(project: ObjectId.fromHexString(widget.project), species: '', speciesRef: '', notes: '', tags: [], author: UserProfile.id);
 
       _imageFuture = emptyFuture();
     }

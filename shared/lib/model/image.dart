@@ -52,9 +52,8 @@ class DbImage {
     required this.imageId,
     required this.imageSize,
     required this.exif,
-    required String userId
+    required this.author
   }) : id = ObjectId(),
-        author = ObjectId.fromHexString(userId),
         sync = false;
 }
 

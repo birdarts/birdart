@@ -57,10 +57,9 @@ class DbRecord {
     required this.species,
     required this.speciesRef,
     required this.notes,
-    required String userId,
+    required this.author,
     required this.tags
   }) : id = ObjectId(),
-        author = ObjectId.fromHexString(userId),
         sync = false,
         observeTime = DateTime.now();
 }

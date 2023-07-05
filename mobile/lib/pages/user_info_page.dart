@@ -191,7 +191,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           if (isExpanded)
             ListTile(
               title: const Text('数据库ID'),
-              subtitle: Text(UserProfile.id),
+              subtitle: Text(UserProfile.id.hexString),
             ),
           if (isExpanded)
             ListTile(
