@@ -32,7 +32,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundImage: ExtendedNetworkImageProvider(avatarUrl, cache: true),
+                backgroundImage:
+                    ExtendedNetworkImageProvider(avatarUrl, cache: true),
               ),
               IconButton(
                 icon: const Icon(Icons.edit),

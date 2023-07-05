@@ -46,17 +46,16 @@ class DbImage {
         'exif': exif,
       };
 
-  DbImage.add({
-    required this.record,
-    required this.imagePath,
-    required this.imageId,
-    required this.imageSize,
-    required this.exif,
-    required this.author
-  }) : id = ObjectId(),
+  DbImage.add(
+      {required this.record,
+      required this.imagePath,
+      required this.imageId,
+      required this.imageSize,
+      required this.exif,
+      required this.author})
+      : id = ObjectId(),
         sync = false;
 }
-
 
 @dao
 abstract class DbImageDao {
@@ -99,6 +98,7 @@ abstract class DbImageDao {
   @Query("SELECT * FROM image WHERE project = :projectArg and sync <> 1")
   Future<List<DbImage>> getByProjectUnsynced(String projectArg);
 
-  @Query("SELECT * FROM image WHERE record = :recordArg AND imagePath = :pathArg")
+  @Query(
+      "SELECT * FROM image WHERE record = :recordArg AND imagePath = :pathArg")
   Future<List<DbImage>> getByRecordAndPath(String recordArg, String pathArg);
 }

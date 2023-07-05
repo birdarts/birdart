@@ -32,7 +32,7 @@ class TianDiTu {
   static TileLayer ciaLayer = TileLayer(
     tileProvider: CacheTileProvider('cia'),
     urlTemplate:
-    'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
+        'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$key',
     userAgentPackageName: packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
     backgroundColor: Colors.transparent,

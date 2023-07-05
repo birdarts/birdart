@@ -8,7 +8,8 @@ class Geocoder {
   // static const tianditu = 'key'; in key_store.dart
   static const key = KeyStore.tianditu;
 
-  static Future<List<Address>> getFromLocation(double latitude, double longitude,
+  static Future<List<Address>> getFromLocation(
+      double latitude, double longitude,
       {int maxResults = 1}) async {
     final dio = Dio();
     final response = await dio.get(

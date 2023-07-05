@@ -30,36 +30,36 @@ class DbRecord {
   });
 
   factory DbRecord.fromJson(Map<String, dynamic> json) => DbRecord(
-    id: ObjectId.fromHexString(json['id']),
-    project: ObjectId.fromHexString(json['project']),
-    author: ObjectId.fromHexString(json['author']),
-    species: json['species'],
-    speciesRef: json['speciesRef'],
-    notes: json['notes'],
-    sync: true,
-    observeTime: DateTime.fromMillisecondsSinceEpoch(json['observeTime']),
-    tags: json['tags'],
-  );
+        id: ObjectId.fromHexString(json['id']),
+        project: ObjectId.fromHexString(json['project']),
+        author: ObjectId.fromHexString(json['author']),
+        species: json['species'],
+        speciesRef: json['speciesRef'],
+        notes: json['notes'],
+        sync: true,
+        observeTime: DateTime.fromMillisecondsSinceEpoch(json['observeTime']),
+        tags: json['tags'],
+      );
 
   Map<String, dynamic> toJson() => {
-    '_id': id.hexString,
-    'project': project.hexString,
-    'author': author.hexString,
-    'species': species,
-    'speciesRef': speciesRef,
-    'notes': notes,
-    'observeTime': observeTime.millisecondsSinceEpoch,
-    'tags': tags
-  };
+        '_id': id.hexString,
+        'project': project.hexString,
+        'author': author.hexString,
+        'species': species,
+        'speciesRef': speciesRef,
+        'notes': notes,
+        'observeTime': observeTime.millisecondsSinceEpoch,
+        'tags': tags
+      };
 
-  DbRecord.add({
-    required this.project,
-    required this.species,
-    required this.speciesRef,
-    required this.notes,
-    required this.author,
-    required this.tags
-  }) : id = ObjectId(),
+  DbRecord.add(
+      {required this.project,
+      required this.species,
+      required this.speciesRef,
+      required this.notes,
+      required this.author,
+      required this.tags})
+      : id = ObjectId(),
         sync = false,
         observeTime = DateTime.now();
 }

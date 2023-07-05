@@ -27,7 +27,9 @@ class CustomSlider extends StatefulWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   image: DecorationImage(
-                      image: ExtendedNetworkImageProvider(titleImageList[index].image, cache: true),
+                      image: ExtendedNetworkImageProvider(
+                          titleImageList[index].image,
+                          cache: true),
                       fit: BoxFit.cover),
                 ),
               ),
@@ -35,7 +37,8 @@ class CustomSlider extends StatefulWidget {
                 bottom: 0.0,
                 left: 0.0,
                 right: 0.0,
-                child: Container( //gradient
+                child: Container(
+                  //gradient
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [

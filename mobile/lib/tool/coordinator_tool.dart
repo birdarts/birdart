@@ -45,8 +45,8 @@ class CoordinateTool {
 
   static double distance(double lat1, double lon1, double lat2, double lon2) =>
       acos(sin(lat1.rad) * sin(lat2.rad) +
-           cos(lat1.rad) * cos(lat2.rad) *
-           cos(lon2.rad - lon1.rad)) * 6371.0;
+          cos(lat1.rad) * cos(lat2.rad) * cos(lon2.rad - lon1.rad)) *
+      6371.0;
 }
 
 extension _DegToRad on double {

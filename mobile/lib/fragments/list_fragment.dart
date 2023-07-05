@@ -150,7 +150,9 @@ class _ListFragmentState extends State<ListFragment>
                         project.notes,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),

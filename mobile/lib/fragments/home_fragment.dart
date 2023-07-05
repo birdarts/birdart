@@ -202,7 +202,9 @@ class _HomeFragmentState extends State<HomeFragment>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buttonNew(),
-          const SizedBox(height: 16,),
+          const SizedBox(
+            height: 16,
+          ),
           _buttonJoin(),
         ],
       );

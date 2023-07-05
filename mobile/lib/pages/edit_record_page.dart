@@ -47,7 +47,13 @@ class _EditRecordState extends State<EditRecord> {
       _imageFuture = imageGridFuture();
     } else {
       _isNew = true;
-      record = DbRecord.add(project: ObjectId.fromHexString(widget.project), species: '', speciesRef: '', notes: '', tags: [], author: UserProfile.id);
+      record = DbRecord.add(
+          project: ObjectId.fromHexString(widget.project),
+          species: '',
+          speciesRef: '',
+          notes: '',
+          tags: [],
+          author: UserProfile.id);
 
       _imageFuture = emptyFuture();
     }
@@ -84,8 +90,8 @@ class _EditRecordState extends State<EditRecord> {
         DbManager.db.recordDao.updateOne(record);
       }
 
-      final result = await imageMapForEach(
-          'place', pictureGrid, oldImages, record.id);
+      final result =
+          await imageMapForEach('place', pictureGrid, oldImages, record.id);
 
       if (result == 1) {
         Fluttertoast.showToast(
@@ -105,8 +111,7 @@ class _EditRecordState extends State<EditRecord> {
   }
 
   Future<void> imageGridFuture() async {
-    oldImages =
-        await DbManager.db.imageDao.getByRecord(record.id.hexString);
+    oldImages = await DbManager.db.imageDao.getByRecord(record.id.hexString);
     for (DbImage image in oldImages) {
       final assetEntity = await AssetEntity.fromId(image.imageId);
       if (assetEntity != null) {
@@ -121,17 +126,14 @@ class _EditRecordState extends State<EditRecord> {
   }
 
   Widget _getSpeciesSelector() => TextFormField(
-    onSaved: (val) => {
-      if (val != null) {record.species = val}
-    },
-    validator: (val) => val == null || val.isEmpty
-        ? '本项不能为空'
-        : null,
-    enabled: true,
-    initialValue: record.species,
-    decoration:
-    const InputDecoration(labelText: '物种'),
-  );
+        onSaved: (val) => {
+          if (val != null) {record.species = val}
+        },
+        validator: (val) => val == null || val.isEmpty ? '本项不能为空' : null,
+        enabled: true,
+        initialValue: record.species,
+        decoration: const InputDecoration(labelText: '物种'),
+      );
 
   Future<void> emptyFuture() async {}
 
@@ -161,7 +163,8 @@ class _EditRecordState extends State<EditRecord> {
           const SizedBox(
             width: 12,
           ),
-          Text(record.observeTime.toString(), style: const TextStyle(fontSize: 18)),
+          Text(record.observeTime.toString(),
+              style: const TextStyle(fontSize: 18)),
         ],
       );
 

@@ -11,10 +11,15 @@ void main() async {
   await saveAdmins('assets/cities.json', dbName, 'cities');
 }
 
-Future<void> saveAdmins(String path, String dbName, String collectionName) async {
+Future<void> saveAdmins(
+    String path, String dbName, String collectionName) async {
   final file = File(path);
   final jsonString = await file.readAsString();
-  final jsonList = List<Map<String, dynamic>>.from(jsonDecode(jsonString).cast<Map<String, dynamic>>()).map((map) => renameKeys(map, {'id': '_id'})).toList();;
+  final jsonList = List<Map<String, dynamic>>.from(
+          jsonDecode(jsonString).cast<Map<String, dynamic>>())
+      .map((map) => renameKeys(map, {'id': '_id'}))
+      .toList();
+  ;
 
   final db = await Db.create('mongodb://localhost:27017/$dbName');
   await db.open();
@@ -35,5 +40,9 @@ Future<void> saveAdmins(String path, String dbName, String collectionName) async
   await db.close();
 }
 
-Map<String, dynamic> renameKeys(Map<String, dynamic> map, Map<String, String> keyMap) =>
-    { for (var key in map.keys) keyMap.containsKey(key) ? keyMap[key]! : key : map[key] };
+Map<String, dynamic> renameKeys(
+        Map<String, dynamic> map, Map<String, String> keyMap) =>
+    {
+      for (var key in map.keys)
+        keyMap.containsKey(key) ? keyMap[key]! : key: map[key]
+    };

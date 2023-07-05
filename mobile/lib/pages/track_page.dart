@@ -131,52 +131,51 @@ class _TrackPageState extends State<TrackPage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
           if (ListTool.subscription != null) {
             showDialog(
                 context: context,
                 builder: (dContext) => AlertDialog(
-                  title: const Text('结束轨迹记录'),
-                  content:
-                  const Text('轨迹记录在后台运行中，点击结束轨迹记录，结束后可将其上传至服务器。'),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(dContext);
-                        },
-                        child: const Text('取消')),
-                    TextButton(
-                        onPressed: () {
-                          endTrack();
-                          Navigator.pop(dContext);
-                        },
-                        child: const Text('结束')),
-                  ],
-                ));
+                      title: const Text('结束轨迹记录'),
+                      content: const Text('轨迹记录在后台运行中，点击结束轨迹记录，结束后可将其上传至服务器。'),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(dContext);
+                            },
+                            child: const Text('取消')),
+                        TextButton(
+                            onPressed: () {
+                              endTrack();
+                              Navigator.pop(dContext);
+                            },
+                            child: const Text('结束')),
+                      ],
+                    ));
           } else {
             showDialog(
                 context: context,
                 builder: (dContext) => AlertDialog(
-                  title: const Text('开始轨迹记录'),
-                  content: const Text(
-                      '即将开始轨迹记录，轨迹记录服务将在后台持续运行，轨迹记录结束后可将其上传至服务器。'),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(dContext);
-                        },
-                        child: const Text('取消')),
-                    TextButton(
-                        onPressed: () {
-                          startTrack();
-                          Navigator.pop(dContext);
-                        },
-                        child: const Text('开始')),
-                  ],
-                ));
+                      title: const Text('开始轨迹记录'),
+                      content: const Text(
+                          '即将开始轨迹记录，轨迹记录服务将在后台持续运行，轨迹记录结束后可将其上传至服务器。'),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(dContext);
+                            },
+                            child: const Text('取消')),
+                        TextButton(
+                            onPressed: () {
+                              startTrack();
+                              Navigator.pop(dContext);
+                            },
+                            child: const Text('开始')),
+                      ],
+                    ));
           }
         },
-        child: Icon(ListTool.subscription == null ? Icons.play_arrow : Icons.stop),
+        child:
+            Icon(ListTool.subscription == null ? Icons.play_arrow : Icons.stop),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -185,22 +184,22 @@ class _TrackPageState extends State<TrackPage>
             if (ListTool.subscription != null) getOngoingTrackCard(),
             Expanded(
                 child: FutureBuilder(
-                  future: _future,
-                  builder: (_, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      final tracks = snapshot.data;
-                      if (tracks != null) {
-                        return ListView.builder(
-                            itemCount: tracks.length,
-                            itemBuilder: (context, index) =>
-                                getTrackItem(tracks[index]));
-                      }
-                      return const Center(child: Text('数据库错误'));
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
-                  },
-                ))
+              future: _future,
+              builder: (_, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  final tracks = snapshot.data;
+                  if (tracks != null) {
+                    return ListView.builder(
+                        itemCount: tracks.length,
+                        itemBuilder: (context, index) =>
+                            getTrackItem(tracks[index]));
+                  }
+                  return const Center(child: Text('数据库错误'));
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            ))
           ],
         ),
       ),
@@ -222,10 +221,13 @@ class _TrackPageState extends State<TrackPage>
                   onPressed: () {
                     List<LatLng> latlngList = List.generate(
                         ListTool.geoxml.wpts.length,
-                            (index) => LatLng(
-                                ListTool.geoxml.wpts[index].lat!,
-                                ListTool.geoxml.wpts[index].lon!));
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
+                        (index) => LatLng(ListTool.geoxml.wpts[index].lat!,
+                            ListTool.geoxml.wpts[index].lon!));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TrackMapPage(layer: getLayer(latlngList))));
                   },
                   child: const Text('查看已记录轨迹'),
                 ),
@@ -234,7 +236,6 @@ class _TrackPageState extends State<TrackPage>
           ],
         ),
       );
-
 
   PolylineLayer getLayer(List<LatLng> latlngList) {
     return PolylineLayer(
@@ -267,7 +268,9 @@ class _TrackPageState extends State<TrackPage>
                     Expanded(
                       child: Text(
                         track.id.hexString,
-                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],
@@ -281,21 +284,27 @@ class _TrackPageState extends State<TrackPage>
                     Expanded(
                       child: Text(
                         track.sync ? '已上传' : '未上传',
-                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],
                 ),
                 TextButton(
                   onPressed: () async {
-                    final geoxml = await GeoXml.fromGpxStream(File(track.file).openRead().transform(utf8.decoder));
+                    final geoxml = await GeoXml.fromGpxStream(
+                        File(track.file).openRead().transform(utf8.decoder));
                     List<LatLng> latlngList = List.generate(
                         geoxml.wpts.length,
-                            (index) => LatLng(
-                            geoxml.wpts[index].lat!,
-                            geoxml.wpts[index].lon!));
+                        (index) => LatLng(
+                            geoxml.wpts[index].lat!, geoxml.wpts[index].lon!));
                     if (mounted) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TrackMapPage(layer: getLayer(latlngList))));
                     }
                   },
                   child: const Text('查看已记录轨迹'),
@@ -327,11 +336,10 @@ class _TrackPageState extends State<TrackPage>
         mainAxisAlignment:
             MainAxisAlignment.spaceBetween, // 将空白空间均匀地分配在子组件之间和两端
         children: [
-          getBottomItem(Icons.timeline_rounded, Theme.of(context).colorScheme.secondary, '开始轨迹记录', () {
-          }),
+          getBottomItem(Icons.timeline_rounded,
+              Theme.of(context).colorScheme.secondary, '开始轨迹记录', () {}),
           getBottomItem(Icons.stop_circle_rounded, Colors.red, '结束轨迹记录', () {
             if (ListTool.subscription != null) {
-
             } else {
               showDialog(
                   context: context,
@@ -492,9 +500,10 @@ class _TrackPageState extends State<TrackPage>
         ListTool.track.distance = 0;
       } else {
         ListTool.track.distance += CoordinateTool.distance(
-          ListTool.track.endLat, ListTool.track.endLon,
-          locationData.latitude, locationData.longitude
-        );
+            ListTool.track.endLat,
+            ListTool.track.endLon,
+            locationData.latitude,
+            locationData.longitude);
       }
 
       ListTool.track.endLat = locationData.latitude;

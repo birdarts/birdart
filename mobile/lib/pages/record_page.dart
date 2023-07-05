@@ -32,42 +32,41 @@ class _RecordPageState extends State<RecordPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: ListTile(
-          title: const Text(
-            '观察记录',
-            style: TextStyle(
-              color: Colors.white,
+          title: ListTile(
+            title: const Text(
+              '观察记录',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            subtitle: Text(
+              record.species,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
-          subtitle: Text(
-            record.species,
-            style: const TextStyle(
-              color: Colors.white,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditRecord(
+                              record: record,
+                              project: record.project.hexString,
+                            ))).then((value) {
+                  if (value) {
+                    updateParent = updateParent || value;
+                    setState(() {});
+                  }
+                });
+              },
+              icon: const Icon(
+                Icons.edit_rounded,
+              ),
             ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EditRecord(
-                        record: record,
-                        project: record.project.hexString,
-                      ))).then((value) {
-                if (value) {
-                  updateParent = updateParent || value;
-                  setState(() {});
-                }
-              });
-            },
-            icon: const Icon(
-              Icons.edit_rounded,
-            ),
-          ),
-        ]
-      ),
+          ]),
       body: WillPopScope(
         onWillPop: () async {
           Navigator.pop(context, updateParent);

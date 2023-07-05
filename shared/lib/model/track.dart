@@ -113,6 +113,7 @@ abstract class TrackDao {
   @Query("SELECT * FROM track WHERE sync <> 1")
   Future<List<Track>> getUnsynced();
 
-  @Query("SELECT * FROM track WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
+  @Query(
+      "SELECT * FROM track WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
   Future<List<Track>> getByDate(String date);
 }

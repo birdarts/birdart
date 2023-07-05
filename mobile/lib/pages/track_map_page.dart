@@ -20,8 +20,8 @@ class TrackMapPage extends StatelessWidget {
           maxZoom: 18.0,
           minZoom: 2,
           interactiveFlags: InteractiveFlag.pinchZoom |
-          InteractiveFlag.drag |
-          InteractiveFlag.doubleTapZoom,
+              InteractiveFlag.drag |
+              InteractiveFlag.doubleTapZoom,
         ),
         children: [
           ...tileList,
@@ -30,16 +30,13 @@ class TrackMapPage extends StatelessWidget {
       ),
     );
   }
-  
-  LatLngBounds boundEnlarge(LatLngBounds bound, double scale){
+
+  LatLngBounds boundEnlarge(LatLngBounds bound, double scale) {
     return LatLngBounds(
-      LatLng(
-          bound.north + scale * (bound.north - bound.south),
+      LatLng(bound.north + scale * (bound.north - bound.south),
           bound.west - scale * (bound.east - bound.west)),
-      LatLng(
-          bound.south - scale * (bound.north - bound.south),
-          bound.east + scale * (bound.east - bound.west)
-      ),
+      LatLng(bound.south - scale * (bound.north - bound.south),
+          bound.east + scale * (bound.east - bound.west)),
     );
   }
 }

@@ -8,12 +8,7 @@ part 'on_db.g.dart';
 
 // dart run build_runner build --delete-conflicting-outputs
 @Database(
-  entities: [
-    DbImage,
-    DbRecord,
-    BirdList,
-    Track
-  ],
+  entities: [DbImage, DbRecord, BirdList, Track],
   version: 1,
 )
 @TypeConverters([ObjectIdConverter, DateTimeConverter, StringListConverter])

@@ -56,11 +56,8 @@ class ImageTool {
   }
 }
 
-Future<int> imageMapForEach(
-    String type,
-    PictureGridState pictureGrid,
-    List<DbImage> oldImages,
-    ObjectId recordId) async {
+Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
+    List<DbImage> oldImages, ObjectId recordId) async {
   List<DbImage> addImages = [];
   List<String> imgPaths = [];
 
