@@ -1,4 +1,4 @@
-import 'package:floor/floor.dart';
+import 'package:floor_annotation/floor_annotation.dart';
 import 'package:objectid/objectid.dart';
 
 class ObjectIdConverter extends TypeConverter<ObjectId, String> {
