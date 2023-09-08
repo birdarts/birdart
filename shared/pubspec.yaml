@@ -11,7 +11,6 @@ dependencies:
   # path: ^1.8.0
   floor_annotation: ^1.4.2
   objectid: ^3.0.0
-  latlong2: any
 
 dev_dependencies:
   lints: ^2.0.0
