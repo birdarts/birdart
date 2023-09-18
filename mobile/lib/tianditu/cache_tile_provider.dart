@@ -6,11 +6,11 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/src/layer/tile_layer/tile_provider/network_no_retry_image_provider.dart'; // this line will be warned as "Don't import Implementation files from other package", just ignore it.
+import 'package:flutter_map/src/layer/tile_layer/tile_provider/network_image_provider.dart'; // this line will be warned as "Don't import Implementation files from other package", just ignore it.
 import '../entity/app_dir.dart';
 import 'package:path/path.dart' as path;
 
-class CacheTileProvider extends NetworkNoRetryTileProvider {
+class CacheTileProvider extends NetworkTileProvider {
   String tileName;
 
   CacheTileProvider(
@@ -33,8 +33,8 @@ class CacheTileProvider extends NetworkNoRetryTileProvider {
       return FileImage(file);
     } else {
       return NetworkImageSaverProvider(
-        getTileUrl(coordinates, options),
         file,
+        url: getTileUrl(coordinates, options),
         headers: headers,
         httpClient: httpClient,
         fallbackUrl: null,
@@ -43,15 +43,15 @@ class CacheTileProvider extends NetworkNoRetryTileProvider {
   }
 }
 
-class NetworkImageSaverProvider extends FMNetworkNoRetryImageProvider {
+class NetworkImageSaverProvider extends FlutterMapNetworkImageProvider {
   File file;
 
   NetworkImageSaverProvider(
-    super.url,
     this.file, {
-    HttpClient? httpClient,
+    required super.url,
+    super.fallbackUrl,
+    required super.httpClient,
     super.headers = const {},
-    required super.fallbackUrl,
   });
 
   @override

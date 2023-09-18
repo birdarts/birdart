@@ -131,13 +131,13 @@ class _MapFragmentState extends State<MapFragment>
       ),
       body: FlutterMap(
         options: MapOptions(
-          center: LatLng(30.6, 114.3),
-          zoom: 10,
+          center: const LatLng(0, 0),
+          zoom: 4,
           maxZoom: 18.0,
           minZoom: 2,
           maxBounds: LatLngBounds(
-            LatLng(31.5, 115.1),
-            LatLng(29.9, 113.7),
+            const LatLng(-90, -180),
+            const LatLng(90, 180),
           ),
           keepAlive: true,
           rotation: 0,

@@ -6,9 +6,7 @@ class WaderSvg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-        'assets/svg/shorebird.svg',
-        semanticsLabel: 'Acme Logo'
-    );
+    return SvgPicture.asset('assets/svg/shorebird.svg',
+        semanticsLabel: 'Acme Logo');
   }
 }

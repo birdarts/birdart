@@ -63,9 +63,12 @@ class _NewListPageState extends State<NewListPage> {
         padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            IconButton(icon: const Icon(Icons.comment_rounded), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.settings_rounded), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.check_rounded), onPressed: _onCompleted),
+            IconButton(
+                icon: const Icon(Icons.comment_rounded), onPressed: () {}),
+            IconButton(
+                icon: const Icon(Icons.settings_rounded), onPressed: () {}),
+            IconButton(
+                icon: const Icon(Icons.check_rounded), onPressed: _onCompleted),
           ],
         ),
       ),

@@ -58,8 +58,7 @@ Future<Response> _registerHandler(Request request) async {
   data.addAll(Uri(query: query).queryParameters);
   data.addAll(request.url.queryParameters);
 
-  if (data.containsKey('name') &&
-      data.containsKey('password')) {
+  if (data.containsKey('name') && data.containsKey('password')) {
     users[data['name']] = data['password'];
     return Response.ok('Registered successfully!');
   } else {

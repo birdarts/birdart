@@ -118,22 +118,18 @@ class _MineFragmentState extends State<MineFragment>
           {Function()? onTap}) =>
       InkWell(
         onTap: onTap,
-        child: Expanded(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    iconData,
-                    size: 30,
-                    color: Colors.black87,
-                  ),
-                  Text(title),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                iconData,
+                size: 30,
+                color: Colors.black87,
               ),
-            ),
+              Text(title),
+            ],
           ),
         ),
       );

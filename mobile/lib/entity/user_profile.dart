@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../entity/sharedpref.dart';
 
 class UserProfile {
-  static String? _id = ObjectId().hexString;
+  static ObjectId? _id = ObjectId();
   static String? _phone;
   static String? _password;
   static String? _email;
@@ -23,7 +23,8 @@ class UserProfile {
 
   static init() {
     _pref = Shared.pref;
-    _id = _pref.getString('id') ?? ObjectId().hexString;
+    final idStr = _pref.getString('id');
+    _id = idStr == null ? ObjectId() : ObjectId.fromHexString(idStr);
     _phone = _pref.getString('phone');
     _password = _pref.getString('password');
     _email = _pref.getString('email');
@@ -56,9 +57,9 @@ class UserProfile {
       (_image != null) &&
       (_track != null);
 
-  static set id(String value) {
+  static set id(ObjectId value) {
     _id = value;
-    _pref.setString('id', value);
+    _pref.setString('id', value.hexString);
   }
 
   static set phone(String value) {
@@ -121,7 +122,7 @@ class UserProfile {
     _pref.setInt('track', value);
   }
 
-  static String get id => _id!;
+  static ObjectId get id => _id!;
 
   static String get phone => _phone!;
 

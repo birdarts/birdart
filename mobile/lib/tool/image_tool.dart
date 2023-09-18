@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:exif/exif.dart';
 import 'package:flutter/foundation.dart';
 import 'package:objectid/objectid.dart';
+import 'package:shared/shared.dart';
 
 import '../db/db_manager.dart';
-import '../db/image.dart';
 import '../entity/user_profile.dart';
 import '../widget/picture_grid.dart';
 
@@ -56,11 +56,8 @@ class ImageTool {
   }
 }
 
-Future<int> imageMapForEach(
-    String type,
-    PictureGridState pictureGrid,
-    List<DbImage> oldImages,
-    ObjectId recordId) async {
+Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
+    List<DbImage> oldImages, ObjectId recordId) async {
   List<DbImage> addImages = [];
   List<String> imgPaths = [];
 
@@ -80,11 +77,12 @@ Future<int> imageMapForEach(
 
         try {
           dbImage = DbImage.add(
-              record: recordId,
-              imagePath: imagePath,
-              imageId: img.id,
-              imageSize: (img.size.width * img.size.height).toInt(),
-              exif: imageTool.asStringExif()
+            record: recordId,
+            imagePath: imagePath,
+            imageId: img.id,
+            imageSize: (img.size.width * img.size.height).toInt(),
+            exif: imageTool.asStringExif(),
+            author: UserProfile.id,
           );
           addImages.add(dbImage);
         } catch (e) {
