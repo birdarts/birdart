@@ -13,7 +13,17 @@ class _NewListPageState extends State<NewListPage> {
   List<String> birds = List.generate(20, (index) => '鸟 $index');
 
   void _onCompleted() {
-    // TODO: 处理完成按钮点击事件
+    // TODO: save list
+  }
+
+  void _getExpectedList() {
+    // TODO: generate possible birds list
+  }
+
+  @override
+  void initState() {
+    _getExpectedList();
+    super.initState();
   }
 
   @override

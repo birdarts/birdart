@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'entity/consts.dart';
 import 'fragments/home_fragment.dart';
@@ -11,8 +15,17 @@ import 'entity/server.dart';
 import 'entity/sharedpref.dart';
 import 'entity/user_profile.dart';
 
+late Locale _appLocale;
+
+Locale _getLocale() {
+  final localeNames = Platform.localeName.split(RegExp(r'[_-]'));
+  return Locale(localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  _appLocale = _getLocale();
+  BdL10n.load(_appLocale);
   await mainCheck();
   runApp(const MyApp());
 }
@@ -59,6 +72,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appName,
       home: const BottomNav(),
+      locale: _appLocale,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('zh'), // Chinese
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.pinkAccent,
@@ -133,38 +156,38 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
         },
         selectedIndex: _selectedIndex,
         elevation: 10,
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(
+            selectedIcon: const Icon(
               Icons.home,
               color: Colors.white,
             ),
-            icon: Icon(Icons.home_outlined),
-            label: '首页',
+            icon: const Icon(Icons.home_outlined),
+            label: BdL10n.current.bottomHome,
           ),
           NavigationDestination(
-            selectedIcon: Icon(
+            selectedIcon: const Icon(
               Icons.article,
               color: Colors.white,
             ),
-            icon: Icon(Icons.article_outlined),
-            label: '记录',
+            icon: const Icon(Icons.article_outlined),
+            label: BdL10n.current.bottomRecords,
           ),
           NavigationDestination(
-            selectedIcon: Icon(
+            selectedIcon: const Icon(
               Icons.location_on,
               color: Colors.white,
             ),
-            icon: Icon(Icons.location_on_outlined),
-            label: '探索',
+            icon: const Icon(Icons.location_on_outlined),
+            label: BdL10n.current.bottomExplore,
           ),
           NavigationDestination(
-            selectedIcon: Icon(
+            selectedIcon: const Icon(
               Icons.face,
               color: Colors.white,
             ),
-            icon: Icon(Icons.face_outlined),
-            label: '我的',
+            icon: const Icon(Icons.face_outlined),
+            label: BdL10n.current.bottomMyBirdart,
           ),
         ],
       ),

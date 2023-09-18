@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../pages/edit_record_page.dart';
 import 'package:shared/shared.dart';
 
-import '../tool/coordinator_tool.dart';
-
 class RecordPage extends StatefulWidget {
   final DbRecord place;
 

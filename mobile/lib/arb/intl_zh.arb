@@ -1,0 +1,18 @@
+{
+  "@@locale": "zh",
+  "bottomHome": "首页",
+  "bottomRecords": "记录",
+  "bottomExplore": "探索",
+  "bottomMyBirdart": "我的Birdart",
+  "homeDate": "日期",
+  "homeDateFormat": "{year}年{month}月{day}日",
+  "homeTime": "时间",
+  "homeEnableTrack": "开启轨迹记录",
+  "homeBirding": "去观鸟！",
+  "homeJoinTeam": "加入观鸟队伍",
+  "mapNameTDT": "天地图",
+  "mapNameOSM": "开放街道地图",
+  "mapNameSat": "卫星图",
+  "mapCoordinate": "经度：{lat}\n纬度：{lon}\n海拔：{alt}"
+
+}

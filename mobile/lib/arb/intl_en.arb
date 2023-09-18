@@ -1,0 +1,30 @@
+{
+  "@@locale": "en",
+  "bottomHome": "Home",
+  "bottomRecords": "Records",
+  "bottomExplore": "Explore",
+  "bottomMyBirdart": "My Birdart",
+  "homeDate": "Date",
+  "homeDateFormat": "{month} {day}, {year}",
+  "homeTime": "Time",
+  "homeEnableTrack": "Enable track",
+  "homeBirding": "Let's birding",
+  "homeJoinTeam": "Join a team",
+  "mapNameTDT": "Tianditu",
+  "mapNameOSM": "OSM",
+  "mapNameSat": "Satellite",
+  "mapCoordinate": "Latitude: {lat}\nLongitude: {lon}\nAltitude: {alt}",
+  "@mapCoordinate": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lon": {
+        "type": "String"
+      },
+      "alt": {
+        "type": "String"
+      }
+    }
+  }
+}

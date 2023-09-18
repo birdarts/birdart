@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
@@ -10,7 +11,7 @@ import 'package:latlong2/latlong.dart' show LatLng;
 
 import '../entity/sharedpref.dart';
 import '../pages/track_page.dart';
-import '../tianditu/tianditu.dart';
+import '../map_util/birdart_tiles.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/location_tool.dart';
 import '../widget/location_marker_layer.dart';
@@ -25,8 +26,8 @@ class MapFragment extends StatefulWidget {
 class _MapFragmentState extends State<MapFragment>
     with AutomaticKeepAliveClientMixin {
   static const _edgeInsets = EdgeInsets.fromLTRB(8, 8, 8, 8);
-  var _locationText = '经度: \n纬度: \n海拔: ';
-  List<Widget> tileList = TianDiTu.vecTile;
+  var _locationText = BdL10n.current.mapCoordinate('', '', '');
+  List<Widget> tileList = BirdartTiles.vecTile;
   final MapController _mapController = MapController();
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
@@ -35,7 +36,7 @@ class _MapFragmentState extends State<MapFragment>
   StreamSubscription? subscription;
 
   @override
-  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true; // this is must
 
   @override
   void initState() {
@@ -148,8 +149,11 @@ class _MapFragmentState extends State<MapFragment>
         ),
         mapController: _mapController,
         nonRotatedChildren: [
-          const RichAttributionWidget(
-            attributions: [TextSourceAttribution('天地图')],
+          RichAttributionWidget(
+            attributions: [
+              TextSourceAttribution(BdL10n.current.mapNameTDT),
+              TextSourceAttribution(BdL10n.current.mapNameOSM),
+            ],
           ),
           Container(
             margin: const EdgeInsets.fromLTRB(0, 20, 15, 0),
@@ -188,12 +192,16 @@ class _MapFragmentState extends State<MapFragment>
                 itemBuilder: (BuildContext context) =>
                     <PopupMenuEntry<List<Widget>>>[
                       PopupMenuItem<List<Widget>>(
-                        value: TianDiTu.vecTile,
-                        child: const Text('街道图'),
+                        value: BirdartTiles.vecTile,
+                        child: Text(BdL10n.current.mapNameTDT),
                       ),
                       PopupMenuItem<List<Widget>>(
-                        value: TianDiTu.imgTile,
-                        child: const Text('卫星图'),
+                        value: BirdartTiles.imgTile,
+                        child: Text(BdL10n.current.mapNameSat),
+                      ),
+                      PopupMenuItem<List<Widget>>(
+                        value: BirdartTiles.osmTile,
+                        child: Text(BdL10n.current.mapNameOSM),
                       ),
                     ]),
           ),
@@ -253,10 +261,10 @@ class _MapFragmentState extends State<MapFragment>
 
   void _setMapLocation(Position locationData, {animate = false}) {
     setState(() => {
-          _locationText =
-              '经度: ${CoordinateTool.degreeToDms(locationData.longitude.toString())}\n'
-                  '纬度: ${CoordinateTool.degreeToDms(locationData.latitude.toString())}\n'
-                  '海拔: ${locationData.altitude.toStringAsFixed(3)}',
+          _locationText = BdL10n.current.mapCoordinate(
+              CoordinateTool.degreeToDms(locationData.longitude.toString()),
+              CoordinateTool.degreeToDms(locationData.latitude.toString()),
+              locationData.altitude.toStringAsFixed(3)),
           _currentLocationLayer = LocationMarker(locationData: locationData),
           if (animate)
             {

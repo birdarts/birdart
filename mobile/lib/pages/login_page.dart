@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoginForm = true;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   String? _username,
       _email,
