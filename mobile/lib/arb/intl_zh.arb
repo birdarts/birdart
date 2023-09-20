@@ -27,5 +27,10 @@
   "mySettings": "设置",
   "myData": "数据中心",
   "myAbout": "关于",
-  "myOpenSource": "开放源代码"
+  "myOpenSource": "开放源代码",
+  "settingsWifiSyncTrack": "WiFi下自动同步轨迹",
+  "settingsWifiSyncImage": "WiFi下自动同步图片",
+  "settingsTrackInterval": "轨迹时间间隔",
+  "settingsSelectTrackInterval": "选择轨迹时间间隔",
+  "settingsTrackIntervalSeconds": "{second} 秒"
 }

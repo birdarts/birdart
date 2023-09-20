@@ -108,7 +108,9 @@ class _MineFragmentState extends State<MineFragment>
             Icons.cloud_download_rounded, BdL10n.current.myData, context,
             onTap: () {}),
         getSettingsItem(Icons.info_rounded, BdL10n.current.myAbout, context,
-            onTap: () {}),
+            onTap: () {
+          showAboutDialog(context: context);
+            }),
         getSettingsItem(
             Icons.code_rounded, BdL10n.current.myOpenSource, context,
             onTap: () async {

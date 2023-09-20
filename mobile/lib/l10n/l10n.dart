@@ -349,6 +349,56 @@ class BdL10n {
       args: [],
     );
   }
+
+  /// `Auto upload tracks under WiFi`
+  String get settingsWifiSyncTrack {
+    return Intl.message(
+      'Auto upload tracks under WiFi',
+      name: 'settingsWifiSyncTrack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto upload images under WiFi`
+  String get settingsWifiSyncImage {
+    return Intl.message(
+      'Auto upload images under WiFi',
+      name: 'settingsWifiSyncImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Track time interval`
+  String get settingsTrackInterval {
+    return Intl.message(
+      'Track time interval',
+      name: 'settingsTrackInterval',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select time interval`
+  String get settingsSelectTrackInterval {
+    return Intl.message(
+      'Select time interval',
+      name: 'settingsSelectTrackInterval',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{second} seconds`
+  String settingsTrackIntervalSeconds(Object second) {
+    return Intl.message(
+      '$second seconds',
+      name: 'settingsTrackIntervalSeconds',
+      desc: '',
+      args: [second],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<BdL10n> {

@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(lat, lon, alt) =>
       "Latitude: ${lat}\nLongitude: ${lon}\nAltitude: ${alt}";
 
+  static String m1(second) => "${second} seconds";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "appName": MessageLookupByLibrary.simpleMessage("Birdart"),
@@ -57,6 +59,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "myTitle": MessageLookupByLibrary.simpleMessage("My Birdart"),
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
-        "recordsTitle": MessageLookupByLibrary.simpleMessage("My checklists")
+        "recordsTitle": MessageLookupByLibrary.simpleMessage("My checklists"),
+        "settingsSelectTrackInterval":
+            MessageLookupByLibrary.simpleMessage("Select time interval"),
+        "settingsTrackInterval":
+            MessageLookupByLibrary.simpleMessage("Track time interval"),
+        "settingsTrackIntervalSeconds": m1,
+        "settingsWifiSyncImage": MessageLookupByLibrary.simpleMessage(
+            "Auto upload images under WiFi"),
+        "settingsWifiSyncTrack": MessageLookupByLibrary.simpleMessage(
+            "Auto upload tracks under WiFi")
       };
 }

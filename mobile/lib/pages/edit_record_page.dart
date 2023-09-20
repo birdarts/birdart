@@ -64,7 +64,7 @@ class _EditRecordState extends State<EditRecord> {
 
   @override
   void dispose() {
-    // 清理控制器资源
+    // clear controller resources
     noteController.dispose();
     super.dispose();
   }

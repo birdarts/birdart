@@ -42,5 +42,10 @@
   "mySettings": "Settings",
   "myData": "Data center",
   "myAbout": "About",
-  "myOpenSource": "Open source"
+  "myOpenSource": "Open source",
+  "settingsWifiSyncTrack": "Auto upload tracks under WiFi",
+  "settingsWifiSyncImage": "Auto upload images under WiFi",
+  "settingsTrackInterval": "Track time interval",
+  "settingsSelectTrackInterval": "Select time interval",
+  "settingsTrackIntervalSeconds": "{second} seconds"
 }

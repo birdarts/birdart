@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(lat, lon, alt) => "经度：${lat}\n纬度：${lon}\n海拔：${alt}";
 
+  static String m1(second) => "${second} 秒";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "bottomExplore": MessageLookupByLibrary.simpleMessage("探索"),
@@ -51,6 +53,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "myTitle": MessageLookupByLibrary.simpleMessage("个人中心"),
         "networkError": MessageLookupByLibrary.simpleMessage("网络错误"),
         "ok": MessageLookupByLibrary.simpleMessage("确认"),
-        "recordsTitle": MessageLookupByLibrary.simpleMessage("观鸟记录")
+        "recordsTitle": MessageLookupByLibrary.simpleMessage("观鸟记录"),
+        "settingsSelectTrackInterval":
+            MessageLookupByLibrary.simpleMessage("选择轨迹时间间隔"),
+        "settingsTrackInterval": MessageLookupByLibrary.simpleMessage("轨迹时间间隔"),
+        "settingsTrackIntervalSeconds": m1,
+        "settingsWifiSyncImage":
+            MessageLookupByLibrary.simpleMessage("WiFi下自动同步图片"),
+        "settingsWifiSyncTrack":
+            MessageLookupByLibrary.simpleMessage("WiFi下自动同步轨迹")
       };
 }
