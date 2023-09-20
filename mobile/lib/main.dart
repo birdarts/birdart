@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'entity/consts.dart';
+import '../l10n/l10n.dart';
 import 'fragments/home_fragment.dart';
 import 'fragments/map_fragment.dart';
 import 'fragments/mine_fragment.dart';
@@ -19,7 +18,7 @@ late Locale _appLocale;
 
 Locale _getLocale() {
   final localeNames = Platform.localeName.split(RegExp(r'[_-]'));
-  return Locale(localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
+  return Locale('en');
 }
 
 void main() async {
@@ -70,7 +69,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: appName,
+      title: BdL10n.current.appName,
       home: const BottomNav(),
       locale: _appLocale,
       localizationsDelegates: const [

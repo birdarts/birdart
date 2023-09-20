@@ -4,61 +4,96 @@ import 'package:flutter_map/flutter_map.dart';
 import 'key_store.dart';
 import 'cache_tile_provider.dart'; // Suitable for most situations
 
+typedef TilesGetter = List<Widget> Function(BuildContext context);
+
 class BirdartTiles {
   // static const tianditu = 'key'; in key_store.dart
-  static const tdtKey = KeyStore.tianditu;
-  static const packageName = 'net.sunjiao.birdart';
+  static const _tdtKey = KeyStore.tianditu;
+  static const _packageName = 'net.sunjiao.birdart';
 
-  static List<TileLayer> vecTile = [
-    // 街道图
-    TileLayer(
-      tileProvider: CacheTileProvider('vec'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$tdtKey',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-    ),
-    TileLayer(
-      tileProvider: CacheTileProvider('cva'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$tdtKey',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-    ),
-  ];
+  // street map
+  static final TileLayer _vec = TileLayer(
+    tileProvider: CacheTileProvider('vec'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
 
-  static List<TileLayer> imgTile = [
-    // 卫星图
-    TileLayer(
-      tileProvider: CacheTileProvider('img'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$tdtKey',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-    ),
-    TileLayer(
-      tileProvider: CacheTileProvider('cia'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$tdtKey',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-    ),
-  ];
+  static final TileLayer _cva = TileLayer(
+    tileProvider: CacheTileProvider('cva'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
 
-  static List<TileLayer> osmTile = [
-    // OSM
-    TileLayer(
-      tileProvider: CacheTileProvider('osm'),
-      urlTemplate:
-          'https://t{s}.tianditu.gov.cn/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$tdtKey',
-      userAgentPackageName: packageName,
-      subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-      backgroundColor: Colors.transparent,
-      maxNativeZoom: 15,
-    ),
-  ];
+  static final TileLayer _eva = TileLayer(
+    tileProvider: CacheTileProvider('eva'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/eva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
+
+  // satellite
+  static final TileLayer _img = TileLayer(
+    tileProvider: CacheTileProvider('img'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
+
+  static final TileLayer _cia = TileLayer(
+    tileProvider: CacheTileProvider('cia'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
+
+  static final TileLayer _eia = TileLayer(
+    tileProvider: CacheTileProvider('eia'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/eia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+  );
+
+  static final TileLayer _osm = TileLayer(
+    tileProvider: CacheTileProvider('osm'),
+    urlTemplate:
+        'https://t{s}.tianditu.gov.cn/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+    backgroundColor: Colors.transparent,
+    maxNativeZoom: 15,
+  );
+
+  static final List<TileLayer> _vecZhTile = [_vec, _cva];
+
+  static final List<TileLayer> _imgZhTile = [_img, _cia];
+
+  static final List<TileLayer> _vecEnTile = [_vec, _eva];
+
+  static final List<TileLayer> _imgEnTile = [_img, _eia];
+
+  static List<TileLayer> vecTile(BuildContext context) =>
+      ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode)
+          ? _vecZhTile
+          : _vecEnTile;
+
+  static List<TileLayer> imgTile(BuildContext context) =>
+      ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode)
+          ? _imgZhTile
+          : _imgEnTile;
+
+  static List<TileLayer> osmTile(BuildContext context) => [_osm];
 }

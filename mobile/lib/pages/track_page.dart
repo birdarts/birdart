@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 
-import 'package:birdart/entity/consts.dart';
-import 'package:birdart/entity/user_profile.dart';
-import 'package:birdart/pages/track_map_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +18,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared/shared.dart';
 
+import '../entity/user_profile.dart';
+import '../pages/track_map_page.dart';
 import '../db/db_manager.dart';
 import '../db/on_db.dart';
 import '../entity/app_dir.dart';
 import '../entity/server.dart';
+import '../l10n/l10n.dart';
 import '../tool/list_tool.dart';
 import '../tool/coordinator_tool.dart';
 import '../widget/track_circle_animation.dart';
@@ -444,10 +444,10 @@ class _TrackPageState extends State<TrackPage>
           intervalDuration: Duration(seconds: interval),
           //(Optional) Set foreground notification config to keep the app alive
           //when going to the background
-          foregroundNotificationConfig: const ForegroundNotificationConfig(
+          foregroundNotificationConfig: ForegroundNotificationConfig(
             notificationText: "正在运行后台轨迹记录",
-            notificationTitle: appName,
-            notificationIcon: AndroidResource(name: 'ic_map'),
+            notificationTitle: BdL10n.current.appName,
+            notificationIcon: const AndroidResource(name: 'ic_map'),
             enableWakeLock: true,
           ));
     } else if (defaultTargetPlatform == TargetPlatform.iOS ||
@@ -473,7 +473,7 @@ class _TrackPageState extends State<TrackPage>
     ListTool.track.id = ObjectId();
 
     ListTool.geoxml = GeoXml();
-    ListTool.geoxml.creator = 'Wuhan Plant Protection';
+    ListTool.geoxml.creator = BdL10n.current.appName;
     ListTool.geoxml.wpts = [];
     ListTool.subscription = Geolocator.getPositionStream(
             locationSettings: await getLocationSettings())

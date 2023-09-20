@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
+import '../l10n/l10n.dart';
 import '../entity/consts.dart';
 import '../pages/new_list_page.dart';
 
@@ -57,13 +58,13 @@ class _HomeFragmentState extends State<HomeFragment>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                '日期',
-                style: TextStyle(fontSize: 16),
+              Text(
+                BdL10n.current.homeDate,
+                style: const TextStyle(fontSize: 16),
               ),
               Text(
-                DateFormat('yyyy年M月d日').format(dateTime),
-                style: const TextStyle(fontSize: 42),
+                DateFormat.yMMMd().format(dateTime),
+                style: const TextStyle(fontSize: 36),
               ),
             ],
           ),
@@ -93,13 +94,13 @@ class _HomeFragmentState extends State<HomeFragment>
                 InkWell(
                   child: Column(
                     children: [
-                      const Text(
-                        '时间',
-                        style: TextStyle(fontSize: 16),
+                      Text(
+                        BdL10n.current.homeTime,
+                        style: const TextStyle(fontSize: 16),
                       ),
                       Text(
-                        DateFormat('HH:mm').format(dateTime),
-                        style: const TextStyle(fontSize: 42),
+                        DateFormat.Hm().format(dateTime),
+                        style: const TextStyle(fontSize: 36),
                       ),
                     ],
                   ),
@@ -177,9 +178,9 @@ class _HomeFragmentState extends State<HomeFragment>
   Widget _trackSwitch() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            '开启轨迹记录',
-            style: TextStyle(fontSize: 16),
+          Text(
+            BdL10n.current.homeEnableTrack,
+            style: const TextStyle(fontSize: 16),
           ),
           const SizedBox(
             width: 16,
@@ -229,7 +230,9 @@ class _HomeFragmentState extends State<HomeFragment>
                 color: Colors.white,
               ),
         label: Text(
-          showRecent ? '去观鸟!' : '输入记录',
+          showRecent
+              ? BdL10n.current.homeBirding
+              : BdL10n.current.homeOldRecord,
           style: const TextStyle(fontSize: 24, color: Colors.white),
         ),
         onPressed: () {
@@ -240,9 +243,9 @@ class _HomeFragmentState extends State<HomeFragment>
 
   Widget _buttonJoin() => TextButton(
         onPressed: () {},
-        child: const Text(
-          '加入观鸟队伍',
-          style: TextStyle(fontSize: 16),
+        child: Text(
+          BdL10n.current.homeJoinTeam,
+          style: const TextStyle(fontSize: 16),
         ),
       );
 
@@ -251,7 +254,7 @@ class _HomeFragmentState extends State<HomeFragment>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(appName),
+        title: Text(BdL10n.current.appName),
         centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.white,

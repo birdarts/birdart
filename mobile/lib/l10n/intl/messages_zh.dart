@@ -20,9 +20,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
-  static String m0(month, day, year) => "${year}年${month}月${day}日";
-
-  static String m1(lat, lon, alt) => "经度：${lat}\n纬度：${lon}\n海拔：${alt}";
+  static String m0(lat, lon, alt) => "经度：${lat}\n纬度：${lon}\n海拔：${alt}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -30,15 +28,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomHome": MessageLookupByLibrary.simpleMessage("首页"),
         "bottomMyBirdart": MessageLookupByLibrary.simpleMessage("我的Birdart"),
         "bottomRecords": MessageLookupByLibrary.simpleMessage("记录"),
+        "cancel": MessageLookupByLibrary.simpleMessage("取消"),
+        "databaseError": MessageLookupByLibrary.simpleMessage("数据库错误"),
+        "exploreTitle": MessageLookupByLibrary.simpleMessage("探索周边"),
         "homeBirding": MessageLookupByLibrary.simpleMessage("去观鸟！"),
         "homeDate": MessageLookupByLibrary.simpleMessage("日期"),
-        "homeDateFormat": m0,
+        "homeDisableTrack": MessageLookupByLibrary.simpleMessage("关闭轨迹记录"),
         "homeEnableTrack": MessageLookupByLibrary.simpleMessage("开启轨迹记录"),
         "homeJoinTeam": MessageLookupByLibrary.simpleMessage("加入观鸟队伍"),
+        "homeOldRecord": MessageLookupByLibrary.simpleMessage("输入记录"),
         "homeTime": MessageLookupByLibrary.simpleMessage("时间"),
-        "mapCoordinate": m1,
+        "mapCoordinate": m0,
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("开放街道地图"),
         "mapNameSat": MessageLookupByLibrary.simpleMessage("卫星图"),
-        "mapNameTDT": MessageLookupByLibrary.simpleMessage("天地图")
+        "mapNameTDT": MessageLookupByLibrary.simpleMessage("天地图"),
+        "myAbout": MessageLookupByLibrary.simpleMessage("关于"),
+        "myData": MessageLookupByLibrary.simpleMessage("数据中心"),
+        "myLogin": MessageLookupByLibrary.simpleMessage("登陆"),
+        "myOpenSource": MessageLookupByLibrary.simpleMessage("开放源代码"),
+        "myRegister": MessageLookupByLibrary.simpleMessage("注册"),
+        "mySettings": MessageLookupByLibrary.simpleMessage("设置"),
+        "myTitle": MessageLookupByLibrary.simpleMessage("个人中心"),
+        "networkError": MessageLookupByLibrary.simpleMessage("网络错误"),
+        "ok": MessageLookupByLibrary.simpleMessage("确认"),
+        "recordsTitle": MessageLookupByLibrary.simpleMessage("观鸟记录")
       };
 }

@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:birdart/entity/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:objectid/objectid.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shared/shared.dart';
 
+import '../entity/user_profile.dart';
 import '../db/db_manager.dart';
 import '../tool/image_tool.dart';
 import '../widget/picture_grid.dart';

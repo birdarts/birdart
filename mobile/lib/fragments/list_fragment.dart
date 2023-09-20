@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 
+import '../l10n/l10n.dart';
 import '../db/db_manager.dart';
 import '../dialogs/qr_code.dart';
 import '../entity/app_dir.dart';
@@ -82,7 +83,7 @@ class _ListFragmentState extends State<ListFragment>
     super.build(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('我的观鸟记录')),
+      appBar: AppBar(title: Text(BdL10n.current.recordsTitle)),
       body: RefreshIndicator(
         onRefresh: () => _fetchProjects(),
         child: Container(
@@ -113,7 +114,7 @@ class _ListFragmentState extends State<ListFragment>
                             child: getProjectItem(projects[index]),
                           ));
                 }
-                return const Center(child: Text('数据库错误'));
+                return Center(child: Text(BdL10n.current.databaseError));
               } else {
                 return const CircularProgressIndicator();
               }
@@ -177,10 +178,6 @@ class _ListFragmentState extends State<ListFragment>
       );
 
   _showQrCode(String projectId) async {
-    if (projectId.isEmpty) {
-      _qrCodeGetFailed('本地项目无法分享，请先进入上传页面同步项目。');
-    }
-
     Dio dio = Server.dio;
 
     try {
@@ -208,7 +205,7 @@ class _ListFragmentState extends State<ListFragment>
         print(exception);
       }
     }
-    _qrCodeGetFailed('请检查网络');
+    _qrCodeGetFailed(BdL10n.current.networkError);
   }
 
   _qrCodeGetFailed(String text) {
@@ -221,7 +218,7 @@ class _ListFragmentState extends State<ListFragment>
             content: Text(text),
             actions: [
               TextButton(
-                child: const Text('确认'),
+                child: Text(BdL10n.current.ok),
                 onPressed: () {
                   Navigator.pop(dContext);
                 },
@@ -267,6 +264,6 @@ class _ListFragmentState extends State<ListFragment>
         print(exception);
       }
     }
-    _qrCodeGetFailed('请检查网络');
+    _qrCodeGetFailed(BdL10n.current.networkError);
   }
 }

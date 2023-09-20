@@ -84,7 +84,7 @@ class _NewListPageState extends State<NewListPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Create',
+        tooltip: 'Save',
         child: const Icon(Icons.save_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,

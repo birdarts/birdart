@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
@@ -9,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
 
+import '../l10n/l10n.dart';
 import '../entity/sharedpref.dart';
 import '../pages/track_page.dart';
 import '../map_util/birdart_tiles.dart';
@@ -27,7 +27,7 @@ class _MapFragmentState extends State<MapFragment>
     with AutomaticKeepAliveClientMixin {
   static const _edgeInsets = EdgeInsets.fromLTRB(8, 8, 8, 8);
   var _locationText = BdL10n.current.mapCoordinate('', '', '');
-  List<Widget> tileList = BirdartTiles.vecTile;
+  late TilesGetter tileList;
   final MapController _mapController = MapController();
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
@@ -40,6 +40,8 @@ class _MapFragmentState extends State<MapFragment>
 
   @override
   void initState() {
+    tileList = BirdartTiles.vecTile;
+
     _getMapStates();
 
     _getCurrentLocation(context, animate: true);
@@ -124,7 +126,7 @@ class _MapFragmentState extends State<MapFragment>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('探索周边'),
+        title: Text(BdL10n.current.exploreTitle),
         //bottom: const PreferredSize(
         //  preferredSize: Size.zero,
         //  child: Text("Title 2", style: TextStyle(color: Colors.white),)
@@ -172,9 +174,9 @@ class _MapFragmentState extends State<MapFragment>
           Container(
             margin: const EdgeInsets.fromLTRB(0, 75, 15, 0),
             alignment: Alignment.topRight,
-            child: PopupMenuButton<List<Widget>>(
+            child: PopupMenuButton<TilesGetter>(
                 // Callback that sets the selected popup menu item.
-                onSelected: (List<Widget> list) {
+                onSelected: (TilesGetter list) {
                   setState(() {
                     tileList = list;
                   });
@@ -190,16 +192,16 @@ class _MapFragmentState extends State<MapFragment>
                   ),
                 ),
                 itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<List<Widget>>>[
-                      PopupMenuItem<List<Widget>>(
+                    <PopupMenuEntry<TilesGetter>>[
+                      PopupMenuItem<TilesGetter>(
                         value: BirdartTiles.vecTile,
                         child: Text(BdL10n.current.mapNameTDT),
                       ),
-                      PopupMenuItem<List<Widget>>(
+                      PopupMenuItem<TilesGetter>(
                         value: BirdartTiles.imgTile,
                         child: Text(BdL10n.current.mapNameSat),
                       ),
-                      PopupMenuItem<List<Widget>>(
+                      PopupMenuItem<TilesGetter>(
                         value: BirdartTiles.osmTile,
                         child: Text(BdL10n.current.mapNameOSM),
                       ),
@@ -252,7 +254,7 @@ class _MapFragmentState extends State<MapFragment>
           ),
         ],
         children: [
-          ...tileList,
+          ...tileList.call(context),
           _currentLocationLayer,
         ],
       ),

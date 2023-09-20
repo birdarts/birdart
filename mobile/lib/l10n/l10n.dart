@@ -50,6 +50,26 @@ class BdL10n {
     return Localizations.of<BdL10n>(context, BdL10n);
   }
 
+  /// `Birdart`
+  String get appName {
+    return Intl.message(
+      'Birdart',
+      name: 'appName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `birdart`
+  String get lowercaseAppName {
+    return Intl.message(
+      'birdart',
+      name: 'lowercaseAppName',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Home`
   String get bottomHome {
     return Intl.message(
@@ -60,10 +80,10 @@ class BdL10n {
     );
   }
 
-  /// `Records`
+  /// `Checklists`
   String get bottomRecords {
     return Intl.message(
-      'Records',
+      'Checklists',
       name: 'bottomRecords',
       desc: '',
       args: [],
@@ -90,6 +110,46 @@ class BdL10n {
     );
   }
 
+  /// `Database error`
+  String get databaseError {
+    return Intl.message(
+      'Database error',
+      name: 'databaseError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network error`
+  String get networkError {
+    return Intl.message(
+      'Network error',
+      name: 'networkError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Date`
   String get homeDate {
     return Intl.message(
@@ -97,16 +157,6 @@ class BdL10n {
       name: 'homeDate',
       desc: '',
       args: [],
-    );
-  }
-
-  /// `{month} {day}, {year}`
-  String homeDateFormat(Object month, Object day, Object year) {
-    return Intl.message(
-      '$month $day, $year',
-      name: 'homeDateFormat',
-      desc: '',
-      args: [month, day, year],
     );
   }
 
@@ -120,21 +170,41 @@ class BdL10n {
     );
   }
 
-  /// `Enable track`
+  /// `Track enabled`
   String get homeEnableTrack {
     return Intl.message(
-      'Enable track',
+      'Track enabled',
       name: 'homeEnableTrack',
       desc: '',
       args: [],
     );
   }
 
-  /// `Let's birding`
+  /// `Track disabled`
+  String get homeDisableTrack {
+    return Intl.message(
+      'Track disabled',
+      name: 'homeDisableTrack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go birding`
   String get homeBirding {
     return Intl.message(
-      'Let\'s birding',
+      'Go birding',
       name: 'homeBirding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start checklist`
+  String get homeOldRecord {
+    return Intl.message(
+      'Start checklist',
+      name: 'homeOldRecord',
       desc: '',
       args: [],
     );
@@ -145,6 +215,26 @@ class BdL10n {
     return Intl.message(
       'Join a team',
       name: 'homeJoinTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My checklists`
+  String get recordsTitle {
+    return Intl.message(
+      'My checklists',
+      name: 'recordsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explore nearby`
+  String get exploreTitle {
+    return Intl.message(
+      'Explore nearby',
+      name: 'exploreTitle',
       desc: '',
       args: [],
     );
@@ -187,6 +277,76 @@ class BdL10n {
       name: 'mapCoordinate',
       desc: '',
       args: [lat, lon, alt],
+    );
+  }
+
+  /// `My Birdart`
+  String get myTitle {
+    return Intl.message(
+      'My Birdart',
+      name: 'myTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register`
+  String get myRegister {
+    return Intl.message(
+      'Register',
+      name: 'myRegister',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get myLogin {
+    return Intl.message(
+      'Login',
+      name: 'myLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get mySettings {
+    return Intl.message(
+      'Settings',
+      name: 'mySettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Data center`
+  String get myData {
+    return Intl.message(
+      'Data center',
+      name: 'myData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get myAbout {
+    return Intl.message(
+      'About',
+      name: 'myAbout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open source`
+  String get myOpenSource {
+    return Intl.message(
+      'Open source',
+      name: 'myOpenSource',
+      desc: '',
+      args: [],
     );
   }
 }

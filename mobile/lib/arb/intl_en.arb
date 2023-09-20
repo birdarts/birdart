@@ -1,15 +1,24 @@
 {
   "@@locale": "en",
+  "appName": "Birdart",
+  "lowercaseAppName": "birdart",
   "bottomHome": "Home",
-  "bottomRecords": "Records",
+  "bottomRecords": "Checklists",
   "bottomExplore": "Explore",
   "bottomMyBirdart": "My Birdart",
+  "databaseError": "Database error",
+  "networkError": "Network error",
+  "ok": "OK",
+  "cancel": "Cancel",
   "homeDate": "Date",
-  "homeDateFormat": "{month} {day}, {year}",
   "homeTime": "Time",
-  "homeEnableTrack": "Enable track",
-  "homeBirding": "Let's birding",
+  "homeEnableTrack": "Track enabled",
+  "homeDisableTrack": "Track disabled",
+  "homeBirding": "Go birding",
+  "homeOldRecord": "Start checklist",
   "homeJoinTeam": "Join a team",
+  "recordsTitle": "My checklists",
+  "exploreTitle": "Explore nearby",
   "mapNameTDT": "Tianditu",
   "mapNameOSM": "OSM",
   "mapNameSat": "Satellite",
@@ -26,5 +35,12 @@
         "type": "String"
       }
     }
-  }
+  },
+  "myTitle": "My Birdart",
+  "myRegister": "Register",
+  "myLogin": "Login",
+  "mySettings": "Settings",
+  "myData": "Data center",
+  "myAbout": "About",
+  "myOpenSource": "Open source"
 }
