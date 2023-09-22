@@ -110,8 +110,8 @@ class _MapFragmentState extends State<MapFragment>
           LatLng(prefs.getDouble('center_latitude')!,
               prefs.getDouble('center_longitude')!),
           prefs.getDouble('zoom')!);
-    } catch (e) {
-      log(e.toString());
+    } catch (e, s) {
+      log(e.toString(), stackTrace: s);
     }
     _setMapLocation(Position.fromMap({
       'latitude': prefs.getDouble('latitude') ?? 0.0,

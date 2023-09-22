@@ -109,7 +109,6 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
                   child: const Text('取消'),
                   onPressed: () {
                     Navigator.pop(dContext);
-                    Navigator.pop(context);
                   },
                 ),
                 TextButton(
@@ -141,7 +140,6 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
                   child: const Text('取消'),
                   onPressed: () {
                     Navigator.pop(dContext);
-                    Navigator.pop(context);
                   },
                 ),
                 TextButton(

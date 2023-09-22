@@ -44,6 +44,7 @@ dependencies:
   extended_image: ^8.1.1
   floor: ^1.4.2
   fluttertoast: ^8.2.2
+  flutter_background_service: ^5.0.1
   flutter_localizations:
     sdk: flutter
   flutter_map: ^5.0.0

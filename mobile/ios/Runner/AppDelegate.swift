@@ -3,6 +3,8 @@ import Flutter
 // This is required for calling FlutterLocalNotificationsPlugin.setPluginRegistrantCallback method.
 import flutter_background_service_ios // add this
 
+// flutter: Exception: No Impeller context is available
+// flutter run --no-enable-impeller
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
