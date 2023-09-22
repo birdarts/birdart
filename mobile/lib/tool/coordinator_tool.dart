@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 class CoordinateTool {
   /// 将 112/1,58/1,390971/10000 格式的经纬度转换成 112.99434397362694格式

@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:birdart/entity/user_profile.dart';
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:objectid/objectid.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shared/shared.dart';
 
+import '../entity/user_profile.dart';
 import '../db/db_manager.dart';
 import '../tool/image_tool.dart';
 import '../widget/picture_grid.dart';
@@ -64,7 +65,7 @@ class _EditRecordState extends State<EditRecord> {
 
   @override
   void dispose() {
-    // 清理控制器资源
+    // clear controller resources
     noteController.dispose();
     super.dispose();
   }
@@ -76,9 +77,9 @@ class _EditRecordState extends State<EditRecord> {
       FocusManager.instance.primaryFocus?.unfocus();
 
       final pictureGrid = _pictureKey.currentState;
-      if (pictureGrid == null || pictureGrid.imageData.isEmpty) {
+      if (pictureGrid == null) {
         Fluttertoast.showToast(
-          msg: "请选择至少一张图片",
+          msg: BdL10n.current.loginAppError,
           toastLength: Toast.LENGTH_SHORT,
         );
         return;

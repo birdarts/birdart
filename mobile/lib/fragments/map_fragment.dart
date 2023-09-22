@@ -8,9 +8,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
 
+import '../l10n/l10n.dart';
 import '../entity/sharedpref.dart';
 import '../pages/track_page.dart';
-import '../tianditu/tianditu.dart';
+import '../map_util/birdart_tiles.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/location_tool.dart';
 import '../widget/location_marker_layer.dart';
@@ -25,8 +26,8 @@ class MapFragment extends StatefulWidget {
 class _MapFragmentState extends State<MapFragment>
     with AutomaticKeepAliveClientMixin {
   static const _edgeInsets = EdgeInsets.fromLTRB(8, 8, 8, 8);
-  var _locationText = '经度: \n纬度: \n海拔: ';
-  List<Widget> tileList = TianDiTu.vecTile;
+  var _locationText = BdL10n.current.mapCoordinate('', '', '');
+  late TilesGetter tileList;
   final MapController _mapController = MapController();
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
@@ -35,10 +36,12 @@ class _MapFragmentState extends State<MapFragment>
   StreamSubscription? subscription;
 
   @override
-  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true; // this is must
 
   @override
   void initState() {
+    tileList = BirdartTiles.vecTile;
+
     _getMapStates();
 
     _getCurrentLocation(context, animate: true);
@@ -107,8 +110,8 @@ class _MapFragmentState extends State<MapFragment>
           LatLng(prefs.getDouble('center_latitude')!,
               prefs.getDouble('center_longitude')!),
           prefs.getDouble('zoom')!);
-    } catch (e) {
-      log(e.toString());
+    } catch (e, s) {
+      log(e.toString(), stackTrace: s);
     }
     _setMapLocation(Position.fromMap({
       'latitude': prefs.getDouble('latitude') ?? 0.0,
@@ -123,7 +126,7 @@ class _MapFragmentState extends State<MapFragment>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('探索周边'),
+        title: Text(BdL10n.current.exploreTitle),
         //bottom: const PreferredSize(
         //  preferredSize: Size.zero,
         //  child: Text("Title 2", style: TextStyle(color: Colors.white),)
@@ -148,8 +151,11 @@ class _MapFragmentState extends State<MapFragment>
         ),
         mapController: _mapController,
         nonRotatedChildren: [
-          const RichAttributionWidget(
-            attributions: [TextSourceAttribution('天地图')],
+          RichAttributionWidget(
+            attributions: [
+              TextSourceAttribution(BdL10n.current.mapNameTDT),
+              TextSourceAttribution(BdL10n.current.mapNameOSM),
+            ],
           ),
           Container(
             margin: const EdgeInsets.fromLTRB(0, 20, 15, 0),
@@ -168,9 +174,9 @@ class _MapFragmentState extends State<MapFragment>
           Container(
             margin: const EdgeInsets.fromLTRB(0, 75, 15, 0),
             alignment: Alignment.topRight,
-            child: PopupMenuButton<List<Widget>>(
+            child: PopupMenuButton<TilesGetter>(
                 // Callback that sets the selected popup menu item.
-                onSelected: (List<Widget> list) {
+                onSelected: (TilesGetter list) {
                   setState(() {
                     tileList = list;
                   });
@@ -186,14 +192,18 @@ class _MapFragmentState extends State<MapFragment>
                   ),
                 ),
                 itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<List<Widget>>>[
-                      PopupMenuItem<List<Widget>>(
-                        value: TianDiTu.vecTile,
-                        child: const Text('街道图'),
+                    <PopupMenuEntry<TilesGetter>>[
+                      PopupMenuItem<TilesGetter>(
+                        value: BirdartTiles.vecTile,
+                        child: Text(BdL10n.current.mapNameTDT),
                       ),
-                      PopupMenuItem<List<Widget>>(
-                        value: TianDiTu.imgTile,
-                        child: const Text('卫星图'),
+                      PopupMenuItem<TilesGetter>(
+                        value: BirdartTiles.imgTile,
+                        child: Text(BdL10n.current.mapNameSat),
+                      ),
+                      PopupMenuItem<TilesGetter>(
+                        value: BirdartTiles.osmTile,
+                        child: Text(BdL10n.current.mapNameOSM),
                       ),
                     ]),
           ),
@@ -244,7 +254,7 @@ class _MapFragmentState extends State<MapFragment>
           ),
         ],
         children: [
-          ...tileList,
+          ...tileList.call(context),
           _currentLocationLayer,
         ],
       ),
@@ -253,10 +263,10 @@ class _MapFragmentState extends State<MapFragment>
 
   void _setMapLocation(Position locationData, {animate = false}) {
     setState(() => {
-          _locationText =
-              '经度: ${CoordinateTool.degreeToDms(locationData.longitude.toString())}\n'
-                  '纬度: ${CoordinateTool.degreeToDms(locationData.latitude.toString())}\n'
-                  '海拔: ${locationData.altitude.toStringAsFixed(3)}',
+          _locationText = BdL10n.current.mapCoordinate(
+              CoordinateTool.degreeToDms(locationData.longitude.toString()),
+              CoordinateTool.degreeToDms(locationData.latitude.toString()),
+              locationData.altitude.toStringAsFixed(3)),
           _currentLocationLayer = LocationMarker(locationData: locationData),
           if (animate)
             {

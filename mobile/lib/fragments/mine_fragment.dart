@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../l10n/l10n.dart';
 import '../entity/user_profile.dart';
 import '../pages/login_page.dart';
 import '../pages/settings_page.dart';
-import '../pages/user_info_page.dart';
+import '../pages/profile_page.dart';
 
 class MineFragment extends StatefulWidget {
   const MineFragment({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _MineFragmentState extends State<MineFragment>
     super.build(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('个人中心')),
+      appBar: AppBar(title: Text(BdL10n.current.myTitle)),
       body: Center(
         child: Column(
           children: [
@@ -34,7 +35,7 @@ class _MineFragmentState extends State<MineFragment>
                   Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const UserInfoPage()))
+                              builder: (context) => const UserProfilePage()))
                       .then((value) => setState(() {}));
                 } else {
                   Navigator.push(
@@ -72,9 +73,9 @@ class _MineFragmentState extends State<MineFragment>
                       style: const TextStyle(fontSize: 20),
                     )
                   else
-                    const Text(
-                      '注册/登陆',
-                      style: TextStyle(fontSize: 20),
+                    Text(
+                      '${BdL10n.current.myLogin}/${BdL10n.current.myRegister}',
+                      style: const TextStyle(fontSize: 20),
                     ),
                 ],
               ),
@@ -97,14 +98,22 @@ class _MineFragmentState extends State<MineFragment>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getSettingsItem(Icons.settings_rounded, '设置', context, onTap: () {
+        getSettingsItem(
+            Icons.settings_rounded, BdL10n.current.mySettings, context,
+            onTap: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const SettingsPage()));
         }),
-        getSettingsItem(Icons.cloud_download_rounded, '数据管理', context,
+        getSettingsItem(
+            Icons.cloud_download_rounded, BdL10n.current.myData, context,
             onTap: () {}),
-        getSettingsItem(Icons.info_rounded, '关于', context, onTap: () {}),
-        getSettingsItem(Icons.code_rounded, '查看源代码', context, onTap: () async {
+        getSettingsItem(Icons.info_rounded, BdL10n.current.myAbout, context,
+            onTap: () {
+          showAboutDialog(context: context);
+        }),
+        getSettingsItem(
+            Icons.code_rounded, BdL10n.current.myOpenSource, context,
+            onTap: () async {
           final url = Uri.parse('https://github.com/birdarts/birdart');
           if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
             throw Exception('Could not launch $url');

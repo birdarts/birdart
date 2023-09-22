@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:birdart/l10n/l10n.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,14 +19,9 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoginForm = true;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
-  String? _username,
-      _email,
-      _password,
-      _confirmPassword,
-      _phoneNumber,
-      _verificationCode;
+  String? _username, _email, _password, _verificationCode;
 
   void _toggleFormMode() {
     setState(() {
@@ -51,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var response = await dio.get('/user/login',
-          queryParameters: {'phone': _phoneNumber, 'password': _password});
+          queryParameters: {'email': _email, 'password': _password});
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.toString());
@@ -68,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           UserProfile.number = userInfo['number'];
 
           Fluttertoast.showToast(
-            msg: "登陆成功。",
+            msg: BdL10n.current.loginSuccess,
             toastLength: Toast.LENGTH_SHORT,
           );
           if (context.mounted) {
@@ -77,25 +73,26 @@ class _LoginPageState extends State<LoginPage> {
           return;
         } else {
           Fluttertoast.showToast(
-            msg: "登陆失败，${data['message']}。",
+            msg: BdL10n.current.loginFailed + data['message'],
             toastLength: Toast.LENGTH_SHORT,
           );
         }
       } else {
         Fluttertoast.showToast(
-          msg: "登陆失败，请检查网络。",
+          msg: BdL10n.current.loginFailed + BdL10n.current.loginNetworkError,
           toastLength: Toast.LENGTH_SHORT,
         );
       }
-    } catch (exception) {
+    } catch (exception, stackTrace) {
       Fluttertoast.showToast(
-        msg: "登陆失败，应用错误。",
+        msg: BdL10n.current.loginFailed + BdL10n.current.loginAppError,
         toastLength: Toast.LENGTH_SHORT,
       );
-      print(exception);
+      debugPrint(exception.toString());
+      debugPrintStack(stackTrace: stackTrace);
     }
     Fluttertoast.showToast(
-      msg: "登陆失败，请检查网络。",
+      msg: BdL10n.current.loginFailed + BdL10n.current.loginNetworkError,
       toastLength: Toast.LENGTH_SHORT,
     );
   }
@@ -105,7 +102,6 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var response = await dio.get('/user/register', queryParameters: {
-        'phone': _phoneNumber,
         'password': _password,
         'name': _username,
         'email': _email,
@@ -116,23 +112,24 @@ class _LoginPageState extends State<LoginPage> {
         Map<String, dynamic> data = jsonDecode(response.toString());
         if (data['success'] = true) {
           Fluttertoast.showToast(
-            msg: "注册成功，现在可以登陆了。",
+            msg: BdL10n.current.registerSuccess,
             toastLength: Toast.LENGTH_SHORT,
           );
           _toggleFormMode();
         } else {
           Fluttertoast.showToast(
-            msg: "注册失败，${data['message']}。",
+            msg: BdL10n.current.registerFailed + data['message'],
             toastLength: Toast.LENGTH_SHORT,
           );
         }
         return;
       } else {}
-    } catch (exception) {
-      print(exception);
+    } catch (exception, stackTrace) {
+      debugPrint(exception.toString());
+      debugPrintStack(stackTrace: stackTrace);
     }
     Fluttertoast.showToast(
-      msg: "注册失败，请检查网络。",
+      msg: BdL10n.current.registerFailed + BdL10n.current.loginNetworkError,
       toastLength: Toast.LENGTH_SHORT,
     );
   }
@@ -143,62 +140,32 @@ class _LoginPageState extends State<LoginPage> {
         : TextFormField(
             onSaved: (val) => _username = val,
             validator: (val) {
-              RegExp regExp = RegExp(
-                r'^[\u4e00-\u9fa5a-zA-Z\d]+$',
-                caseSensitive: false,
-                multiLine: false,
-              );
-              RegExp noChinese = RegExp(
-                r'^[a-zA-Z\d]+$',
-                caseSensitive: false,
-                multiLine: false,
-              );
               if (val == null || val.isEmpty) {
-                return '用户名不能为空';
-              } else if (!regExp.hasMatch(val)) {
-                return '用户名只能包含汉字、英文字母或数字';
-              } else if (noChinese.hasMatch(val) && val.length < 6) {
-                return '用户名应至少包含2个汉字或6个字母';
-              } else if (!noChinese.hasMatch(val) && val.length < 2) {
-                return '用户名应至少包含2个汉字或6个字母';
+                return BdL10n.current.registerNameNotEmpty;
+              } else if (val.length < 6) {
+                return BdL10n.current.registerNameLength;
               }
               return null;
             },
-            decoration: const InputDecoration(
-              labelText: '用户名',
-              hintText: '输入用户名',
-              icon: Icon(Icons.person),
+            decoration: InputDecoration(
+              labelText: BdL10n.current.loginFormUsername,
+              hintText: BdL10n.current.loginFormUsernameHint,
+              icon: const Icon(Icons.person),
             ),
           );
   }
 
   Widget _showEmailInput() {
-    return _isLoginForm
-        ? Container()
-        : TextFormField(
-            onSaved: (val) => _email = val,
-            validator: (val) =>
-                val == null || !val.contains('@') ? '邮箱格式有误' : null,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              labelText: '电子邮箱',
-              hintText: '输入一个有效的电子邮箱地址',
-              icon: Icon(Icons.email),
-            ),
-          );
-  }
-
-  Widget _showPhoneNumberInput() {
     return TextFormField(
-      onSaved: (val) => _phoneNumber = val,
-      validator: (val) => val == null || val.length != 11
-          ? '电话号码格式有误，仅支持中国内地手机号，不支持固定电话、海外及港澳台电话号码。'
+      onSaved: (val) => _email = val,
+      validator: (val) => val == null || !val.contains('@')
+          ? BdL10n.current.loginFormEmailFormat
           : null,
-      keyboardType: TextInputType.phone,
-      decoration: const InputDecoration(
-        labelText: '电话号码',
-        hintText: '输入您的电话号码',
-        icon: Icon(Icons.phone),
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        labelText: BdL10n.current.loginFormEmail,
+        hintText: BdL10n.current.loginFormEmailHint,
+        icon: const Icon(Icons.email),
       ),
     );
   }
@@ -214,17 +181,17 @@ class _LoginPageState extends State<LoginPage> {
           multiLine: false,
         );
         if (val == null || val.isEmpty) {
-          return '密码不能为空';
+          return BdL10n.current.loginFormPasswordNotEmpty;
         } else if (!regExp.hasMatch(val)) {
-          return '密码应当至少包括8个字符，可以使用大写、小写字母、数字、特殊符号。';
+          return BdL10n.current.loginFormPasswordFormat;
         }
         return null;
       },
       obscureText: true,
-      decoration: const InputDecoration(
-        labelText: '密码',
-        hintText: '输入您的密码',
-        icon: Icon(Icons.lock),
+      decoration: InputDecoration(
+        labelText: BdL10n.current.loginFormPassword,
+        hintText: BdL10n.current.loginFormPasswordHint,
+        icon: const Icon(Icons.lock),
       ),
     );
   }
@@ -233,14 +200,14 @@ class _LoginPageState extends State<LoginPage> {
     return _isLoginForm
         ? Container()
         : TextFormField(
-            onSaved: (val) => _confirmPassword = val,
-            validator: (val) =>
-                val == null || val != _password ? '密码不匹配' : null,
+            validator: (val) => val == null || val != _password
+                ? BdL10n.current.loginFormConfirmNotMatch
+                : null,
             obscureText: true,
-            decoration: const InputDecoration(
-              labelText: '确认密码',
-              hintText: '再次输入您的密码',
-              icon: Icon(Icons.lock),
+            decoration: InputDecoration(
+              labelText: BdL10n.current.loginFormConfirmPassword,
+              hintText: BdL10n.current.loginFormConfirmPasswordHint,
+              icon: const Icon(Icons.lock),
             ),
           );
   }
@@ -250,12 +217,14 @@ class _LoginPageState extends State<LoginPage> {
         ? Container()
         : TextFormField(
             onSaved: (val) => _verificationCode = val,
-            validator: (val) => val == null || val.isEmpty ? '验证码不能为空' : null,
+            validator: (val) => val == null || val.isEmpty
+                ? BdL10n.current.loginFormVerFormat
+                : null,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: '验证码',
-              hintText: '输入验证码',
-              icon: Icon(Icons.code),
+            decoration: InputDecoration(
+              labelText: BdL10n.current.loginFormVer,
+              hintText: BdL10n.current.loginFormVerHint,
+              icon: const Icon(Icons.code),
             ),
           );
   }
@@ -266,11 +235,15 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         ElevatedButton(
           onPressed: () => _submitForm(context),
-          child: Text(_isLoginForm ? '登陆' : '注册'),
+          child: Text(_isLoginForm
+              ? BdL10n.current.myLogin
+              : BdL10n.current.myRegister),
         ),
         ElevatedButton(
           onPressed: _toggleFormMode,
-          child: Text(_isLoginForm ? '还没有账号? 注册' : '已有账号? 请登录'),
+          child: Text(_isLoginForm
+              ? BdL10n.current.registerHint
+              : BdL10n.current.loginHint),
         )
       ],
     );
@@ -287,7 +260,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isLoginForm ? '登陆' : '注册'),
+        title: Text(
+            _isLoginForm ? BdL10n.current.myLogin : BdL10n.current.myRegister),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
@@ -297,7 +271,6 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               _showUsernameInput(),
               _showEmailInput(),
-              _showPhoneNumberInput(),
               _showPasswordInput(),
               _showConfirmPasswordInput(),
               _showVerificationCodeInput(),

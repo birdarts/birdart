@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_api_availability/google_api_availability.dart';
 
-Future<bool> locationAvailabilityChecker(BuildContext context) async {
+// Merge service unavailability to LocationPermission.unableToDetermine
+Future<LocationPermission> locationAvailabilityChecker(BuildContext context) async {
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
-            'Location services are disabled. Please enable the services')));
-    return false;
+            '')));
+    return LocationPermission.unableToDetermine;
   }
 
   if (!serviceEnabled) {
-    return false;
+    return LocationPermission.unableToDetermine;
   }
 
   LocationPermission locationPermission = await Geolocator.checkPermission();
@@ -20,34 +20,47 @@ Future<bool> locationAvailabilityChecker(BuildContext context) async {
     locationPermission = await Geolocator.requestPermission();
     if (locationPermission == LocationPermission.denied) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-      }
-      return false;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                '')));      }
+      return locationPermission;
     }
   }
 
-  if (locationPermission == LocationPermission.deniedForever &&
-      context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            'Location permissions are permanently denied, we cannot request permissions.')));
-    return false;
+  if (locationPermission == LocationPermission.deniedForever && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return locationPermission;
   }
 
-  return true;
+  return locationPermission;
 }
 
 Future<Position?> getCurrentLocation(BuildContext context) async {
   final locationAvailable = await locationAvailabilityChecker(context);
-  if (!locationAvailable) {
+  if (locationAvailable.isFalse()) {
     return null;
   }
-  final availability = await GoogleApiAvailability.instance
-      .checkGooglePlayServicesAvailability();
 
   return await Geolocator.getCurrentPosition(
-    forceAndroidLocationManager:
-        availability != GooglePlayServicesAvailability.success,
+    forceAndroidLocationManager: true,
   );
+}
+
+extension ToBool on LocationPermission {
+  isTrue() {
+    return [
+      LocationPermission.whileInUse,
+      LocationPermission.denied,
+    ].contains(this);
+  }
+
+  isFalse() {
+    return [
+      LocationPermission.denied,
+      LocationPermission.deniedForever,
+      LocationPermission.unableToDetermine,
+    ].contains(this);
+  }
 }

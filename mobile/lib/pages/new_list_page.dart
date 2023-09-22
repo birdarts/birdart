@@ -1,3 +1,4 @@
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class NewListPage extends StatefulWidget {
@@ -13,7 +14,17 @@ class _NewListPageState extends State<NewListPage> {
   List<String> birds = List.generate(20, (index) => '鸟 $index');
 
   void _onCompleted() {
-    // TODO: 处理完成按钮点击事件
+    // TODO: save list
+  }
+
+  void _getExpectedList() {
+    // TODO: generate possible birds list
+  }
+
+  @override
+  void initState() {
+    _getExpectedList();
+    super.initState();
   }
 
   @override
@@ -50,9 +61,9 @@ class _NewListPageState extends State<NewListPage> {
               icon: const Icon(Icons.add_rounded),
               onPressed: () {},
             ),
-            title: const TextField(
+            title: TextField(
               decoration: InputDecoration(
-                hintText: '输入关键字搜索',
+                hintText: BdL10n.current.newListSearch,
                 border: InputBorder.none,
               ),
             ),
@@ -74,7 +85,7 @@ class _NewListPageState extends State<NewListPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Create',
+        tooltip: BdL10n.current.save,
         child: const Icon(Icons.save_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../tianditu/tianditu.dart';
+import '../map_util/birdart_tiles.dart';
 
 class TrackMapPage extends StatelessWidget {
-  TrackMapPage({super.key, required this.layer});
+  const TrackMapPage({super.key, required this.layer});
 
-  final List<Widget> tileList = TianDiTu.vecTile;
   final PolylineLayer layer;
 
   @override
@@ -24,7 +23,7 @@ class TrackMapPage extends StatelessWidget {
               InteractiveFlag.doubleTapZoom,
         ),
         children: [
-          ...tileList,
+          ...BirdartTiles.vecTile(context),
           layer,
         ],
       ),
