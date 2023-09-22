@@ -150,6 +150,16 @@ class BdL10n {
     );
   }
 
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Date`
   String get homeDate {
     return Intl.message(
@@ -397,6 +407,266 @@ class BdL10n {
       name: 'settingsTrackIntervalSeconds',
       desc: '',
       args: [second],
+    );
+  }
+
+  /// `Login success.`
+  String get loginSuccess {
+    return Intl.message(
+      'Login success.',
+      name: 'loginSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login Failed. `
+  String get loginFailed {
+    return Intl.message(
+      'Login Failed. ',
+      name: 'loginFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network error.`
+  String get loginNetworkError {
+    return Intl.message(
+      'Network error.',
+      name: 'loginNetworkError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Application internal error.`
+  String get loginAppError {
+    return Intl.message(
+      'Application internal error.',
+      name: 'loginAppError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register success, please check your email inbox.`
+  String get registerSuccess {
+    return Intl.message(
+      'Register success, please check your email inbox.',
+      name: 'registerSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register failed.`
+  String get registerFailed {
+    return Intl.message(
+      'Register failed.',
+      name: 'registerFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username should not be empty.`
+  String get registerNameNotEmpty {
+    return Intl.message(
+      'Username should not be empty.',
+      name: 'registerNameNotEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username should contains at least 6 characters.`
+  String get registerNameLength {
+    return Intl.message(
+      'Username should contains at least 6 characters.',
+      name: 'registerNameLength',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get loginFormUsername {
+    return Intl.message(
+      'Username',
+      name: 'loginFormUsername',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please choose your favour username.`
+  String get loginFormUsernameHint {
+    return Intl.message(
+      'Please choose your favour username.',
+      name: 'loginFormUsernameHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get loginFormEmail {
+    return Intl.message(
+      'Email',
+      name: 'loginFormEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid email address.`
+  String get loginFormEmailHint {
+    return Intl.message(
+      'Please enter a valid email address.',
+      name: 'loginFormEmailHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email address not right.`
+  String get loginFormEmailFormat {
+    return Intl.message(
+      'Email address not right.',
+      name: 'loginFormEmailFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get loginFormPassword {
+    return Intl.message(
+      'Password',
+      name: 'loginFormPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a complex password.`
+  String get loginFormPasswordHint {
+    return Intl.message(
+      'Please enter a complex password.',
+      name: 'loginFormPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password`
+  String get loginFormConfirmPassword {
+    return Intl.message(
+      'Confirm password',
+      name: 'loginFormConfirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm your password.`
+  String get loginFormConfirmPasswordHint {
+    return Intl.message(
+      'Please confirm your password.',
+      name: 'loginFormConfirmPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password should not be empty`
+  String get loginFormPasswordNotEmpty {
+    return Intl.message(
+      'Password should not be empty',
+      name: 'loginFormPasswordNotEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The password should contain at least 8 characters, and only letters, numbers, and special symbols.`
+  String get loginFormPasswordFormat {
+    return Intl.message(
+      'The password should contain at least 8 characters, and only letters, numbers, and special symbols.',
+      name: 'loginFormPasswordFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match.`
+  String get loginFormConfirmNotMatch {
+    return Intl.message(
+      'Passwords do not match.',
+      name: 'loginFormConfirmNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `VerCode`
+  String get loginFormVer {
+    return Intl.message(
+      'VerCode',
+      name: 'loginFormVer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification code, case insensitive.`
+  String get loginFormVerHint {
+    return Intl.message(
+      'Verification code, case insensitive.',
+      name: 'loginFormVerHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `VerCode should not be empty.`
+  String get loginFormVerFormat {
+    return Intl.message(
+      'VerCode should not be empty.',
+      name: 'loginFormVerFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Have no account? Register now.`
+  String get registerHint {
+    return Intl.message(
+      'Have no account? Register now.',
+      name: 'registerHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Have an account? Login immediately.`
+  String get loginHint {
+    return Intl.message(
+      'Have an account? Login immediately.',
+      name: 'loginHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search birds`
+  String get newListSearch {
+    return Intl.message(
+      'Search birds',
+      name: 'newListSearch',
+      desc: '',
+      args: [],
     );
   }
 }

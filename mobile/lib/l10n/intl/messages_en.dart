@@ -45,6 +45,40 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeOldRecord":
             MessageLookupByLibrary.simpleMessage("Start checklist"),
         "homeTime": MessageLookupByLibrary.simpleMessage("Time"),
+        "loginAppError":
+            MessageLookupByLibrary.simpleMessage("Application internal error."),
+        "loginFailed": MessageLookupByLibrary.simpleMessage("Login Failed. "),
+        "loginFormConfirmNotMatch":
+            MessageLookupByLibrary.simpleMessage("Passwords do not match."),
+        "loginFormConfirmPassword":
+            MessageLookupByLibrary.simpleMessage("Confirm password"),
+        "loginFormConfirmPasswordHint": MessageLookupByLibrary.simpleMessage(
+            "Please confirm your password."),
+        "loginFormEmail": MessageLookupByLibrary.simpleMessage("Email"),
+        "loginFormEmailFormat":
+            MessageLookupByLibrary.simpleMessage("Email address not right."),
+        "loginFormEmailHint": MessageLookupByLibrary.simpleMessage(
+            "Please enter a valid email address."),
+        "loginFormPassword": MessageLookupByLibrary.simpleMessage("Password"),
+        "loginFormPasswordFormat": MessageLookupByLibrary.simpleMessage(
+            "The password should contain at least 8 characters, and only letters, numbers, and special symbols."),
+        "loginFormPasswordHint": MessageLookupByLibrary.simpleMessage(
+            "Please enter a complex password."),
+        "loginFormPasswordNotEmpty": MessageLookupByLibrary.simpleMessage(
+            "Password should not be empty"),
+        "loginFormUsername": MessageLookupByLibrary.simpleMessage("Username"),
+        "loginFormUsernameHint": MessageLookupByLibrary.simpleMessage(
+            "Please choose your favour username."),
+        "loginFormVer": MessageLookupByLibrary.simpleMessage("VerCode"),
+        "loginFormVerFormat": MessageLookupByLibrary.simpleMessage(
+            "VerCode should not be empty."),
+        "loginFormVerHint": MessageLookupByLibrary.simpleMessage(
+            "Verification code, case insensitive."),
+        "loginHint": MessageLookupByLibrary.simpleMessage(
+            "Have an account? Login immediately."),
+        "loginNetworkError":
+            MessageLookupByLibrary.simpleMessage("Network error."),
+        "loginSuccess": MessageLookupByLibrary.simpleMessage("Login success."),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("birdart"),
         "mapCoordinate": m0,
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("OSM"),
@@ -58,8 +92,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "mySettings": MessageLookupByLibrary.simpleMessage("Settings"),
         "myTitle": MessageLookupByLibrary.simpleMessage("My Birdart"),
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
+        "newListSearch": MessageLookupByLibrary.simpleMessage("Search birds"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "recordsTitle": MessageLookupByLibrary.simpleMessage("My checklists"),
+        "registerFailed":
+            MessageLookupByLibrary.simpleMessage("Register failed."),
+        "registerHint": MessageLookupByLibrary.simpleMessage(
+            "Have no account? Register now."),
+        "registerNameLength": MessageLookupByLibrary.simpleMessage(
+            "Username should contains at least 6 characters."),
+        "registerNameNotEmpty": MessageLookupByLibrary.simpleMessage(
+            "Username should not be empty."),
+        "registerSuccess": MessageLookupByLibrary.simpleMessage(
+            "Register success, please check your email inbox."),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "settingsSelectTrackInterval":
             MessageLookupByLibrary.simpleMessage("Select time interval"),
         "settingsTrackInterval":

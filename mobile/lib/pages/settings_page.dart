@@ -1,6 +1,5 @@
 import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -87,7 +86,8 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           ListTile(
             title: Text(BdL10n.current.settingsTrackInterval),
-            subtitle: Text(BdL10n.current.settingsTrackIntervalSeconds(trackInterval)),
+            subtitle: Text(
+                BdL10n.current.settingsTrackIntervalSeconds(trackInterval)),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => showTrackIntervalDialog(),
           ),

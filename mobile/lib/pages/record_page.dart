@@ -1,11 +1,12 @@
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../pages/edit_record_page.dart';
 import 'package:shared/shared.dart';
 
 class RecordPage extends StatefulWidget {
-  final DbRecord place;
+  final DbRecord record;
 
-  const RecordPage({Key? key, required this.place}) : super(key: key);
+  const RecordPage({Key? key, required this.record}) : super(key: key);
 
   @override
   State<RecordPage> createState() => _RecordPageState();
@@ -20,7 +21,7 @@ class _RecordPageState extends State<RecordPage>
 
   @override
   void initState() {
-    record = widget.place;
+    record = widget.record;
     super.initState();
   }
 
@@ -31,9 +32,9 @@ class _RecordPageState extends State<RecordPage>
     return Scaffold(
       appBar: AppBar(
           title: ListTile(
-            title: const Text(
-              '观察记录',
-              style: TextStyle(
+            title: Text(
+              BdL10n.current.recordsTitle,
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),

@@ -22,7 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(lat, lon, alt) => "经度：${lat}\n纬度：${lon}\n海拔：${alt}";
 
-  static String m1(second) => "${second} 秒";
+  static String m1(second) => "${second}秒";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -40,6 +40,35 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeJoinTeam": MessageLookupByLibrary.simpleMessage("加入观鸟队伍"),
         "homeOldRecord": MessageLookupByLibrary.simpleMessage("输入记录"),
         "homeTime": MessageLookupByLibrary.simpleMessage("时间"),
+        "loginAppError": MessageLookupByLibrary.simpleMessage("应用内部错误。"),
+        "loginFailed": MessageLookupByLibrary.simpleMessage("登陆失败。"),
+        "loginFormConfirmNotMatch":
+            MessageLookupByLibrary.simpleMessage("密码不匹配。"),
+        "loginFormConfirmPassword":
+            MessageLookupByLibrary.simpleMessage("确认密码"),
+        "loginFormConfirmPasswordHint":
+            MessageLookupByLibrary.simpleMessage("请确认您的密码。"),
+        "loginFormEmail": MessageLookupByLibrary.simpleMessage("电子邮箱"),
+        "loginFormEmailFormat": MessageLookupByLibrary.simpleMessage("邮箱地址错误。"),
+        "loginFormEmailHint":
+            MessageLookupByLibrary.simpleMessage("请输入一个有效的邮箱地址。"),
+        "loginFormPassword": MessageLookupByLibrary.simpleMessage("密码"),
+        "loginFormPasswordFormat": MessageLookupByLibrary.simpleMessage(
+            "密码应当至少包括8个字符，可以使用字母、数字、特殊符号。"),
+        "loginFormPasswordHint":
+            MessageLookupByLibrary.simpleMessage("请选择一个复杂的密码。"),
+        "loginFormPasswordNotEmpty":
+            MessageLookupByLibrary.simpleMessage("密码不能为空。"),
+        "loginFormUsername": MessageLookupByLibrary.simpleMessage("用户名"),
+        "loginFormUsernameHint":
+            MessageLookupByLibrary.simpleMessage("请选择一个您喜欢的用户名。"),
+        "loginFormVer": MessageLookupByLibrary.simpleMessage("验证码"),
+        "loginFormVerFormat": MessageLookupByLibrary.simpleMessage("验证码不能为空。"),
+        "loginFormVerHint":
+            MessageLookupByLibrary.simpleMessage("请输入验证码，不区分大小写。"),
+        "loginHint": MessageLookupByLibrary.simpleMessage("已有账号？立刻登陆。"),
+        "loginNetworkError": MessageLookupByLibrary.simpleMessage("网络错误。"),
+        "loginSuccess": MessageLookupByLibrary.simpleMessage("登陆成功。"),
         "mapCoordinate": m0,
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("开放街道地图"),
         "mapNameSat": MessageLookupByLibrary.simpleMessage("卫星图"),
@@ -52,8 +81,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "mySettings": MessageLookupByLibrary.simpleMessage("设置"),
         "myTitle": MessageLookupByLibrary.simpleMessage("个人中心"),
         "networkError": MessageLookupByLibrary.simpleMessage("网络错误"),
+        "newListSearch": MessageLookupByLibrary.simpleMessage("搜索鸟种"),
         "ok": MessageLookupByLibrary.simpleMessage("确认"),
         "recordsTitle": MessageLookupByLibrary.simpleMessage("观鸟记录"),
+        "registerFailed": MessageLookupByLibrary.simpleMessage("注册失败。"),
+        "registerHint": MessageLookupByLibrary.simpleMessage("没有账号？现在注册。"),
+        "registerNameLength":
+            MessageLookupByLibrary.simpleMessage("用户名应包含至少6个字符。"),
+        "registerNameNotEmpty":
+            MessageLookupByLibrary.simpleMessage("用户名不能为空。"),
+        "registerSuccess":
+            MessageLookupByLibrary.simpleMessage("注册成功，请检查您的收件箱。"),
+        "save": MessageLookupByLibrary.simpleMessage("保存"),
         "settingsSelectTrackInterval":
             MessageLookupByLibrary.simpleMessage("选择轨迹时间间隔"),
         "settingsTrackInterval": MessageLookupByLibrary.simpleMessage("轨迹时间间隔"),

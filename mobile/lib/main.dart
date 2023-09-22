@@ -18,7 +18,8 @@ late Locale _appLocale;
 
 Locale _getLocale() {
   final localeNames = Platform.localeName.split(RegExp(r'[_-]'));
-  return Locale('en');
+  return Locale(
+      'en'); //localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
 }
 
 void main() async {

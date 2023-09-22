@@ -110,7 +110,7 @@ class _MineFragmentState extends State<MineFragment>
         getSettingsItem(Icons.info_rounded, BdL10n.current.myAbout, context,
             onTap: () {
           showAboutDialog(context: context);
-            }),
+        }),
         getSettingsItem(
             Icons.code_rounded, BdL10n.current.myOpenSource, context,
             onTap: () async {
