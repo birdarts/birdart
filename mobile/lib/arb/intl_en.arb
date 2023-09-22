@@ -82,5 +82,7 @@
   "profileEnterUserName": "Enter username",
   "profileUserID": "User ID",
   "profileEmail": "Email",
-  "profileLogout": "Log out"
+  "profileLogout": "Log out",
+  "locationDisabled": "Location services are disabled. Please enable the services",
+  "locationPermissionDenied": "Location permissions are permanently denied, we cannot request permissions"
 }

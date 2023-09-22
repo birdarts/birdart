@@ -7,7 +7,7 @@ Future<LocationPermission> locationAvailabilityChecker(BuildContext context) asy
   if (!serviceEnabled && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
-            'Location services are disabled. Please enable the services')));
+            '')));
     return LocationPermission.unableToDetermine;
   }
 
@@ -22,7 +22,7 @@ Future<LocationPermission> locationAvailabilityChecker(BuildContext context) asy
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
-                'Location permissions are permanently denied, we cannot request permissions.')));      }
+                '')));      }
       return locationPermission;
     }
   }

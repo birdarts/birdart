@@ -45,6 +45,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeOldRecord":
             MessageLookupByLibrary.simpleMessage("Start checklist"),
         "homeTime": MessageLookupByLibrary.simpleMessage("Time"),
+        "locationDisabled": MessageLookupByLibrary.simpleMessage(
+            "Location services are disabled. Please enable the services"),
+        "locationPermissionDenied": MessageLookupByLibrary.simpleMessage(
+            "Location permissions are permanently denied, we cannot request permissions"),
         "loginAppError":
             MessageLookupByLibrary.simpleMessage("Application internal error."),
         "loginFailed": MessageLookupByLibrary.simpleMessage("Login Failed. "),

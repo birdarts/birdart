@@ -749,6 +749,26 @@ class BdL10n {
       args: [],
     );
   }
+
+  /// `Location services are disabled. Please enable the services`
+  String get locationDisabled {
+    return Intl.message(
+      'Location services are disabled. Please enable the services',
+      name: 'locationDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location permissions are permanently denied, we cannot request permissions`
+  String get locationPermissionDenied {
+    return Intl.message(
+      'Location permissions are permanently denied, we cannot request permissions',
+      name: 'locationPermissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<BdL10n> {

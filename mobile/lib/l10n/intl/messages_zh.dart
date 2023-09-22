@@ -40,6 +40,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeJoinTeam": MessageLookupByLibrary.simpleMessage("加入观鸟队伍"),
         "homeOldRecord": MessageLookupByLibrary.simpleMessage("输入记录"),
         "homeTime": MessageLookupByLibrary.simpleMessage("时间"),
+        "locationDisabled":
+            MessageLookupByLibrary.simpleMessage("定位服务未开启，请开启定位服务"),
+        "locationPermissionDenied":
+            MessageLookupByLibrary.simpleMessage("位置权限已被永久拒绝，无法请求位置权限"),
         "loginAppError": MessageLookupByLibrary.simpleMessage("应用内部错误。"),
         "loginFailed": MessageLookupByLibrary.simpleMessage("登陆失败。"),
         "loginFormConfirmNotMatch":

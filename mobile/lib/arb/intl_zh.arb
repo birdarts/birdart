@@ -67,5 +67,7 @@
   "profileEnterUserName": "输入用户名",
   "profileUserID": "用户ID",
   "profileEmail": "电子邮箱",
-  "profileLogout": "退出账号"
+  "profileLogout": "退出账号",
+  "locationDisabled": "定位服务未开启，请开启定位服务",
+  "locationPermissionDenied": "位置权限已被永久拒绝，无法请求位置权限"
 }
