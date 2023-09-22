@@ -4,7 +4,7 @@ class CustomDropdownButton extends StatefulWidget {
   final List<String> list;
   final String title;
   final Function(String?)? onSelect;
-  String dropdownValue;
+  final String dropdownValue;
 
   CustomDropdownButton({
     super.key,
@@ -19,6 +19,14 @@ class CustomDropdownButton extends StatefulWidget {
 }
 
 class CustomDropdownButtonState extends State<CustomDropdownButton> {
+  late String dropdownValue;
+
+  @override
+  void initState() {
+    dropdownValue = widget.dropdownValue;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -36,10 +44,11 @@ class CustomDropdownButtonState extends State<CustomDropdownButton> {
             height: 2,
           ),
           onChanged: (String? value) {
-            // This is called when the user selects an item.
+            // When a button is selected, assign the unit attribute to the corresponding value
+            // and call the updateBarGroups method to update the barGroups.
             if (value != null) {
               setState(() {
-                widget.dropdownValue = value;
+                dropdownValue = value;
               });
             }
           },

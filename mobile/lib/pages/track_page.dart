@@ -27,6 +27,7 @@ import '../entity/server.dart';
 import '../l10n/l10n.dart';
 import '../tool/list_tool.dart';
 import '../tool/coordinator_tool.dart';
+import '../tool/location_tool.dart';
 import '../widget/track_circle_animation.dart';
 
 class TrackPage extends StatefulWidget {
@@ -36,8 +37,7 @@ class TrackPage extends StatefulWidget {
   State<TrackPage> createState() => _TrackPageState();
 }
 
-class _TrackPageState extends State<TrackPage>
-    with AutomaticKeepAliveClientMixin {
+class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
   late Future _future;
@@ -47,6 +47,7 @@ class _TrackPageState extends State<TrackPage>
   void initState() {
     _future = db.trackDao.getAll();
     permissionCheck();
+    uploadTrack();
     super.initState();
   }
 
@@ -59,8 +60,7 @@ class _TrackPageState extends State<TrackPage>
             builder: (dContext) {
               return AlertDialog(
                 title: const Text('忽略电池优化'),
-                content: const Text(
-                    '轨迹记录功能需要应用保持后台运行，如要继续使用，请忽略电池优化，如您的手机对应用有其它后台运行限制，请手动关闭。'),
+                content: const Text('轨迹记录功能需要应用保持后台运行，如要继续使用，请忽略电池优化，如您的手机对应用有其它后台运行限制，请手动关闭。'),
                 actions: [
                   TextButton(
                     child: const Text('取消'),
@@ -85,8 +85,47 @@ class _TrackPageState extends State<TrackPage>
   }
 
   permissionCheck() async {
-    await permissionRequester(Permission.notification, '通知权限', '发送通知以保持后台运行');
-    await permissionRequester(Permission.locationAlways, '后台定位权限', '应用保持后台定位');
+    if (Platform.isAndroid) {
+      await permissionRequester(Permission.locationAlways, '后台定位权限', '应用保持后台定位');
+      await permissionRequester(Permission.notification, '通知权限', '发送通知以保持后台运行');
+      await permissionRequester(
+          Permission.ignoreBatteryOptimizations, '后台运行权限', '后台运行权限（如您的手机对应用有其它后台运行限制，可能需要手动关闭）');
+    } else if (Platform.isIOS) {
+      await permissionRequesterIos('后台定位权限', '应用保持后台定位');
+    }
+  }
+
+  permissionRequesterIos(String name, String usage) async {
+    final aval = await locationAvailabilityChecker(context);
+    if (aval == LocationPermission.whileInUse) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (dContext) {
+            return AlertDialog(
+              title: Text(name),
+              content: Text('轨迹记录功能需要$usage，如要继续使用，请授予$name。'),
+              actions: [
+                TextButton(
+                  child: const Text('取消'),
+                  onPressed: () {
+                    Navigator.pop(dContext);
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: const Text('确认'),
+                  onPressed: () {
+                    Navigator.pop(dContext);
+                    Geolocator.openLocationSettings();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
   }
 
   permissionRequester(Permission permission, String name, String usage) async {
@@ -156,8 +195,7 @@ class _TrackPageState extends State<TrackPage>
                 context: context,
                 builder: (dContext) => AlertDialog(
                       title: const Text('开始轨迹记录'),
-                      content: const Text(
-                          '即将开始轨迹记录，轨迹记录服务将在后台持续运行，轨迹记录结束后可将其上传至服务器。'),
+                      content: const Text('即将开始轨迹记录，轨迹记录服务将在后台持续运行，轨迹记录结束后可将其上传至服务器。'),
                       actions: [
                         TextButton(
                             onPressed: () {
@@ -174,8 +212,7 @@ class _TrackPageState extends State<TrackPage>
                     ));
           }
         },
-        child:
-            Icon(ListTool.subscription == null ? Icons.play_arrow : Icons.stop),
+        child: Icon(ListTool.subscription == null ? Icons.play_arrow : Icons.stop),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -191,8 +228,7 @@ class _TrackPageState extends State<TrackPage>
                   if (tracks != null) {
                     return ListView.builder(
                         itemCount: tracks.length,
-                        itemBuilder: (context, index) =>
-                            getTrackItem(tracks[index]));
+                        itemBuilder: (context, index) => getTrackItem(tracks[index]));
                   }
                   return const Center(child: Text('数据库错误'));
                 } else {
@@ -221,13 +257,12 @@ class _TrackPageState extends State<TrackPage>
                   onPressed: () {
                     List<LatLng> latlngList = List.generate(
                         ListTool.geoxml.wpts.length,
-                        (index) => LatLng(ListTool.geoxml.wpts[index].lat!,
-                            ListTool.geoxml.wpts[index].lon!));
+                        (index) => LatLng(
+                            ListTool.geoxml.wpts[index].lat!, ListTool.geoxml.wpts[index].lon!));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TrackMapPage(layer: getLayer(latlngList))));
+                            builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
                   },
                   child: const Text('查看已记录轨迹'),
                 ),
@@ -268,9 +303,8 @@ class _TrackPageState extends State<TrackPage>
                     Expanded(
                       child: Text(
                         track.id.hexString,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.secondary),
+                        style:
+                            TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],
@@ -284,9 +318,8 @@ class _TrackPageState extends State<TrackPage>
                     Expanded(
                       child: Text(
                         track.sync ? '已上传' : '未上传',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.secondary),
+                        style:
+                            TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ],
@@ -295,16 +328,13 @@ class _TrackPageState extends State<TrackPage>
                   onPressed: () async {
                     final geoxml = await GeoXml.fromGpxStream(
                         File(track.file).openRead().transform(utf8.decoder));
-                    List<LatLng> latlngList = List.generate(
-                        geoxml.wpts.length,
-                        (index) => LatLng(
-                            geoxml.wpts[index].lat!, geoxml.wpts[index].lon!));
+                    List<LatLng> latlngList = List.generate(geoxml.wpts.length,
+                        (index) => LatLng(geoxml.wpts[index].lat!, geoxml.wpts[index].lon!));
                     if (mounted) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  TrackMapPage(layer: getLayer(latlngList))));
+                              builder: (context) => TrackMapPage(layer: getLayer(latlngList))));
                     }
                   },
                   child: const Text('查看已记录轨迹'),
@@ -333,11 +363,10 @@ class _TrackPageState extends State<TrackPage>
         vertical: 12,
       ),
       child: Row(
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween, // 将空白空间均匀地分配在子组件之间和两端
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, // 将空白空间均匀地分配在子组件之间和两端
         children: [
-          getBottomItem(Icons.timeline_rounded,
-              Theme.of(context).colorScheme.secondary, '开始轨迹记录', () {}),
+          getBottomItem(
+              Icons.timeline_rounded, Theme.of(context).colorScheme.secondary, '开始轨迹记录', () {}),
           getBottomItem(Icons.stop_circle_rounded, Colors.red, '结束轨迹记录', () {
             if (ListTool.subscription != null) {
             } else {
@@ -408,8 +437,7 @@ class _TrackPageState extends State<TrackPage>
         }
       });
 
-  Widget getBottomItem(
-      IconData icon, Color color, String text, Function onTap) {
+  Widget getBottomItem(IconData icon, Color color, String text, Function onTap) {
     return InkWell(
       onTap: () {
         onTap.call();
@@ -434,13 +462,12 @@ class _TrackPageState extends State<TrackPage>
     }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final availability = await GoogleApiAvailability.instance
-          .checkGooglePlayServicesAvailability();
+      final availability =
+          await GoogleApiAvailability.instance.checkGooglePlayServicesAvailability();
       return AndroidSettings(
           accuracy: LocationAccuracy.high,
           distanceFilter: 1,
-          forceLocationManager:
-              availability != GooglePlayServicesAvailability.success,
+          forceLocationManager: availability != GooglePlayServicesAvailability.success,
           intervalDuration: Duration(seconds: interval),
           //(Optional) Set foreground notification config to keep the app alive
           //when going to the background
@@ -475,9 +502,9 @@ class _TrackPageState extends State<TrackPage>
     ListTool.geoxml = GeoXml();
     ListTool.geoxml.creator = BdL10n.current.appName;
     ListTool.geoxml.wpts = [];
-    ListTool.subscription = Geolocator.getPositionStream(
-            locationSettings: await getLocationSettings())
-        .listen((Position locationData) async {
+    ListTool.subscription =
+        Geolocator.getPositionStream(locationSettings: await getLocationSettings())
+            .listen((Position locationData) async {
       DateTime? time;
       if (locationData.timestamp != null) {
         time = locationData.timestamp;
@@ -499,11 +526,8 @@ class _TrackPageState extends State<TrackPage>
         ListTool.track.startTime = time ?? DateTime.now();
         ListTool.track.distance = 0;
       } else {
-        ListTool.track.distance += CoordinateTool.distance(
-            ListTool.track.endLat,
-            ListTool.track.endLon,
-            locationData.latitude,
-            locationData.longitude);
+        ListTool.track.distance += CoordinateTool.distance(ListTool.track.endLat,
+            ListTool.track.endLon, locationData.latitude, locationData.longitude);
       }
 
       ListTool.track.endLat = locationData.latitude;
@@ -545,11 +569,17 @@ class _TrackPageState extends State<TrackPage>
       if (!await parent.exists()) {
         await parent.create(recursive: true);
       }
-      await file.create();
-      file.writeAsStringSync(gpxString);
-      await db.trackDao.insertOne(ListTool.track);
-      setState(() {
-        _future = db.trackDao.getAll();
+      file.create().then((value) {
+        file.writeAsStringSync(gpxString);
+        //Insert database records after saving the file
+        db.trackDao.insertOne(ListTool.track).then((value) {
+          setState(() {
+            // Refresh the page after inserting the database record.
+            _future = db.trackDao.getAll();
+          });
+
+          uploadTrack();
+        });
       });
     }
   }
