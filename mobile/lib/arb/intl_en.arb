@@ -74,5 +74,13 @@
   "loginFormVerFormat": "VerCode should not be empty.",
   "registerHint": "Have no account? Register now.",
   "loginHint": "Have an account? Login immediately.",
-  "newListSearch": "Search birds"
+  "newListSearch": "Search birds",
+  "profileTitle": "User profile",
+  "profileChangeAvatar": "Edit Avatar",
+  "profileChooseAvatar": "Pick avatar from storage",
+  "profileEditUserName": "Edit username",
+  "profileEnterUserName": "Enter username",
+  "profileUserID": "User ID",
+  "profileEmail": "Email",
+  "profileLogout": "Log out"
 }

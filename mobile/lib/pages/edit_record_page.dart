@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:objectid/objectid.dart';
@@ -76,9 +77,9 @@ class _EditRecordState extends State<EditRecord> {
       FocusManager.instance.primaryFocus?.unfocus();
 
       final pictureGrid = _pictureKey.currentState;
-      if (pictureGrid == null || pictureGrid.imageData.isEmpty) {
+      if (pictureGrid == null) {
         Fluttertoast.showToast(
-          msg: "请选择至少一张图片",
+          msg: BdL10n.current.loginAppError,
           toastLength: Toast.LENGTH_SHORT,
         );
         return;

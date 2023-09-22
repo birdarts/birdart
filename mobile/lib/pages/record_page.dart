@@ -15,7 +15,7 @@ class RecordPage extends StatefulWidget {
 class _RecordPageState extends State<RecordPage>
     with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true;
   bool updateParent = false;
   late DbRecord record;
 

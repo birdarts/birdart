@@ -94,6 +94,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
         "newListSearch": MessageLookupByLibrary.simpleMessage("Search birds"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "profileChangeAvatar":
+            MessageLookupByLibrary.simpleMessage("Edit Avatar"),
+        "profileChooseAvatar":
+            MessageLookupByLibrary.simpleMessage("Pick avatar from storage"),
+        "profileEditUserName":
+            MessageLookupByLibrary.simpleMessage("Edit username"),
+        "profileEmail": MessageLookupByLibrary.simpleMessage("Email"),
+        "profileEnterUserName":
+            MessageLookupByLibrary.simpleMessage("Enter username"),
+        "profileLogout": MessageLookupByLibrary.simpleMessage("Log out"),
+        "profileTitle": MessageLookupByLibrary.simpleMessage("User profile"),
+        "profileUserID": MessageLookupByLibrary.simpleMessage("User ID"),
         "recordsTitle": MessageLookupByLibrary.simpleMessage("My checklists"),
         "registerFailed":
             MessageLookupByLibrary.simpleMessage("Register failed."),

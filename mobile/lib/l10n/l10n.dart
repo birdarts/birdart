@@ -669,6 +669,86 @@ class BdL10n {
       args: [],
     );
   }
+
+  /// `User profile`
+  String get profileTitle {
+    return Intl.message(
+      'User profile',
+      name: 'profileTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Avatar`
+  String get profileChangeAvatar {
+    return Intl.message(
+      'Edit Avatar',
+      name: 'profileChangeAvatar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick avatar from storage`
+  String get profileChooseAvatar {
+    return Intl.message(
+      'Pick avatar from storage',
+      name: 'profileChooseAvatar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit username`
+  String get profileEditUserName {
+    return Intl.message(
+      'Edit username',
+      name: 'profileEditUserName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter username`
+  String get profileEnterUserName {
+    return Intl.message(
+      'Enter username',
+      name: 'profileEnterUserName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User ID`
+  String get profileUserID {
+    return Intl.message(
+      'User ID',
+      name: 'profileUserID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get profileEmail {
+    return Intl.message(
+      'Email',
+      name: 'profileEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log out`
+  String get profileLogout {
+    return Intl.message(
+      'Log out',
+      name: 'profileLogout',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<BdL10n> {

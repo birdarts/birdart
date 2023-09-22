@@ -6,7 +6,7 @@ import '../l10n/l10n.dart';
 import '../entity/user_profile.dart';
 import '../pages/login_page.dart';
 import '../pages/settings_page.dart';
-import '../pages/user_info_page.dart';
+import '../pages/profile_page.dart';
 
 class MineFragment extends StatefulWidget {
   const MineFragment({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class _MineFragmentState extends State<MineFragment>
                   Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const UserInfoPage()))
+                              builder: (context) => const UserProfilePage()))
                       .then((value) => setState(() {}));
                 } else {
                   Navigator.push(

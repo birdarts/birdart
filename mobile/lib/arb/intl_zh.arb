@@ -59,5 +59,13 @@
   "loginFormVerFormat": "验证码不能为空。",
   "registerHint": "没有账号？现在注册。",
   "loginHint": "已有账号？立刻登陆。",
-  "newListSearch": "搜索鸟种"
+  "newListSearch": "搜索鸟种",
+  "profileTitle": "个人资料",
+  "profileChangeAvatar": "修改头像",
+  "profileChooseAvatar": "从手机选择头像",
+  "profileEditUserName": "修改用户名",
+  "profileEnterUserName": "输入用户名",
+  "profileUserID": "用户ID",
+  "profileEmail": "电子邮箱",
+  "profileLogout": "退出账号"
 }

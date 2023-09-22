@@ -39,7 +39,7 @@ class TrackPage extends StatefulWidget {
 
 class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true; // 覆写`wantKeepAlive`返回`true`
+  bool get wantKeepAlive => true;
   late Future _future;
   OnDb db = DbManager.db;
 
@@ -88,8 +88,7 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
     if (Platform.isAndroid) {
       await permissionRequester(Permission.locationAlways, '后台定位权限', '应用保持后台定位');
       await permissionRequester(Permission.notification, '通知权限', '发送通知以保持后台运行');
-      await permissionRequester(
-          Permission.ignoreBatteryOptimizations, '后台运行权限', '后台运行权限（如您的手机对应用有其它后台运行限制，可能需要手动关闭）');
+      androidBatteryCheck();
     } else if (Platform.isIOS) {
       await permissionRequesterIos('后台定位权限', '应用保持后台定位');
     }
