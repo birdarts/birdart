@@ -1,3 +1,4 @@
+import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -5,9 +6,11 @@ import 'package:geolocator/geolocator.dart';
 Future<LocationPermission> locationAvailabilityChecker(BuildContext context) async {
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled && context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-            '')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(BdL10n.current.locationDisabled),
+      ),
+    );
     return LocationPermission.unableToDetermine;
   }
 
@@ -20,18 +23,23 @@ Future<LocationPermission> locationAvailabilityChecker(BuildContext context) asy
     locationPermission = await Geolocator.requestPermission();
     if (locationPermission == LocationPermission.denied) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-                '')));      }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(BdL10n.current.locationPermissionDenied),
+          ),
+        );
+      }
       return locationPermission;
     }
   }
 
   if (locationPermission == LocationPermission.deniedForever && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return locationPermission;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(BdL10n.current.locationPermissionDenied),
+      ),
+    );
+    return locationPermission;
   }
 
   return locationPermission;
@@ -52,7 +60,7 @@ extension ToBool on LocationPermission {
   isTrue() {
     return [
       LocationPermission.whileInUse,
-      LocationPermission.denied,
+      LocationPermission.always,
     ].contains(this);
   }
 
