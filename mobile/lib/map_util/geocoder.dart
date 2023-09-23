@@ -30,10 +30,10 @@ class Geocoder {
           province: component['province'],
           county: component['county'],
           poi: component['poi'],
-          poiDistince: component['poi_distance'],
+          poiDistance: component['poi_distance'],
           poiPosition: component['poi_position'],
           road: component['road'],
-          roadDistince: component['road_distance'],
+          roadDistance: component['road_distance'],
           latitude: location['lat'],
           longitude: location['lon'],
         );
@@ -59,10 +59,10 @@ class Address {
   String city;
   String county;
   String poi;
-  int poiDistince;
+  int poiDistance;
   String poiPosition;
   String road;
-  int roadDistince;
+  int roadDistance;
   double latitude;
   double longitude;
 
@@ -76,10 +76,10 @@ class Address {
     required this.city,
     required this.county,
     required this.poi,
-    required this.poiDistince,
+    required this.poiDistance,
     required this.poiPosition,
     required this.road,
-    required this.roadDistince,
+    required this.roadDistance,
     required this.latitude,
     required this.longitude,
   });
