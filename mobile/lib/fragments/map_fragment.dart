@@ -32,7 +32,7 @@ class _MapFragmentState extends State<MapFragment>
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
   );
-  final prefs = Shared.pref;
+  final prefs = SharedPref.pref;
   StreamSubscription? subscription;
 
   @override
@@ -93,7 +93,7 @@ class _MapFragmentState extends State<MapFragment>
   Future<void> _saveMapStates(
       LatLng center, double zoom, Position? locationData) async {
     if (locationData != null) {
-      final prefs = Shared.pref!;
+      final prefs = SharedPref.pref!;
 
       await prefs.setDouble('center_latitude', center.latitude);
       await prefs.setDouble('center_longitude', center.longitude);

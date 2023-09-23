@@ -69,12 +69,9 @@ class BirdartTiles {
 
   static final TileLayer _osm = TileLayer(
     tileProvider: CacheTileProvider('osm'),
-    urlTemplate:
-        'https://t{s}.tianditu.gov.cn/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     userAgentPackageName: _packageName,
-    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
     backgroundColor: Colors.transparent,
-    maxNativeZoom: 15,
   );
 
   static final List<TileLayer> _vecZhTile = [_vec, _cva];
@@ -85,15 +82,15 @@ class BirdartTiles {
 
   static final List<TileLayer> _imgEnTile = [_img, _eia];
 
-  static List<TileLayer> vecTile(BuildContext context) =>
+  static TilesGetter vecTile = (BuildContext context) =>
       ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode)
           ? _vecZhTile
           : _vecEnTile;
 
-  static List<TileLayer> imgTile(BuildContext context) =>
+  static TilesGetter imgTile = (BuildContext context) =>
       ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode)
           ? _imgZhTile
           : _imgEnTile;
 
-  static List<TileLayer> osmTile(BuildContext context) => [_osm];
+  static TilesGetter osmTile = (BuildContext context) => [_osm];
 }

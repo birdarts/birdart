@@ -22,7 +22,7 @@ class UserProfile {
   static bool inited = false;
 
   static init() {
-    _pref = Shared.pref;
+    _pref = SharedPref.pref;
     final idStr = _pref.getString('id');
     _id = idStr == null ? ObjectId() : ObjectId.fromHexString(idStr);
     _phone = _pref.getString('phone');

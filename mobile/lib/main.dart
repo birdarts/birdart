@@ -34,13 +34,13 @@ Future<void> mainCheck() async {
   while (AppDir.data.path.isEmpty ||
       AppDir.cache.path.isEmpty ||
       DbManager.database == null ||
-      !Shared.inited ||
+      !SharedPref.inited ||
       !UserProfile.inited) {
-    Future? sharedFuture;
+    Future? prefFuture;
     Future? dirFuture;
     Future? dbFuture;
-    if (!Shared.inited) {
-      sharedFuture = Shared.init();
+    if (!SharedPref.inited) {
+      prefFuture = SharedPref.init();
     }
     if (AppDir.data.path.isEmpty || AppDir.cache.path.isEmpty) {
       dirFuture = AppDir.setDir();
@@ -49,8 +49,8 @@ Future<void> mainCheck() async {
       dbFuture = DbManager.setDb();
     }
     if (!UserProfile.inited) {
-      if (sharedFuture != null) {
-        await sharedFuture;
+      if (prefFuture != null) {
+        await prefFuture;
       }
       UserProfile.init();
       Server.setupDio();
