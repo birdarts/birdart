@@ -965,6 +965,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.2.1"
+  relative_time:
+    dependency: "direct main"
+    description:
+      name: relative_time
+      sha256: f0475e5b922f5b125fba1d73ee03ca6d68fb85766fed27d1ad82c8b932ba4ea0
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.1"
   shared:
     dependency: "direct main"
     description:

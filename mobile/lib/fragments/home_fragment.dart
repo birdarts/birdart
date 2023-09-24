@@ -222,11 +222,11 @@ class _HomeFragmentState extends State<HomeFragment>
             ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: SvgPicture.asset('assets/svg/binoculars.svg',
-                    width: 40, height: 40, semanticsLabel: 'Acme Logo'),
+                    width: 30, height: 30, semanticsLabel: 'Acme Logo'),
               )
             : const Icon(
                 Icons.edit_note_rounded,
-                size: 48,
+                size: 36,
                 color: Colors.white,
               ),
         label: Text(
@@ -262,7 +262,6 @@ class _HomeFragmentState extends State<HomeFragment>
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.w500,
         ),
-        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [

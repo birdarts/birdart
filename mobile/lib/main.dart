@@ -91,8 +91,8 @@ class MyApp extends StatelessWidget {
           onSecondary: Colors.white,
         ),
         bottomAppBarTheme: BottomAppBarTheme(
-          color: Colors.pinkAccent[5],
-          surfaceTintColor: Colors.pinkAccent[5],
+          color: Colors.pink.shade50,
+          surfaceTintColor: Colors.pink.shade50,
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.pinkAccent,

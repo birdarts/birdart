@@ -10,7 +10,7 @@ import 'package:latlong2/latlong.dart' show LatLng;
 
 import '../l10n/l10n.dart';
 import '../entity/sharedpref.dart';
-import '../pages/track_page.dart';
+import '../tool/tracker.dart';
 import '../map_util/birdart_tiles.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/location_tool.dart';
@@ -206,27 +206,6 @@ class _MapFragmentState extends State<MapFragment>
                         child: Text(BdL10n.current.mapNameOSM),
                       ),
                     ]),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(0, 130, 15, 0),
-            alignment: Alignment.topRight,
-            child: FloatingActionButton.small(
-              heroTag: Icons.timeline_rounded,
-              backgroundColor: Colors.white,
-              onPressed: () {
-                stopSubscription();
-                Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TrackPage()))
-                    .then((value) => startSubscription());
-              },
-              shape: const CircleBorder(),
-              child: const IconTheme(
-                data: IconThemeData(color: Colors.black54),
-                child: Icon(Icons.timeline_rounded),
-              ),
-            ),
           ),
           Container(
             alignment: Alignment.bottomLeft,

@@ -23,7 +23,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(lat, lon, alt) =>
       "Latitude: ${lat}\nLongitude: ${lon}\nAltitude: ${alt}";
 
-  static String m1(second) => "${second} seconds";
+  static String m1(hour, minute) => "${hour} h, ${minute} min";
+
+  static String m2(second) => "${second} seconds";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -96,7 +98,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "mySettings": MessageLookupByLibrary.simpleMessage("Settings"),
         "myTitle": MessageLookupByLibrary.simpleMessage("My Birdart"),
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
+        "newListAutoHotspot":
+            MessageLookupByLibrary.simpleMessage("Auto select"),
         "newListSearch": MessageLookupByLibrary.simpleMessage("Search birds"),
+        "newListTrackDisabled":
+            MessageLookupByLibrary.simpleMessage("Track disabled"),
+        "newListTrackDuration": m1,
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "profileChangeAvatar":
             MessageLookupByLibrary.simpleMessage("Edit Avatar"),
@@ -126,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select time interval"),
         "settingsTrackInterval":
             MessageLookupByLibrary.simpleMessage("Track time interval"),
-        "settingsTrackIntervalSeconds": m1,
+        "settingsTrackIntervalSeconds": m2,
         "settingsWifiSyncImage": MessageLookupByLibrary.simpleMessage(
             "Auto upload images under WiFi"),
         "settingsWifiSyncTrack": MessageLookupByLibrary.simpleMessage(

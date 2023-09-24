@@ -1,5 +1,8 @@
 import 'package:birdart/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:shared/model/track.dart';
+
+import '../tool/list_tool.dart';
 
 class NewListPage extends StatefulWidget {
   const NewListPage({super.key});
@@ -21,11 +24,17 @@ class _NewListPageState extends State<NewListPage> {
     // TODO: generate possible birds list
   }
 
+  void _startTrack() {
+
+  }
+
   @override
   void initState() {
     _getExpectedList();
     super.initState();
   }
+
+  final titleSpace = const SizedBox(width: 8);
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +45,33 @@ class _NewListPageState extends State<NewListPage> {
           fontSize: 14.0,
           fontStyle: FontStyle.normal,
         ),
-        title: const Row(
-          children: [
-            Icon(Icons.my_location_rounded),
-            SizedBox(width: 8),
-            Text('10 min'),
-            SizedBox(width: 8),
-            Text('10.0 km'),
-            SizedBox(width: 8),
-            Icon(Icons.add_location_rounded),
-            SizedBox(width: 8),
-            Text('观鸟点名称'),
-          ],
-        ),
+        title: ListTool.tracker != null
+            ? Row(
+                children: [
+                  const Icon(Icons.timeline_rounded),
+                  titleSpace,
+                  Text(ListTool.tracker!.track.getTimeText()),
+                  titleSpace,
+                  Text('${ListTool.tracker!.track.distance} km'),
+                  titleSpace,
+                  const Icon(Icons.add_location_rounded),
+                  titleSpace,
+                  Text(BdL10n.current.newListAutoHotspot),
+                ],
+              )
+            : Row(
+                children: [
+                  const Icon(Icons.timeline_rounded),
+                  titleSpace,
+                  Text(BdL10n.current.newListTrackDisabled),
+                  titleSpace,
+                  const Icon(Icons.add_location_rounded),
+                  titleSpace,
+                  Text(BdL10n.current.newListAutoHotspot),
+                ],
+              ),
         bottom: AppBar(
-          backgroundColor: Colors.pink.shade50, // todo use theme color scheme,
+          backgroundColor: Theme.of(context).bottomAppBarTheme.color,
           leading: null,
           leadingWidth: 0,
           centerTitle: false,
@@ -75,16 +96,22 @@ class _NewListPageState extends State<NewListPage> {
         child: Row(
           children: [
             IconButton(
-                icon: const Icon(Icons.comment_rounded), onPressed: () {}),
+              icon: const Icon(Icons.comment_rounded),
+              onPressed: () {},
+            ),
             IconButton(
-                icon: const Icon(Icons.settings_rounded), onPressed: () {}),
+              icon: const Icon(Icons.settings_rounded),
+              onPressed: () {},
+            ),
             IconButton(
-                icon: const Icon(Icons.check_rounded), onPressed: _onCompleted),
+              icon: const Icon(Icons.check_circle_rounded),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _onCompleted,
         tooltip: BdL10n.current.save,
         child: const Icon(Icons.save_rounded),
       ),
@@ -113,5 +140,12 @@ class _NewListPageState extends State<NewListPage> {
         },
       ),
     );
+  }
+}
+
+extension on Track {
+  String getTimeText() {
+    Duration difference = endTime.difference(startTime);
+    return BdL10n.current.newListTrackDuration(difference.inHours, difference.inMinutes % 60);
   }
 }

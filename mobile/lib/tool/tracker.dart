@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -23,33 +22,26 @@ import '../pages/track_map_page.dart';
 import '../db/db_manager.dart';
 import '../db/on_db.dart';
 import '../entity/app_dir.dart';
-import '../entity/server.dart';
 import '../l10n/l10n.dart';
-import '../tool/list_tool.dart';
-import '../tool/coordinator_tool.dart';
-import '../tool/location_tool.dart';
+import 'coordinator_tool.dart';
+import 'location_tool.dart';
 import '../widget/track_circle_animation.dart';
 
-class TrackPage extends StatefulWidget {
-  const TrackPage({Key? key}) : super(key: key);
-
-  @override
-  State<TrackPage> createState() => _TrackPageState();
-}
-
-class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-  late Future _future;
-  OnDb db = DbManager.db;
-
-  @override
-  void initState() {
+class Tracker {
+  Tracker({required this.context}) {
     _future = db.trackDao.getAll();
     permissionCheck();
-    uploadTrack();
-    super.initState();
   }
+
+  late Future _future;
+  OnDb db = DbManager.db;
+  BuildContext context;
+
+  StreamSubscription? subscription;
+  GeoXml geoxml = GeoXml();
+  Track track = Track.empty(UserProfile.id);
+
+  bool get mounted => context.mounted;
 
   androidBatteryCheck() {
     if (Platform.isAndroid) {
@@ -70,9 +62,14 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
                   ),
                   TextButton(
                     child: const Text('确认'),
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(dContext);
-                      OptimizeBattery.openBatteryOptimizationSettings();
+                      final availability = await GoogleApiAvailability.instance.checkGooglePlayServicesAvailability();
+                      if (availability == GooglePlayServicesAvailability.success) {
+                        OptimizeBattery.openBatteryOptimizationSettings();
+                      } else {
+                        OptimizeBattery.stopOptimizingBatteryUsage();
+                      }
                     },
                   ),
                 ],
@@ -95,8 +92,8 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
   }
 
   permissionRequesterIos(String name, String usage) async {
-    final aval = await locationAvailabilityChecker(context);
-    if (aval == LocationPermission.whileInUse) {
+    final avail = await locationAvailabilityChecker(context);
+    if (avail == LocationPermission.whileInUse) {
       if (mounted) {
         showDialog(
           context: context,
@@ -157,17 +154,14 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
     }
   }
 
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('轨迹记录'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (ListTool.subscription != null) {
+          if (subscription != null) {
             showDialog(
                 context: context,
                 builder: (dContext) => AlertDialog(
@@ -209,13 +203,13 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
                     ));
           }
         },
-        child: Icon(ListTool.subscription == null ? Icons.play_arrow : Icons.stop),
+        child: Icon(subscription == null ? Icons.play_arrow : Icons.stop),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
-            if (ListTool.subscription != null) getOngoingTrackCard(),
+            if (subscription != null) getOngoingTrackCard(),
             Expanded(
                 child: FutureBuilder(
               future: _future,
@@ -253,9 +247,9 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
                 TextButton(
                   onPressed: () {
                     List<LatLng> latlngList = List.generate(
-                        ListTool.geoxml.wpts.length,
+                        geoxml.wpts.length,
                         (index) => LatLng(
-                            ListTool.geoxml.wpts[index].lat!, ListTool.geoxml.wpts[index].lon!));
+                            geoxml.wpts[index].lat!, geoxml.wpts[index].lon!));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -342,98 +336,6 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
         ),
       );
 
-  Widget getBottom(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 10.0,
-            offset: Offset(0, 5.0),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 12,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // 将空白空间均匀地分配在子组件之间和两端
-        children: [
-          getBottomItem(
-              Icons.timeline_rounded, Theme.of(context).colorScheme.secondary, '开始轨迹记录', () {}),
-          getBottomItem(Icons.stop_circle_rounded, Colors.red, '结束轨迹记录', () {
-            if (ListTool.subscription != null) {
-            } else {
-              showDialog(
-                  context: context,
-                  builder: (dContext) => AlertDialog(
-                        title: const Text('结束轨迹记录'),
-                        content: const Text('轨迹记录未在后台运行。'),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(dContext);
-                              },
-                              child: const Text('取消')),
-                        ],
-                      ));
-            }
-          }),
-          getBottomItem(Icons.cloud_upload_rounded, Colors.purple, '上传轨迹', () {
-            uploadTrack();
-          }),
-        ],
-      ),
-    );
-  }
-
-  uploadTrack() => db.trackDao.getUnsynced().then((list) {
-        for (var track in list) {
-          Dio dio = Server.dio;
-
-          var formData = FormData();
-
-          for (var entry in track.toJson().entries) {
-            formData.fields.add(MapEntry(entry.key, entry.value.toString()));
-          }
-
-          formData.files.add(MapEntry(
-              'kml',
-              MultipartFile.fromBytes(
-                File(track.file).readAsBytesSync(),
-                filename: track.file.split('/').last.split('\\').last,
-              )));
-
-          // Send the FormData object to the server using dio.post method
-          dio.post(
-            '/user/track/save',
-            data: formData,
-            onSendProgress: (int sent, int total) {
-              if (kDebugMode) {
-                print('$sent/$total');
-              }
-            },
-          ).then((response) {
-            if (response.statusCode == 200) {
-              Map<String, dynamic> data = jsonDecode(response.toString());
-              if (data['success'] = true) {
-                track.sync = true;
-                db.trackDao.insertOne(track);
-                Fluttertoast.showToast(msg: '轨迹${track.id.hexString}上传成功');
-                setState(() {
-                  _future = db.trackDao.getAll();
-                });
-                return;
-              }
-            }
-            Fluttertoast.showToast(msg: '轨迹上传失败');
-          });
-        }
-      });
-
   Widget getBottomItem(IconData icon, Color color, String text, Function onTap) {
     return InkWell(
       onTap: () {
@@ -493,13 +395,13 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
   }
 
   startTrack() async {
-    ListTool.track = Track.empty(UserProfile.id);
-    ListTool.track.id = ObjectId();
+    track = Track.empty(UserProfile.id);
+    track.id = ObjectId();
 
-    ListTool.geoxml = GeoXml();
-    ListTool.geoxml.creator = BdL10n.current.appName;
-    ListTool.geoxml.wpts = [];
-    ListTool.subscription =
+    geoxml = GeoXml();
+    geoxml.creator = BdL10n.current.appName;
+    geoxml.wpts = [];
+    subscription =
         Geolocator.getPositionStream(locationSettings: await getLocationSettings())
             .listen((Position locationData) async {
       DateTime? time;
@@ -510,74 +412,53 @@ class _TrackPageState extends State<TrackPage> with AutomaticKeepAliveClientMixi
         print(time);
       }
       // create gpx object
-      ListTool.geoxml.wpts.add(Wpt(
+      geoxml.wpts.add(Wpt(
         lat: locationData.latitude,
         lon: locationData.longitude,
         ele: locationData.altitude,
         time: time,
       ));
-      if (ListTool.track.startTime.millisecondsSinceEpoch == 0) {
-        ListTool.track.startLat = locationData.latitude;
-        ListTool.track.startLon = locationData.longitude;
-        ListTool.track.startEle = locationData.altitude;
-        ListTool.track.startTime = time ?? DateTime.now();
-        ListTool.track.distance = 0;
+      if (track.startTime.millisecondsSinceEpoch == 0) {
+        track.startLat = locationData.latitude;
+        track.startLon = locationData.longitude;
+        track.startEle = locationData.altitude;
+        track.startTime = time ?? DateTime.now();
+        track.distance = 0;
       } else {
-        ListTool.track.distance += CoordinateTool.distance(ListTool.track.endLat,
-            ListTool.track.endLon, locationData.latitude, locationData.longitude);
+        track.distance += CoordinateTool.distance(track.endLat,
+            track.endLon, locationData.latitude, locationData.longitude);
       }
 
-      ListTool.track.endLat = locationData.latitude;
-      ListTool.track.endLon = locationData.longitude;
-      ListTool.track.endEle = locationData.altitude;
-      ListTool.track.endTime = time ?? DateTime.now();
-      ListTool.track.pointCount++;
+      track.endLat = locationData.latitude;
+      track.endLon = locationData.longitude;
+      track.endEle = locationData.altitude;
+      track.endTime = time ?? DateTime.now();
+      track.pointCount++;
     });
-
-    if (mounted) {
-      setState(() {
-        ListTool.subscription;
-      });
-    }
   }
 
   endTrack() async {
-    final subscription = ListTool.subscription;
-    if (subscription != null) {
-      await subscription.cancel();
-      ListTool.subscription = null;
-      if (mounted) {
-        setState(() {
-          ListTool.subscription;
-        });
-      }
-      if (ListTool.track.pointCount == 0) {
-        Fluttertoast.showToast(msg: '轨迹记录期间未收到任何位置信息，请检查定位服务。');
-        return;
-      }
-      var gpxString = ListTool.geoxml.toGpxString(pretty: true);
-      ListTool.track.file = path.join(
-        AppDir.data.path,
-        'files',
-        '${ListTool.track.id.hexString}.gpx',
-      );
-      final file = File(ListTool.track.file);
-      Directory parent = file.parent;
-      if (!await parent.exists()) {
-        await parent.create(recursive: true);
-      }
-      file.create().then((value) {
-        file.writeAsStringSync(gpxString);
-        //Insert database records after saving the file
-        db.trackDao.insertOne(ListTool.track).then((value) {
-          setState(() {
-            // Refresh the page after inserting the database record.
-            _future = db.trackDao.getAll();
-          });
-
-          uploadTrack();
-        });
-      });
+    await subscription?.cancel();
+    subscription = null;
+    if (track.pointCount == 0) {
+      Fluttertoast.showToast(msg: '轨迹记录期间未收到任何位置信息，请检查定位服务。');
+      return;
     }
+    var gpxString = geoxml.toGpxString(pretty: true);
+    track.file = path.join(
+      AppDir.data.path,
+      'files',
+      '${track.id.hexString}.gpx',
+    );
+    final file = File(track.file);
+    Directory parent = file.parent;
+    if (!await parent.exists()) {
+      await parent.create(recursive: true);
+    }
+    file.create().then((value) {
+      file.writeAsStringSync(gpxString);
+      //Insert database records after saving the file
+      db.trackDao.insertOne(track);
+    });
   }
 }

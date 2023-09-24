@@ -670,6 +670,36 @@ class BdL10n {
     );
   }
 
+  /// `Track disabled`
+  String get newListTrackDisabled {
+    return Intl.message(
+      'Track disabled',
+      name: 'newListTrackDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto select`
+  String get newListAutoHotspot {
+    return Intl.message(
+      'Auto select',
+      name: 'newListAutoHotspot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{hour} h, {minute} min`
+  String newListTrackDuration(Object hour, Object minute) {
+    return Intl.message(
+      '$hour h, $minute min',
+      name: 'newListTrackDuration',
+      desc: '',
+      args: [hour, minute],
+    );
+  }
+
   /// `User profile`
   String get profileTitle {
     return Intl.message(

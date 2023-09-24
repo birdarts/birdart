@@ -22,7 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(lat, lon, alt) => "经度：${lat}\n纬度：${lon}\n海拔：${alt}";
 
-  static String m1(second) => "${second}秒";
+  static String m1(hour, minute) => "${hour}时${minute}分";
+
+  static String m2(second) => "${second}秒";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -85,7 +87,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "mySettings": MessageLookupByLibrary.simpleMessage("设置"),
         "myTitle": MessageLookupByLibrary.simpleMessage("个人中心"),
         "networkError": MessageLookupByLibrary.simpleMessage("网络错误"),
+        "newListAutoHotspot": MessageLookupByLibrary.simpleMessage("自动选择"),
         "newListSearch": MessageLookupByLibrary.simpleMessage("搜索鸟种"),
+        "newListTrackDisabled": MessageLookupByLibrary.simpleMessage("轨迹记录关闭"),
+        "newListTrackDuration": m1,
         "ok": MessageLookupByLibrary.simpleMessage("确认"),
         "profileChangeAvatar": MessageLookupByLibrary.simpleMessage("修改头像"),
         "profileChooseAvatar": MessageLookupByLibrary.simpleMessage("从手机选择头像"),
@@ -108,7 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsSelectTrackInterval":
             MessageLookupByLibrary.simpleMessage("选择轨迹时间间隔"),
         "settingsTrackInterval": MessageLookupByLibrary.simpleMessage("轨迹时间间隔"),
-        "settingsTrackIntervalSeconds": m1,
+        "settingsTrackIntervalSeconds": m2,
         "settingsWifiSyncImage":
             MessageLookupByLibrary.simpleMessage("WiFi下自动同步图片"),
         "settingsWifiSyncTrack":
