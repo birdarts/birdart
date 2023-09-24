@@ -1,4 +1,4 @@
-import 'package:birdart/l10n/l10n.dart';
+import '../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import '../pages/edit_record_page.dart';
 import 'package:shared/shared.dart';

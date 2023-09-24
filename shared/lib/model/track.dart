@@ -51,8 +51,8 @@ class Track {
         endLon: double.parse(json['endLon']),
         endLat: double.parse(json['endLat']),
         endEle: double.parse(json['endEle']),
-        startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
-        endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
+        startTime: DateTime.fromMicrosecondsSinceEpoch(json['startTime']),
+        endTime: DateTime.fromMicrosecondsSinceEpoch(json['endTime']),
         pointCount: int.parse(json['pointCount']),
         distance: double.parse(json['distance']),
         sync: true,
@@ -68,16 +68,16 @@ class Track {
         'endLon': endLon,
         'endLat': endLat,
         'endEle': endEle,
-        'startTime': startTime.millisecondsSinceEpoch,
-        'endTime': endTime.millisecondsSinceEpoch,
+        'startTime': startTime.microsecondsSinceEpoch,
+        'endTime': endTime.microsecondsSinceEpoch,
         'pointCount': pointCount,
         'distance': distance,
       };
 
   Track.empty(this.author)
       : id = ObjectId(),
-        startTime = DateTime.fromMillisecondsSinceEpoch(0),
-        endTime = DateTime.fromMillisecondsSinceEpoch(0),
+        startTime = DateTime.fromMicrosecondsSinceEpoch(0),
+        endTime = DateTime.fromMicrosecondsSinceEpoch(0),
         sync = false;
 }
 

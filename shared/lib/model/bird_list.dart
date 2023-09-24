@@ -6,25 +6,15 @@ class BirdList {
   @primaryKey
   ObjectId id;
   ObjectId author;
-  String name;
   String notes;
   DateTime createTime;
   int time; // in minutes
   int birders; // birder amount
-  double distance;
+  double distance; //
   String type = ''; // list type
-  bool complete;
-  bool sync;
+  bool complete; // is complete record or not
+  bool sync; // if already uploaded.
 
-  double lon;
-  double lat;
-  double ele;
-
-  String country;
-  String province;
-  String city;
-  String county;
-  String poi;
   ObjectId track;
 
   String comment = '';
@@ -32,18 +22,9 @@ class BirdList {
   BirdList({
     required this.id,
     required this.author,
-    required this.name,
     required this.notes,
     required this.createTime,
     required this.sync,
-    required this.lon,
-    required this.lat,
-    required this.ele,
-    required this.country,
-    required this.province,
-    required this.city,
-    required this.county,
-    required this.poi,
     required this.track,
     required this.comment,
     required this.type,
@@ -56,18 +37,9 @@ class BirdList {
   factory BirdList.fromJson(Map<String, dynamic> json) => BirdList(
         id: ObjectId.fromHexString(json['_id']),
         author: ObjectId.fromHexString(json['author']),
-        name: json['name'],
         notes: json['notes'],
-        createTime: DateTime.fromMillisecondsSinceEpoch(json['createTime']),
+        createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
         sync: true,
-        lon: double.parse(json['lon']),
-        lat: double.parse(json['lat']),
-        ele: double.parse(json['ele']),
-        country: json['country'],
-        province: json['province'],
-        city: json['city'],
-        county: json['county'],
-        poi: json['poi'],
         track: json['track'],
         comment: json['comment'],
         type: json['type'],
@@ -80,17 +52,8 @@ class BirdList {
   Map<String, dynamic> toJson() => {
         '_id': id.hexString,
         'author': author.hexString,
-        'name': name,
         'notes': notes,
-        'createTime': createTime.millisecondsSinceEpoch,
-        'lon': lon,
-        'lat': lat,
-        'ele': ele,
-        'country': country,
-        'province': province,
-        'city': city,
-        'county': county,
-        'poi': poi,
+        'createTime': createTime.microsecondsSinceEpoch,
         'track': track,
         'comment': comment,
         'type': type,
@@ -99,6 +62,18 @@ class BirdList {
         'distance': distance,
         'complete': complete,
       };
+
+  BirdList.empty(this.author, this.track)
+      : id = ObjectId(),
+        notes = '',
+        createTime = DateTime.now(),
+        sync = false,
+        comment = '',
+        type = '',
+        time = 0,
+        birders = 1,
+        distance = 0,
+        complete = true;
 }
 
 @dao

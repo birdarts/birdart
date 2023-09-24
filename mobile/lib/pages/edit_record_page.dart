@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:birdart/l10n/l10n.dart';
+import '../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:objectid/objectid.dart';

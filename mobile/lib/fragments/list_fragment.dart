@@ -141,7 +141,7 @@ class _ListFragmentState extends State<ListFragment>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        project.name,
+                        project.createTime.toIso8601String(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: const TextStyle(

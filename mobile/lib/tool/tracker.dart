@@ -336,23 +336,6 @@ class Tracker {
         ),
       );
 
-  Widget getBottomItem(IconData icon, Color color, String text, Function onTap) {
-    return InkWell(
-      onTap: () {
-        onTap.call();
-      },
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: color,
-          ),
-          Text(text),
-        ],
-      ),
-    );
-  }
-
   Future<LocationSettings> getLocationSettings() async {
     var prefs = await SharedPreferences.getInstance();
     int interval = prefs.getInt('track_interval') ?? 10;

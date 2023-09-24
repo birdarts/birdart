@@ -13,10 +13,10 @@ class ObjectIdConverter extends TypeConverter<ObjectId, String> {
 class DateTimeConverter extends TypeConverter<DateTime, int> {
   @override
   DateTime decode(int databaseValue) =>
-      DateTime.fromMillisecondsSinceEpoch(databaseValue);
+      DateTime.fromMicrosecondsSinceEpoch(databaseValue);
 
   @override
-  int encode(DateTime value) => value.millisecondsSinceEpoch;
+  int encode(DateTime value) => value.microsecondsSinceEpoch;
 }
 
 class StringListConverter extends TypeConverter<List<String>, String> {

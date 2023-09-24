@@ -37,7 +37,7 @@ class DbRecord {
         speciesRef: json['speciesRef'],
         notes: json['notes'],
         sync: true,
-        observeTime: DateTime.fromMillisecondsSinceEpoch(json['observeTime']),
+        observeTime: DateTime.fromMicrosecondsSinceEpoch(json['observeTime']),
         tags: json['tags'],
       );
 
@@ -48,7 +48,7 @@ class DbRecord {
         'species': species,
         'speciesRef': speciesRef,
         'notes': notes,
-        'observeTime': observeTime.millisecondsSinceEpoch,
+        'observeTime': observeTime.microsecondsSinceEpoch,
         'tags': tags
       };
 

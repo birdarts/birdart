@@ -1,11 +1,16 @@
-import 'package:birdart/l10n/l10n.dart';
-import 'package:flutter/material.dart';
-import 'package:shared/model/track.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:shared/shared.dart';
+
+import '../l10n/l10n.dart';
+import '../tool/tracker.dart';
 import '../tool/list_tool.dart';
 
 class NewListPage extends StatefulWidget {
-  const NewListPage({super.key});
+  const NewListPage({super.key, this.birdList});
+
+  final BirdList? birdList;
 
   @override
   State<NewListPage> createState() => _NewListPageState();
@@ -15,8 +20,11 @@ class _NewListPageState extends State<NewListPage> {
   Map<String, int> records = {};
 
   List<String> birds = List.generate(20, (index) => '鸟 $index');
+  late BirdList birdList;
+  late StreamController<bool> _streamController;
 
   void _onCompleted() {
+    _endTrack();
     // TODO: save list
   }
 
@@ -25,12 +33,25 @@ class _NewListPageState extends State<NewListPage> {
   }
 
   void _startTrack() {
+    if (ListTool.tracker == null) {
+      ListTool.tracker = Tracker(context: context);
+      ListTool.tracker?.permissionCheck();
+      ListTool.tracker?.startTrack();
+    }
+  }
 
+  void _endTrack() {
+    if (ListTool.tracker != null) {
+      ListTool.tracker?.endTrack();
+    }
   }
 
   @override
   void initState() {
+    // birdList = widget.birdList ?? BirdList();
+    _streamController = StreamController<bool>();
     _getExpectedList();
+    _startTrack();
     super.initState();
   }
 
@@ -45,8 +66,11 @@ class _NewListPageState extends State<NewListPage> {
           fontSize: 14.0,
           fontStyle: FontStyle.normal,
         ),
-        title: ListTool.tracker != null
-            ? Row(
+        title: StreamBuilder(
+          stream: _streamController.stream,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done || snapshot.connectionState == ConnectionState.active) {
+              return Row(
                 children: [
                   const Icon(Icons.timeline_rounded),
                   titleSpace,
@@ -58,8 +82,9 @@ class _NewListPageState extends State<NewListPage> {
                   titleSpace,
                   Text(BdL10n.current.newListAutoHotspot),
                 ],
-              )
-            : Row(
+              );
+            } else {
+              return Row(
                 children: [
                   const Icon(Icons.timeline_rounded),
                   titleSpace,
@@ -69,7 +94,10 @@ class _NewListPageState extends State<NewListPage> {
                   titleSpace,
                   Text(BdL10n.current.newListAutoHotspot),
                 ],
-              ),
+              );
+            }
+          },
+        ),
         bottom: AppBar(
           backgroundColor: Theme.of(context).bottomAppBarTheme.color,
           leading: null,
