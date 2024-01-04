@@ -23,7 +23,7 @@ class _LocationMarkerState extends State<LocationMarker> {
       markers: [
         Marker(
           point: LatLng(locationData.latitude, locationData.longitude),
-          builder: (context) => Transform.rotate(
+          child: Transform.rotate(
             angle: 180 + locationData.heading,
             child: Stack(
               alignment: Alignment.center,

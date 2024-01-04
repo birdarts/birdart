@@ -44,7 +44,6 @@ class QrScanDialog extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: AiBarcodeScanner(
-                hintWidget: const SizedBox(),
                 controller: controller,
                 onScan: (String value) {
                   debugPrint(value);
