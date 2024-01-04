@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:birdart/tool/device_tool.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart'; // Suitable for most situations
 import 'package:geolocator/geolocator.dart';
-import 'package:google_api_availability/google_api_availability.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
 
 import '../l10n/l10n.dart';
 import '../entity/sharedpref.dart';
-import '../tool/tracker.dart';
 import '../map_util/birdart_tiles.dart';
 import '../tool/coordinator_tool.dart';
 import '../tool/location_tool.dart';
@@ -29,6 +28,7 @@ class _MapFragmentState extends State<MapFragment>
   var _locationText = BdL10n.current.mapCoordinate('', '', '');
   late TilesGetter tileList;
   final MapController _mapController = MapController();
+
   LocationMarker _currentLocationLayer = const LocationMarker(
     locationData: null,
   );
@@ -42,7 +42,7 @@ class _MapFragmentState extends State<MapFragment>
   void initState() {
     tileList = BirdartTiles.vecTile;
 
-    _getMapStates();
+    // _getMapStates();
 
     _getCurrentLocation(context, animate: true);
     startSubscription();
@@ -51,11 +51,8 @@ class _MapFragmentState extends State<MapFragment>
 
   Future<LocationSettings> getLocationSettings() async {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final availability = await GoogleApiAvailability.instance
-          .checkGooglePlayServicesAvailability();
       return AndroidSettings(
-        forceLocationManager:
-            availability != GooglePlayServicesAvailability.success,
+        forceLocationManager: await DeviceTool().isGoogleAval,
       );
     } else {
       return const LocationSettings();
@@ -83,8 +80,8 @@ class _MapFragmentState extends State<MapFragment>
       print("dispose");
     }
     stopSubscription();
-    LatLng center = _mapController.center;
-    double zoom = _mapController.zoom;
+    LatLng center = _mapController.camera.center;
+    double zoom = _mapController.camera.zoom;
     Position? locationData = _currentLocationLayer.locationData;
     await _saveMapStates(center, zoom, locationData);
     super.dispose();
@@ -107,9 +104,9 @@ class _MapFragmentState extends State<MapFragment>
   void _getMapStates() {
     try {
       _mapController.move(
-          LatLng(prefs.getDouble('center_latitude')!,
-              prefs.getDouble('center_longitude')!),
-          prefs.getDouble('zoom')!);
+          LatLng(prefs.getDouble('center_latitude') ?? 0.0,
+              prefs.getDouble('center_longitude') ?? 0.0),
+          prefs.getDouble('zoom') ?? 4);
     } catch (e, s) {
       log(e.toString(), stackTrace: s);
     }
@@ -134,23 +131,22 @@ class _MapFragmentState extends State<MapFragment>
       ),
       body: FlutterMap(
         options: MapOptions(
-          center: const LatLng(0, 0),
-          zoom: 4,
+          initialCenter: const LatLng(0, 0),
+          initialZoom: 4,
           maxZoom: 18.0,
           minZoom: 2,
-          maxBounds: LatLngBounds(
-            const LatLng(-90, -180),
-            const LatLng(90, 180),
-          ),
+          cameraConstraint: const CameraConstraint.unconstrained(),
           keepAlive: true,
-          rotation: 0,
-          interactiveFlags: InteractiveFlag.pinchZoom |
-              InteractiveFlag.drag |
-              InteractiveFlag.doubleTapZoom,
+          initialRotation: 0,
+          interactionOptions: const InteractionOptions(
+            flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag | InteractiveFlag.doubleTapZoom,
+          ),
           onPositionChanged: (MapPosition position, bool hasGesture) {},
+          backgroundColor: Colors.transparent,
         ),
         mapController: _mapController,
-        nonRotatedChildren: [
+        children: [
+          // non-rotated children
           RichAttributionWidget(
             attributions: [
               TextSourceAttribution(BdL10n.current.mapNameTDT),
@@ -231,8 +227,7 @@ class _MapFragmentState extends State<MapFragment>
               ),
             ),
           ),
-        ],
-        children: [
+          // rotated children
           ...tileList.call(context),
           _currentLocationLayer,
         ],

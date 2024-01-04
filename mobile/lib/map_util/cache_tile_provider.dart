@@ -44,9 +44,9 @@ class CacheTileProvider extends NetworkTileProvider {
 }
 
 class NetworkImageSaverProvider extends FlutterMapNetworkImageProvider {
-  File file;
+  final File file;
 
-  NetworkImageSaverProvider(
+  const NetworkImageSaverProvider(
     this.file, {
     required super.url,
     super.fallbackUrl,

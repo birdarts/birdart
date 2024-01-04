@@ -18,7 +18,6 @@ class BirdartTiles {
         'https://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
     userAgentPackageName: _packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-    backgroundColor: Colors.transparent,
   );
 
   static final TileLayer _cva = TileLayer(
@@ -27,7 +26,6 @@ class BirdartTiles {
         'https://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
     userAgentPackageName: _packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-    backgroundColor: Colors.transparent,
   );
 
   static final TileLayer _eva = TileLayer(
@@ -36,7 +34,6 @@ class BirdartTiles {
         'https://t{s}.tianditu.gov.cn/eva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
     userAgentPackageName: _packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-    backgroundColor: Colors.transparent,
   );
 
   // satellite
@@ -46,7 +43,6 @@ class BirdartTiles {
         'https://t{s}.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
     userAgentPackageName: _packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-    backgroundColor: Colors.transparent,
   );
 
   static final TileLayer _cia = TileLayer(
@@ -55,7 +51,6 @@ class BirdartTiles {
         'https://t{s}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
     userAgentPackageName: _packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-    backgroundColor: Colors.transparent,
   );
 
   static final TileLayer _eia = TileLayer(
@@ -64,14 +59,12 @@ class BirdartTiles {
         'https://t{s}.tianditu.gov.cn/eia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
     userAgentPackageName: _packageName,
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
-    backgroundColor: Colors.transparent,
   );
 
   static final TileLayer _osm = TileLayer(
     tileProvider: CacheTileProvider('osm'),
     urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     userAgentPackageName: _packageName,
-    backgroundColor: Colors.transparent,
   );
 
   static final List<TileLayer> _vecZhTile = [_vec, _cva];

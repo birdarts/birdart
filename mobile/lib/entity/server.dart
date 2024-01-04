@@ -5,11 +5,14 @@ import 'user_profile.dart';
 class Server {
   static const String url =
       kDebugMode ? 'http://192.168.1.11:5000/' : 'https://sun-jiao.github.io/';
-  static Dio _dio = Dio();
+  static Dio? _dio;
 
   static Dio get dio {
-    setupDio();
-    return _dio;
+    if (_dio == null) {
+      setupDio();
+    }
+
+    return _dio!;
   }
 
   static setupDio() {

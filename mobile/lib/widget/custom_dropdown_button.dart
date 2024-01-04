@@ -6,7 +6,7 @@ class CustomDropdownButton extends StatefulWidget {
   final Function(String?)? onSelect;
   final String dropdownValue;
 
-  CustomDropdownButton({
+  const CustomDropdownButton({
     super.key,
     required this.list,
     required this.title,

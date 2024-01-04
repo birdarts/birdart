@@ -15,12 +15,14 @@ class TrackMapPage extends StatelessWidget {
       appBar: AppBar(),
       body: FlutterMap(
         options: MapOptions(
-          bounds: boundEnlarge(layer.polylines[0].boundingBox, 0.075),
+          initialCameraFit: CameraFit.bounds(
+            bounds: boundEnlarge(layer.polylines[0].boundingBox, 0.075),
+          ),
           maxZoom: 18.0,
           minZoom: 2,
-          interactiveFlags: InteractiveFlag.pinchZoom |
-              InteractiveFlag.drag |
-              InteractiveFlag.doubleTapZoom,
+          interactionOptions: const InteractionOptions(
+            flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag | InteractiveFlag.doubleTapZoom,
+          ),
         ),
         children: [
           ...BirdartTiles.vecTile(context),

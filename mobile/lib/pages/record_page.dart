@@ -66,10 +66,10 @@ class _RecordPageState extends State<RecordPage>
               ),
             ),
           ]),
-      body: WillPopScope(
-        onWillPop: () async {
+      body: PopScope(
+        onPopInvoked: (_) async {
           Navigator.pop(context, updateParent);
-          return updateParent;
+          // return updateParent;
         },
         child: Column(
           children: [

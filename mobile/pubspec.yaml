@@ -39,6 +39,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   ai_barcode_scanner: ^3.4.1
   camera: ^0.10.5+8
+  device_info: ^2.0.3
   dio: ^5.4.0
   exif: ^3.3.0
   extended_image: ^8.2.0

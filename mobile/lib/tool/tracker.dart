@@ -24,6 +24,7 @@ import '../db/on_db.dart';
 import '../entity/app_dir.dart';
 import '../l10n/l10n.dart';
 import 'coordinator_tool.dart';
+import 'device_tool.dart';
 import 'location_tool.dart';
 import '../widget/track_circle_animation.dart';
 
@@ -64,8 +65,7 @@ class Tracker {
                     child: const Text('确认'),
                     onPressed: () async {
                       Navigator.pop(dContext);
-                      final availability = await GoogleApiAvailability.instance.checkGooglePlayServicesAvailability();
-                      if (availability == GooglePlayServicesAvailability.success) {
+                      if (await DeviceTool().isGoogleAval) {
                         OptimizeBattery.openBatteryOptimizationSettings();
                       } else {
                         OptimizeBattery.stopOptimizingBatteryUsage();
@@ -344,12 +344,10 @@ class Tracker {
     }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final availability =
-          await GoogleApiAvailability.instance.checkGooglePlayServicesAvailability();
       return AndroidSettings(
           accuracy: LocationAccuracy.high,
           distanceFilter: 1,
-          forceLocationManager: availability != GooglePlayServicesAvailability.success,
+          forceLocationManager: await DeviceTool().isGoogleAval,
           intervalDuration: Duration(seconds: interval),
           //(Optional) Set foreground notification config to keep the app alive
           //when going to the background
@@ -388,9 +386,7 @@ class Tracker {
         Geolocator.getPositionStream(locationSettings: await getLocationSettings())
             .listen((Position locationData) async {
       DateTime? time;
-      if (locationData.timestamp != null) {
-        time = locationData.timestamp;
-      }
+      time = locationData.timestamp;
       if (kDebugMode) {
         print(time);
       }
