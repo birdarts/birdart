@@ -8,22 +8,22 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/camera_android-0.10.8+9/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/camera_android-0.10.8+16/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_background_service_android-6.2.2/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_plugin_android_lifecycle-2.0.16/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_plugin_android_lifecycle-2.0.17/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/fluttertoast-8.2.4/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/geolocator_android-4.3.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/geolocator_android-4.4.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/google_api_availability_android-1.0.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/mobile_scanner-3.5.5/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/optimize_battery-0.0.4/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path_provider_android-2.2.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path_provider_android-2.2.2/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/permission_handler_android-12.0.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/photo_manager-3.0.0-dev.5/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/sensors_plus-4.0.2/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_android-2.2.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/sqflite-2.3.0/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/url_launcher_android-6.2.1/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/video_player_android-2.4.10/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/video_player_android-2.4.11/android" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
           </set>
