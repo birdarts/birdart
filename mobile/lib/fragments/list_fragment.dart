@@ -46,7 +46,7 @@ class _ListFragmentState extends State<ListFragment>
               dataList.length, (index) => BirdList.fromJson(dataList[index]));
           for (var item in projectList) {
             final oldProject =
-                await DbManager.db.birdListDao.getById(item.id.hexString);
+                await DbManager.db.birdListDao.getById(item.id.toString());
             if (oldProject.isNotEmpty) {
               projectList.remove(item);
             }
@@ -166,7 +166,7 @@ class _ListFragmentState extends State<ListFragment>
                     Icons.qr_code_rounded,
                     size: 30,
                   ),
-                  onTap: () => _showQrCode(project.id.hexString),
+                  onTap: () => _showQrCode(project.id.toString()),
                 ),
                 const SizedBox(
                   width: 10,
@@ -243,7 +243,7 @@ class _ListFragmentState extends State<ListFragment>
         if (data['success'] = true) {
           BirdList project = BirdList.fromJson(data['data']);
           final oldProject =
-              await DbManager.db.birdListDao.getById(project.id.hexString);
+              await DbManager.db.birdListDao.getById(project.id.toString());
           if (oldProject.isNotEmpty) {
             _qrCodeGetFailed('项目已存在');
             return;

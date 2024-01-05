@@ -1,12 +1,12 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 
 @Entity(tableName: 'IMAGE')
 class DbImage {
   @primaryKey
-  ObjectId id;
-  ObjectId record;
-  ObjectId author;
+  Xid id;
+  Xid record;
+  Xid author;
 
   String imagePath;
   String imageId;
@@ -26,9 +26,9 @@ class DbImage {
   });
 
   factory DbImage.fromJson(Map<String, dynamic> json) => DbImage(
-        id: ObjectId.fromHexString(json['_id']),
-        record: ObjectId.fromHexString(json['record']),
-        author: ObjectId.fromHexString(json['author']),
+        id: Xid.fromString(json['_id']),
+        record: Xid.fromString(json['record']),
+        author: Xid.fromString(json['author']),
         imagePath: json['imagePath'],
         imageId: json['imageId'],
         imageSize: json['imageSize'],
@@ -37,9 +37,9 @@ class DbImage {
       );
 
   Map<String, dynamic> toJson() => {
-        '_id': id.hexString,
-        'record': record.hexString,
-        'author': author.hexString,
+        '_id': id.toString(),
+        'record': record.toString(),
+        'author': author.toString(),
         'imagePath': imagePath,
         'imageId': imageId,
         'imageSize': imageSize,
@@ -53,7 +53,7 @@ class DbImage {
       required this.imageSize,
       required this.exif,
       required this.author})
-      : id = ObjectId(),
+      : id = Xid(),
         sync = false;
 }
 

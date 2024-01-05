@@ -19,7 +19,6 @@ Future<void> saveAdmins(
           jsonDecode(jsonString).cast<Map<String, dynamic>>())
       .map((map) => renameKeys(map, {'id': '_id'}))
       .toList();
-  ;
 
   final db = await Db.create('mongodb://localhost:27017/$dbName');
   await db.open();

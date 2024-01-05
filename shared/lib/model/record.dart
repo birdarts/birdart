@@ -1,12 +1,12 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 
 @Entity(tableName: 'RECORD')
 class DbRecord {
   @primaryKey
-  ObjectId id;
-  ObjectId project;
-  ObjectId author;
+  Xid id;
+  Xid project;
+  Xid author;
 
   String species;
   String speciesRef;
@@ -30,9 +30,9 @@ class DbRecord {
   });
 
   factory DbRecord.fromJson(Map<String, dynamic> json) => DbRecord(
-        id: ObjectId.fromHexString(json['id']),
-        project: ObjectId.fromHexString(json['project']),
-        author: ObjectId.fromHexString(json['author']),
+        id: Xid.fromString(json['id']),
+        project: Xid.fromString(json['project']),
+        author: Xid.fromString(json['author']),
         species: json['species'],
         speciesRef: json['speciesRef'],
         notes: json['notes'],
@@ -42,9 +42,9 @@ class DbRecord {
       );
 
   Map<String, dynamic> toJson() => {
-        '_id': id.hexString,
-        'project': project.hexString,
-        'author': author.hexString,
+        '_id': id.toString(),
+        'project': project.toString(),
+        'author': author.toString(),
         'species': species,
         'speciesRef': speciesRef,
         'notes': notes,
@@ -59,7 +59,7 @@ class DbRecord {
       required this.notes,
       required this.author,
       required this.tags})
-      : id = ObjectId(),
+      : id = Xid(),
         sync = false,
         observeTime = DateTime.now();
 }

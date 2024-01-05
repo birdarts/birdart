@@ -1,11 +1,11 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 
 @entity
 class Hotspot {
   @primaryKey
-  ObjectId id;
-  ObjectId author;
+  Xid id;
+  Xid author;
   String name;
   double lon;
   double lat;
@@ -30,8 +30,8 @@ class Hotspot {
   });
 
   factory Hotspot.fromJson(Map<String, dynamic> json) => Hotspot(
-    id: ObjectId.fromHexString(json['_id']),
-    author: ObjectId.fromHexString(json['author']),
+    id: Xid.fromString(json['_id']),
+    author: Xid.fromString(json['author']),
     name: json['name'].toString(),
     lon: double.tryParse(json['lon'] ?? '0.0') ?? json['lon'] ?? 0.0,
     lat: double.tryParse(json['lat'] ?? '0.0') ?? json['lat'] ?? 0.0,
@@ -43,8 +43,8 @@ class Hotspot {
   );
 
   Map<String, dynamic> toJson() => {
-    '_id': id.hexString,
-    'author': author.hexString,
+    '_id': id.toString(),
+    'author': author.toString(),
     'name': name,
     'lon': lon,
     'lat': lat,
@@ -56,7 +56,7 @@ class Hotspot {
   };
 
   Hotspot.empty(this.author)
-      : id = ObjectId(),
+      : id = Xid(),
         name = '',
         lon = 0.0,
         lat = 0.0,

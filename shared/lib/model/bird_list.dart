@@ -1,11 +1,11 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 
 @entity
 class BirdList {
   @primaryKey
-  ObjectId id;
-  ObjectId author;
+  Xid id;
+  Xid author;
   String notes;
   DateTime createTime;
   int time; // in minutes
@@ -15,7 +15,7 @@ class BirdList {
   bool complete; // is complete record or not
   bool sync; // if already uploaded.
 
-  ObjectId track;
+  Xid track;
 
   String comment = '';
 
@@ -35,8 +35,8 @@ class BirdList {
   });
 
   factory BirdList.fromJson(Map<String, dynamic> json) => BirdList(
-        id: ObjectId.fromHexString(json['_id']),
-        author: ObjectId.fromHexString(json['author']),
+        id: Xid.fromString(json['_id']),
+        author: Xid.fromString(json['author']),
         notes: json['notes'],
         createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
         sync: true,
@@ -50,8 +50,8 @@ class BirdList {
       );
 
   Map<String, dynamic> toJson() => {
-        '_id': id.hexString,
-        'author': author.hexString,
+        '_id': id.toString(),
+        'author': author.toString(),
         'notes': notes,
         'createTime': createTime.microsecondsSinceEpoch,
         'track': track,
@@ -64,7 +64,7 @@ class BirdList {
       };
 
   BirdList.empty(this.author, this.track)
-      : id = ObjectId(),
+      : id = Xid(),
         notes = '',
         createTime = DateTime.now(),
         sync = false,

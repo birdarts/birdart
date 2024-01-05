@@ -53,7 +53,7 @@ class _RecordPageState extends State<RecordPage>
                     MaterialPageRoute(
                         builder: (context) => EditRecord(
                               record: record,
-                              project: record.project.hexString,
+                              project: record.project.toString(),
                             ))).then((value) {
                   if (value) {
                     updateParent = updateParent || value;

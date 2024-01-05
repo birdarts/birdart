@@ -3,7 +3,7 @@ import 'dart:async';
 import '../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shared/shared.dart';
 
@@ -49,7 +49,7 @@ class _EditRecordState extends State<EditRecord> {
     } else {
       _isNew = true;
       record = DbRecord.add(
-          project: ObjectId.fromHexString(widget.project),
+          project: Xid.fromString(widget.project),
           species: '',
           speciesRef: '',
           notes: '',
@@ -112,7 +112,7 @@ class _EditRecordState extends State<EditRecord> {
   }
 
   Future<void> imageGridFuture() async {
-    oldImages = await DbManager.db.imageDao.getByRecord(record.id.hexString);
+    oldImages = await DbManager.db.imageDao.getByRecord(record.id.toString());
     for (DbImage image in oldImages) {
       final assetEntity = await AssetEntity.fromId(image.imageId);
       if (assetEntity != null) {

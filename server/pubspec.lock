@@ -265,14 +265,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.2"
-  objectid:
-    dependency: transitive
-    description:
-      name: objectid
-      sha256: fd4a0b9fe07df25c446948b786e7ab2f363b2f461afa78632cab179d7613b9b3
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.0.0"
   package_config:
     dependency: transitive
     description:
@@ -568,6 +560,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.1"
+  xid:
+    dependency: transitive
+    description:
+      name: xid
+      sha256: c22d6aa5278cbceff7b41f40e187330e028afd34acca901e4b496e830c9c1ec3
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   xml:
     dependency: transitive
     description:

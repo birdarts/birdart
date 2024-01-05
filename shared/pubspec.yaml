@@ -10,7 +10,7 @@ environment:
 dependencies:
   # path: ^1.8.0
   floor_annotation: ^1.4.2
-  objectid: ^3.0.0
+  xid: ^1.1.2
 
 dev_dependencies:
   lints: ^2.0.0

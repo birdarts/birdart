@@ -115,10 +115,10 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.9.1"
-  objectid:
+  xid:
     dependency: transitive
     description:
-      name: objectid
+      name: xid
       sha256: fd4a0b9fe07df25c446948b786e7ab2f363b2f461afa78632cab179d7613b9b3
       url: "https://pub.flutter-io.cn"
     source: hosted

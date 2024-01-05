@@ -8,9 +8,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geoxml/geoxml.dart';
-import 'package:google_api_availability/google_api_availability.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 import 'package:optimize_battery/optimize_battery.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
@@ -293,7 +292,7 @@ class Tracker {
                     ),
                     Expanded(
                       child: Text(
-                        track.id.hexString,
+                        track.id.toString(),
                         style:
                             TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.secondary),
                       ),
@@ -377,7 +376,7 @@ class Tracker {
 
   startTrack() async {
     track = Track.empty(UserProfile.id);
-    track.id = ObjectId();
+    track.id = Xid();
 
     geoxml = GeoXml();
     geoxml.creator = BdL10n.current.appName;
@@ -427,7 +426,7 @@ class Tracker {
     track.file = path.join(
       AppDir.data.path,
       'files',
-      '${track.id.hexString}.gpx',
+      '${track.id.toString()}.gpx',
     );
     final file = File(track.file);
     Directory parent = file.parent;

@@ -1,13 +1,13 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:objectid/objectid.dart';
+import 'package:xid/xid.dart';
 
-class ObjectIdConverter extends TypeConverter<ObjectId, String> {
+class XidConverter extends TypeConverter<Xid, String> {
   @override
-  ObjectId decode(String databaseValue) =>
-      ObjectId.fromHexString(databaseValue);
+  Xid decode(String databaseValue) =>
+      Xid.fromString(databaseValue);
 
   @override
-  String encode(ObjectId value) => value.hexString;
+  String encode(Xid value) => value.toString();
 }
 
 class DateTimeConverter extends TypeConverter<DateTime, int> {
