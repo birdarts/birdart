@@ -1,12 +1,12 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:xid/xid.dart';
+import 'uuid_gen.dart';
 
 @Entity(tableName: 'RECORD')
 class DbRecord {
   @primaryKey
-  Xid id;
-  Xid project;
-  Xid author;
+  String id;
+  String project;
+  String author;
 
   String species;
   String speciesRef;
@@ -30,9 +30,9 @@ class DbRecord {
   });
 
   factory DbRecord.fromJson(Map<String, dynamic> json) => DbRecord(
-        id: Xid.fromString(json['id']),
-        project: Xid.fromString(json['project']),
-        author: Xid.fromString(json['author']),
+        id: (json['id']),
+        project: (json['project']),
+        author: (json['author']),
         species: json['species'],
         speciesRef: json['speciesRef'],
         notes: json['notes'],
@@ -59,7 +59,7 @@ class DbRecord {
       required this.notes,
       required this.author,
       required this.tags})
-      : id = Xid(),
+      : id = uuid.v1(),
         sync = false,
         observeTime = DateTime.now();
 }

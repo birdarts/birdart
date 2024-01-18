@@ -3,7 +3,6 @@ import 'dart:async';
 import '../l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:xid/xid.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shared/shared.dart';
 
@@ -49,7 +48,7 @@ class _EditRecordState extends State<EditRecord> {
     } else {
       _isNew = true;
       record = DbRecord.add(
-          project: Xid.fromString(widget.project),
+          project: (widget.project),
           species: '',
           speciesRef: '',
           notes: '',

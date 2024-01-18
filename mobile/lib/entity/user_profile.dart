@@ -1,10 +1,10 @@
-import 'package:xid/xid.dart';
+import 'package:shared/model/uuid_gen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/sharedpref.dart';
 
 class UserProfile {
-  static Xid? _id;
+  static String? _id;
   static String? _phone;
   static String? _password;
   static String? _email;
@@ -24,7 +24,7 @@ class UserProfile {
   static init() {
     _pref = SharedPref.pref;
     final idStr = _pref.getString('id');
-    _id = idStr == null ? Xid() : Xid.fromString(idStr);
+    _id = idStr == null ? uuid.v1() : (idStr);
     _phone = _pref.getString('phone');
     _password = _pref.getString('password');
     _email = _pref.getString('email');
@@ -57,7 +57,7 @@ class UserProfile {
       (_image != null) &&
       (_track != null);
 
-  static set id(Xid value) {
+  static set id(String value) {
     _id = value;
     _pref.setString('id', value.toString());
   }
@@ -122,7 +122,7 @@ class UserProfile {
     _pref.setInt('track', value);
   }
 
-  static Xid get id => _id!;
+  static String get id => _id!;
 
   static String get phone => _phone!;
 

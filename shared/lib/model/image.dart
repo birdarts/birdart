@@ -1,12 +1,12 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:xid/xid.dart';
+import 'uuid_gen.dart';
 
 @Entity(tableName: 'IMAGE')
 class DbImage {
   @primaryKey
-  Xid id;
-  Xid record;
-  Xid author;
+  String id;
+  String record;
+  String author;
 
   String imagePath;
   String imageId;
@@ -26,9 +26,9 @@ class DbImage {
   });
 
   factory DbImage.fromJson(Map<String, dynamic> json) => DbImage(
-        id: Xid.fromString(json['_id']),
-        record: Xid.fromString(json['record']),
-        author: Xid.fromString(json['author']),
+        id: json['_id'],
+        record: json['record'],
+        author: json['author'],
         imagePath: json['imagePath'],
         imageId: json['imageId'],
         imageSize: json['imageSize'],
@@ -53,7 +53,7 @@ class DbImage {
       required this.imageSize,
       required this.exif,
       required this.author})
-      : id = Xid(),
+      : id = uuid.v1(),
         sync = false;
 }
 

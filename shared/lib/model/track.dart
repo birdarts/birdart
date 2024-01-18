@@ -1,11 +1,11 @@
 import 'package:floor_annotation/floor_annotation.dart';
-import 'package:xid/xid.dart';
+import 'uuid_gen.dart';
 
 @entity
 class Track {
   @primaryKey
-  Xid id;
-  Xid author;
+  String id;
+  String author;
 
   double startLon = 0.0;
   double startLat = 0.0;
@@ -43,8 +43,8 @@ class Track {
   });
 
   factory Track.fromJson(Map<String, dynamic> json) => Track(
-        id: Xid.fromString(json['_id']),
-        author: Xid.fromString(json['author']),
+        id: (json['_id']),
+        author: (json['author']),
         startLon: double.parse(json['startLon']),
         startLat: double.parse(json['startLat']),
         startEle: double.parse(json['startEle']),
@@ -75,7 +75,7 @@ class Track {
       };
 
   Track.empty(this.author)
-      : id = Xid(),
+      : id = uuid.v1(),
         startTime = DateTime.fromMicrosecondsSinceEpoch(0),
         endTime = DateTime.fromMicrosecondsSinceEpoch(0),
         sync = false;

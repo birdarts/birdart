@@ -9,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geoxml/geoxml.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:xid/xid.dart';
 import 'package:optimize_battery/optimize_battery.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
@@ -376,7 +375,7 @@ class Tracker {
 
   startTrack() async {
     track = Track.empty(UserProfile.id);
-    track.id = Xid();
+    track.id = uuid.v1();
 
     geoxml = GeoXml();
     geoxml.creator = BdL10n.current.appName;
@@ -400,7 +399,7 @@ class Tracker {
         track.startLat = locationData.latitude;
         track.startLon = locationData.longitude;
         track.startEle = locationData.altitude;
-        track.startTime = time ?? DateTime.now();
+        track.startTime = time;
         track.distance = 0;
       } else {
         track.distance += CoordinateTool.distance(track.endLat,
@@ -410,7 +409,7 @@ class Tracker {
       track.endLat = locationData.latitude;
       track.endLon = locationData.longitude;
       track.endEle = locationData.altitude;
-      track.endTime = time ?? DateTime.now();
+      track.endTime = time;
       track.pointCount++;
     });
   }

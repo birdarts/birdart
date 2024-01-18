@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:exif/exif.dart';
 import 'package:flutter/foundation.dart';
-import 'package:xid/xid.dart';
 import 'package:shared/shared.dart';
 
 import '../db/db_manager.dart';
@@ -57,7 +56,7 @@ class ImageTool {
 }
 
 Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
-    List<DbImage> oldImages, Xid recordId) async {
+    List<DbImage> oldImages, String recordId) async {
   List<DbImage> addImages = [];
   List<String> imgPaths = [];
 
