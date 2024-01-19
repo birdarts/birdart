@@ -87,7 +87,7 @@ class _RecordPageState extends State<RecordPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(record.observeTime.toString()),
+            Text(record.createTime.toString()),
             const SizedBox(
               height: 4,
             ),

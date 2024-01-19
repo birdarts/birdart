@@ -373,7 +373,7 @@ class Tracker {
     }
   }
 
-  startTrack() async {
+  startTrack({VoidCallback? callback}) async {
     track = Track.empty(UserProfile.id);
     track.id = uuid.v1();
 
@@ -411,6 +411,8 @@ class Tracker {
       track.endEle = locationData.altitude;
       track.endTime = time;
       track.pointCount++;
+
+      callback?.call();
     });
   }
 

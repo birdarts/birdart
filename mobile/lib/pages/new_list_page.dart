@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:birdart/entity/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 
@@ -10,17 +11,18 @@ import '../tool/list_tool.dart';
 class NewListPage extends StatefulWidget {
   const NewListPage({super.key, this.birdList});
 
-  final BirdList? birdList;
+  final Checklist? birdList;
 
   @override
   State<NewListPage> createState() => _NewListPageState();
 }
 
 class _NewListPageState extends State<NewListPage> {
-  Map<String, int> records = {};
+  List<DbRecord> records = [];
 
-  List<String> birds = List.generate(20, (index) => '鸟 $index');
-  late BirdList birdList;
+  List<Bird> birds = [];
+  bool loadComplete = false;
+  late Checklist birdList;
   late StreamController<bool> _streamController;
 
   void _onCompleted() {
@@ -28,15 +30,31 @@ class _NewListPageState extends State<NewListPage> {
     // TODO: save list
   }
 
-  void _getExpectedList() {
-    // TODO: generate possible birds list
+
+  Future<void> _getExpectedList() async {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      birds = [
+        Bird(id: 'XIQUE', scientific: 'Pica serica', vernacular: '喜鹊', ordo: 'Pass', familia: 'Corv', genus: 'Pica'),
+        Bird(id: 'SONYA', scientific: 'Garrulus glandarius', vernacular: '松鸦', ordo: 'Pass', familia: 'Corv', genus: 'Garrulus'),
+        Bird(id: 'ZUOYA', scientific: 'Phasianus colchicus', vernacular: '雉鸡', ordo: 'Phasianidae', familia: 'Phasianidae', genus: 'Phasianus'),
+        Bird(id: 'KULIA', scientific: 'Columbina minuta', vernacular: '地鸽', ordo: 'Columbiformes', familia: 'Columbidae', genus: 'Columbina'),
+        Bird(id: 'ZHFEI', scientific: 'Turdus merula', vernacular: '乌鸫', ordo: 'Passeriformes', familia: 'Turdidae', genus: 'Turdus'),
+        Bird(id: 'HONMA', scientific: 'Eudromia elegans', vernacular: '红嘴鸥', ordo: 'Charadriiformes', familia: 'Laridae', genus: 'Eudromia'),
+        Bird(id: 'DONFA', scientific: 'Ciconia boyciana', vernacular: '东方白鹳', ordo: 'Ciconiiformes', familia: 'Ciconiidae', genus: 'Ciconia'),
+      ]; // test only
+      loadComplete = true;
+    });
   }
 
   void _startTrack() {
     if (ListTool.tracker == null) {
       ListTool.tracker = Tracker(context: context);
-      ListTool.tracker?.permissionCheck();
-      ListTool.tracker?.startTrack();
+      ListTool.tracker?.startTrack(
+        callback: () {
+          _streamController.add(true);
+        }
+      );
     }
   }
 
@@ -48,10 +66,10 @@ class _NewListPageState extends State<NewListPage> {
 
   @override
   void initState() {
-    // birdList = widget.birdList ?? BirdList();
     _streamController = StreamController<bool>();
     _getExpectedList();
     _startTrack();
+    birdList = widget.birdList ?? Checklist.empty(UserProfile.id, ListTool.tracker!.track.id);
     super.initState();
   }
 
@@ -145,25 +163,26 @@ class _NewListPageState extends State<NewListPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       body: ListView.builder(
-        itemCount: 20,
+        itemCount: birds.length,
         itemBuilder: (context, index) {
-          final name = birds[index];
+          final bird = birds[index];
+          final record = records.where((element) => element.speciesRef == bird.id).firstOrNull;
           return ListTile(
             leading: IconButton(
-              icon: records.containsKey(name)
-                  ? Text(records[name].toString())
+              icon: record != null
+                  ? Text(record.amount.toString())
                   : const Icon(Icons.add_rounded),
               onPressed: () {
                 setState(() {
-                  if (records.containsKey(name)) {
-                    records[name] = records[name]! + 1;
+                  if (record == null) {
+                    records.add(DbRecord.add(project: birdList.id, species: bird.scientific, speciesRef: bird.id, notes: '', author: UserProfile.id, tags: []));
                   } else {
-                    records[name] = 1;
+                    record.amount ++;
                   }
                 });
               },
             ),
-            title: Text(name),
+            title: Text(bird.vernacular),
           );
         },
       ),

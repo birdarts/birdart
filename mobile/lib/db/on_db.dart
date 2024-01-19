@@ -8,8 +8,8 @@ part 'on_db.g.dart';
 
 // dart run build_runner build --delete-conflicting-outputs
 @Database(
-  entities: [DbImage, DbRecord, BirdList, Track],
-  version: 1,
+  entities: [Bird, Hotspot, DbImage, DbRecord, Checklist, Track],
+  version: 2,
 )
 @TypeConverters([DateTimeConverter, StringListConverter])
 abstract class OnDb extends FloorDatabase {
@@ -17,4 +17,6 @@ abstract class OnDb extends FloorDatabase {
   BirdListDao get birdListDao;
   DbRecordDao get recordDao;
   TrackDao get trackDao;
+  BirdDao get birdSpeciesDao;
+  HotspotDao get hotspotDao;
 }

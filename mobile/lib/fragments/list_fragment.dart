@@ -42,8 +42,8 @@ class _ListFragmentState extends State<ListFragment>
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
           List<dynamic> dataList = data['data']['list'];
-          List<BirdList> projectList = List.generate(
-              dataList.length, (index) => BirdList.fromJson(dataList[index]));
+          List<Checklist> projectList = List.generate(
+              dataList.length, (index) => Checklist.fromJson(dataList[index]));
           for (var item in projectList) {
             final oldProject =
                 await DbManager.db.birdListDao.getById(item.id.toString());
@@ -125,7 +125,7 @@ class _ListFragmentState extends State<ListFragment>
     );
   }
 
-  Widget getProjectItem(BirdList project) => ClipRRect(
+  Widget getProjectItem(Checklist project) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
           child: SizedBox(
@@ -241,7 +241,7 @@ class _ListFragmentState extends State<ListFragment>
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
-          BirdList project = BirdList.fromJson(data['data']);
+          Checklist project = Checklist.fromJson(data['data']);
           final oldProject =
               await DbManager.db.birdListDao.getById(project.id.toString());
           if (oldProject.isNotEmpty) {

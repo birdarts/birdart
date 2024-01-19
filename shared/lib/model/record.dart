@@ -13,9 +13,11 @@ class DbRecord {
 
   List<String> tags;
   String notes;
+  int amount;
   bool sync; // if changes already uploaded.
 
-  DateTime observeTime;
+  DateTime createTime;
+  DateTime updateTime;
 
   DbRecord({
     required this.id,
@@ -24,8 +26,10 @@ class DbRecord {
     required this.species,
     required this.speciesRef,
     required this.notes,
+    required this.amount,
     required this.sync,
-    required this.observeTime,
+    required this.createTime,
+    required this.updateTime,
     required this.tags,
   });
 
@@ -37,7 +41,9 @@ class DbRecord {
         speciesRef: json['speciesRef'],
         notes: json['notes'],
         sync: true,
-        observeTime: DateTime.fromMicrosecondsSinceEpoch(json['observeTime']),
+        amount: int.tryParse(json['amount'].toString()) ?? 1,
+    createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
+    updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
         tags: json['tags'],
       );
 
@@ -48,7 +54,9 @@ class DbRecord {
         'species': species,
         'speciesRef': speciesRef,
         'notes': notes,
-        'observeTime': observeTime.microsecondsSinceEpoch,
+        'amount': amount,
+    'createTime': createTime.microsecondsSinceEpoch,
+    'updateTime': updateTime.microsecondsSinceEpoch,
         'tags': tags
       };
 
@@ -61,7 +69,9 @@ class DbRecord {
       required this.tags})
       : id = uuid.v1(),
         sync = false,
-        observeTime = DateTime.now();
+        amount = 1,
+        createTime = DateTime.now(),
+        updateTime = DateTime.now();
 }
 
 @dao

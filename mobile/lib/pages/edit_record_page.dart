@@ -163,7 +163,7 @@ class _EditRecordState extends State<EditRecord> {
           const SizedBox(
             width: 12,
           ),
-          Text(record.observeTime.toString(),
+          Text(record.createTime.toString(),
               style: const TextStyle(fontSize: 18)),
         ],
       );

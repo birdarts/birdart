@@ -4,9 +4,11 @@
 library;
 
 export 'src/shared_base.dart';
-export 'model/bird_list.dart';
+export 'model/bird_species.dart';
+export 'model/checklist.dart';
 export 'model/image.dart';
 export 'model/record.dart';
+export 'model/hotspot.dart';
 export 'model/track.dart';
 export 'model/type_converter.dart';
 export 'model/uuid_gen.dart';
