@@ -21,6 +21,8 @@
   "mapNameTDT": "天地图",
   "mapNameOSM": "开放街道地图",
   "mapNameSat": "卫星图",
+  "mapNameAgol": "Arcgis卫星图",
+  "mapNameStamenTerrain": "Stamen地形图",
   "mapCoordinate": "经度：{lat}\n纬度：{lon}\n海拔：{alt}",
   "myTitle": "个人中心",
   "myRegister": "注册",

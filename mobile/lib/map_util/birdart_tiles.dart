@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
+import 'custom_header.dart';
 import 'key_store.dart';
 import 'cache_tile_provider.dart'; // Suitable for most situations
 
@@ -63,8 +64,25 @@ class BirdartTiles {
 
   static final TileLayer _osm = TileLayer(
     tileProvider: CacheTileProvider('osm'),
-    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    urlTemplate: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
     userAgentPackageName: _packageName,
+    subdomains: const ['a', 'b', 'c'],
+  );
+
+  static final TileLayer _agol = TileLayer(
+    tileProvider: CacheTileProvider(
+      'agol',
+      customHeaders: customHeaders, // const Map<String, String> customHeaders = {
+    ),
+    urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  );
+
+  static final _stadiaStamenTerrainBackground = TileLayer(
+    tileProvider: CacheTileProvider(
+      'StamenTerrain',
+      customHeaders: customHeaders, // const Map<String, String> customHeaders = {
+    ),
+    urlTemplate: 'https://tiles.stadiamaps.com/tiles/stamen_terrain_background/{z}/{x}/{y}.png',
   );
 
   static final List<TileLayer> _vecZhTile = [_vec, _cva];
@@ -75,15 +93,13 @@ class BirdartTiles {
 
   static final List<TileLayer> _imgEnTile = [_img, _eia];
 
-  static TilesGetter vecTile = (BuildContext context) =>
-      ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode)
-          ? _vecZhTile
-          : _vecEnTile;
+  static TilesGetter vecTile = (BuildContext context) => _vecZhTile;
+      // ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode) ? _vecZhTile : _vecZhTile;
 
-  static TilesGetter imgTile = (BuildContext context) =>
-      ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode)
-          ? _imgZhTile
-          : _imgEnTile;
+  static TilesGetter imgTile = (BuildContext context) => _imgZhTile;
+      // ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode) ? _imgZhTile : _imgZhTile;
 
   static TilesGetter osmTile = (BuildContext context) => [_osm];
+  static TilesGetter agolTile = (BuildContext context) => [_agol, _cia];
+  static TilesGetter stamenTerrain = (BuildContext context) => [_stadiaStamenTerrainBackground, _cia];
 }

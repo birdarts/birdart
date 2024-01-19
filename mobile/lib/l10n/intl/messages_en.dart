@@ -87,8 +87,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccess": MessageLookupByLibrary.simpleMessage("Login success."),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("birdart"),
         "mapCoordinate": m0,
+        "mapNameAgol": MessageLookupByLibrary.simpleMessage("Arcgis Satellite"),
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("OSM"),
         "mapNameSat": MessageLookupByLibrary.simpleMessage("Satellite"),
+        "mapNameStamenTerrain":
+            MessageLookupByLibrary.simpleMessage("Stamen Terrain"),
         "mapNameTDT": MessageLookupByLibrary.simpleMessage("Tianditu"),
         "myAbout": MessageLookupByLibrary.simpleMessage("About"),
         "myData": MessageLookupByLibrary.simpleMessage("Data center"),

@@ -146,6 +146,9 @@ class _MapFragmentState extends State<MapFragment>
         ),
         mapController: _mapController,
         children: [
+          // rotated children
+          ...tileList.call(context),
+          _currentLocationLayer,
           // non-rotated children
           RichAttributionWidget(
             attributions: [
@@ -201,6 +204,14 @@ class _MapFragmentState extends State<MapFragment>
                         value: BirdartTiles.osmTile,
                         child: Text(BdL10n.current.mapNameOSM),
                       ),
+                      PopupMenuItem<TilesGetter>(
+                        value: BirdartTiles.agolTile,
+                        child: Text(BdL10n.current.mapNameAgol),
+                      ),
+                      PopupMenuItem<TilesGetter>(
+                        value: BirdartTiles.stamenTerrain,
+                        child: Text(BdL10n.current.mapNameStamenTerrain),
+                      ),
                     ]),
           ),
           Container(
@@ -227,9 +238,6 @@ class _MapFragmentState extends State<MapFragment>
               ),
             ),
           ),
-          // rotated children
-          ...tileList.call(context),
-          _currentLocationLayer,
         ],
       ),
     );

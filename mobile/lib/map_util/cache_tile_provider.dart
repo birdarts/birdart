@@ -12,9 +12,11 @@ import 'package:path/path.dart' as path;
 
 class CacheTileProvider extends NetworkTileProvider {
   String tileName;
-
+  Map<String, String>? customHeaders;
+  
   CacheTileProvider(
     this.tileName, {
+    this.customHeaders,
     super.headers,
     super.httpClient,
   });
@@ -35,7 +37,7 @@ class CacheTileProvider extends NetworkTileProvider {
       return NetworkImageSaverProvider(
         file,
         url: getTileUrl(coordinates, options),
-        headers: headers,
+        headers: customHeaders ?? headers,
         httpClient: httpClient,
         fallbackUrl: null,
       );

@@ -23,6 +23,8 @@
   "mapNameTDT": "Tianditu",
   "mapNameOSM": "OSM",
   "mapNameSat": "Satellite",
+  "mapNameAgol": "Arcgis Satellite",
+  "mapNameStamenTerrain": "Stamen Terrain",
   "mapCoordinate": "Latitude: {lat}\nLongitude: {lon}\nAltitude: {alt}",
   "@mapCoordinate": {
     "placeholders": {

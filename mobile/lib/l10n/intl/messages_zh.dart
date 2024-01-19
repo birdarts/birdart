@@ -76,8 +76,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginNetworkError": MessageLookupByLibrary.simpleMessage("网络错误。"),
         "loginSuccess": MessageLookupByLibrary.simpleMessage("登陆成功。"),
         "mapCoordinate": m0,
+        "mapNameAgol": MessageLookupByLibrary.simpleMessage("Arcgis卫星图"),
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("开放街道地图"),
         "mapNameSat": MessageLookupByLibrary.simpleMessage("卫星图"),
+        "mapNameStamenTerrain":
+            MessageLookupByLibrary.simpleMessage("Stamen地形图"),
         "mapNameTDT": MessageLookupByLibrary.simpleMessage("天地图"),
         "myAbout": MessageLookupByLibrary.simpleMessage("关于"),
         "myData": MessageLookupByLibrary.simpleMessage("数据中心"),

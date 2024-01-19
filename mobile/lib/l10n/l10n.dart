@@ -280,6 +280,26 @@ class BdL10n {
     );
   }
 
+  /// `Arcgis Satellite`
+  String get mapNameAgol {
+    return Intl.message(
+      'Arcgis Satellite',
+      name: 'mapNameAgol',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stamen Terrain`
+  String get mapNameStamenTerrain {
+    return Intl.message(
+      'Stamen Terrain',
+      name: 'mapNameStamenTerrain',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latitude: {lat}\nLongitude: {lon}\nAltitude: {alt}`
   String mapCoordinate(String lat, String lon, String alt) {
     return Intl.message(
