@@ -4,6 +4,7 @@
 library;
 
 export 'src/shared_base.dart';
+export 'src/in_china_tester.dart';
 export 'model/bird_species.dart';
 export 'model/checklist.dart';
 export 'model/image.dart';

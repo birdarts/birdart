@@ -1,3 +1,4 @@
+import 'package:birdart/map_util/double_tile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -62,11 +63,25 @@ class BirdartTiles {
     subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
   );
 
+  static final TileLayer _cta = TileLayer(
+    tileProvider: CacheTileProvider('cta'),
+    urlTemplate:
+    'https://t{s}.tianditu.gov.cn/cta_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cta&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=$_tdtKey',
+    userAgentPackageName: _packageName,
+    subdomains: const ['0', '1', '2', '3', '4', '5', '6', '7'],
+  );
+
   static final TileLayer _osm = TileLayer(
     tileProvider: CacheTileProvider('osm'),
     urlTemplate: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
     userAgentPackageName: _packageName,
     subdomains: const ['a', 'b', 'c'],
+  );
+
+  static final TileLayer _osm2 = TileLayer(
+    tileProvider: CacheTileProvider('osm2'),
+    urlTemplate: 'https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
+    userAgentPackageName: _packageName,
   );
 
   static final TileLayer _agol = TileLayer(
@@ -85,6 +100,20 @@ class BirdartTiles {
     urlTemplate: 'https://tiles.stadiamaps.com/tiles/stamen_terrain_background/{z}/{x}/{y}.png',
   );
 
+  static final _stadiaStamenTonerLabels = TileLayer(
+    tileProvider: CacheTileProvider(
+      'StamenLabel',
+      customHeaders: customHeaders, // const Map<String, String> customHeaders = {
+    ),
+    urlTemplate: 'https://tiles.stadiamaps.com/tiles/stamen_toner_labels/{z}/{x}/{y}.png',
+    minZoom: 0,
+    maxZoom: 20,
+  );
+
+  static final TileLayer _doubleLabel = TileLayer(
+    tileProvider: DoubleTileProvider(_cia, _stadiaStamenTonerLabels),
+  );
+
   static final List<TileLayer> _vecZhTile = [_vec, _cva];
 
   static final List<TileLayer> _imgZhTile = [_img, _cia];
@@ -99,7 +128,7 @@ class BirdartTiles {
   static TilesGetter imgTile = (BuildContext context) => _imgZhTile;
       // ['zh', 'ja'].contains(Localizations.localeOf(context).languageCode) ? _imgZhTile : _imgZhTile;
 
-  static TilesGetter osmTile = (BuildContext context) => [_osm];
+  static TilesGetter osmTile = (BuildContext context) => [_osm2, _doubleLabel];
   static TilesGetter agolTile = (BuildContext context) => [_agol, _cia];
-  static TilesGetter stamenTerrain = (BuildContext context) => [_stadiaStamenTerrainBackground, _cia];
+  static TilesGetter stamenTerrain = (BuildContext context) => [_stadiaStamenTerrainBackground, _cta];
 }

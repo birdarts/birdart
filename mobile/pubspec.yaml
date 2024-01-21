@@ -67,6 +67,7 @@ dependencies:
   shared_preferences: ^2.2.1
   sqflite: any
   url_launcher: ^6.2.2
+  vector_map_tiles: ^7.0.1
   wechat_assets_picker: ^9.0.0-dev.2
   wechat_camera_picker: ^4.2.0-dev.3
   xid: ^1.1.2

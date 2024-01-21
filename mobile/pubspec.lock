@@ -289,6 +289,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.4.0"
+  executor_lib:
+    dependency: transitive
+    description:
+      name: executor_lib
+      sha256: "544889daa5726462657dab6410b75f2f8e3a77479d85b307a25c346e243bc38e"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.1"
   exif:
     dependency: "direct main"
     description:
@@ -949,6 +957,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "68645b24e0716782e58948f8467fd42a880f255096a821f9e7d0ec625b00c84d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.0"
   provider:
     dependency: "direct main"
     description:
@@ -1353,6 +1369,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.9+2"
+  vector_map_tiles:
+    dependency: "direct main"
+    description:
+      name: vector_map_tiles
+      sha256: "1888b8c62ea6940891c37f9390248c978b1b564e6e391ff013dfc40fcef8015c"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "7.0.1"
   vector_math:
     dependency: transitive
     description:
@@ -1361,6 +1385,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  vector_tile:
+    dependency: transitive
+    description:
+      name: vector_tile
+      sha256: "3adb04426f3aebefce56f3fdf8ab2e23cc9f7d5b06ff8ca33ae87e3a1e441874"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
+  vector_tile_renderer:
+    dependency: transitive
+    description:
+      name: vector_tile_renderer
+      sha256: b58fa02b472ced87de00de2b4d5837576239bddb21b562481f25bde39bd117ae
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.2.0"
   video_player:
     dependency: transitive
     description:
