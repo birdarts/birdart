@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:birdart/pages/checklist_page.dart';
+import 'package:birdart/tool/list_tool.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../l10n/l10n.dart';
@@ -19,13 +22,20 @@ late Locale _appLocale;
 Locale _getLocale() {
   final localeNames = Platform.localeName.split(RegExp(r'[_-]'));
   return Locale(localeNames[0], localeNames.length > 1 ? localeNames[1] : null);
-      // 'en'); //
+  // 'en'); //
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _appLocale = _getLocale();
   BdL10n.load(_appLocale);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+  ));
   await mainCheck();
   runApp(const MyApp());
 }
@@ -135,19 +145,67 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
   int _selectedIndex = 0; //預設值
-  final List<Widget> pages = [
-    const HomeFragment(),
-    const ListFragment(),
-    const MapFragment(),
-    const MineFragment(),
-  ];
+  GlobalKey<HomeFragmentState> homeKey = GlobalKey<HomeFragmentState>();
+  late final List<Widget> pages;
+
+  var pageController = PageController();
+
+  @override
+  initState() {
+    super.initState();
+    pages = [
+      HomeFragment(
+        key: homeKey,
+        update: () {
+          setState(() {});
+        },
+      ),
+      const ListFragment(),
+      const MapFragment(),
+      const MineFragment(),
+    ];
+  }
+
+  update () {
+    homeKey.currentState?.update();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var pageController = PageController();
-
     return Scaffold(
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (ListTool.checklist != null)
+            Container(
+              color: Colors.orangeAccent.shade100,
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => const ChecklistPage()))
+                      .then((value) => update());
+                },
+                title: const Text('Checklist is ongoing in background ...'),
+                trailing: const Icon(Icons.expand_less_rounded),
+              ),
+            ),
+          _navBar(),
+        ],
+      ),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        onPageChanged: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        children: pages,
+      ),
+    );
+  }
+
+  NavigationBar _navBar() => NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
             pageController.jumpToPage(index);
@@ -190,17 +248,5 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
             label: BdL10n.current.bottomMyBirdart,
           ),
         ],
-      ),
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
-        onPageChanged: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        children: pages,
-      ),
-    );
-  }
+      );
 }

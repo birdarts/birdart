@@ -12,7 +12,9 @@ class TrackMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Track route preview'),
+      ),
       body: FlutterMap(
         options: MapOptions(
           initialCameraFit: CameraFit.bounds(
@@ -25,7 +27,7 @@ class TrackMapPage extends StatelessWidget {
           ),
         ),
         children: [
-          ...BirdartTiles.vecTile(context),
+          ...BirdartTiles.agolTile(context),
           layer,
         ],
       ),

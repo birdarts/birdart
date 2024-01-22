@@ -23,8 +23,7 @@ class UserProfile {
 
   static init() {
     _pref = SharedPref.pref;
-    final idStr = _pref.getString('id');
-    _id = idStr == null ? uuid.v1() : (idStr);
+    _id = _pref.getString('id') ?? uuid.v1(); // TODO remove `uuid.v1()` when the backend is ready
     _phone = _pref.getString('phone');
     _password = _pref.getString('password');
     _email = _pref.getString('email');

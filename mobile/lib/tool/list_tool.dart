@@ -3,5 +3,7 @@ import 'package:shared/shared.dart';
 
 class ListTool {
   static Tracker? tracker;
-  static Checklist? birdList;
+  static Checklist? checklist;
+  static List<DbRecord> records = [];
+  static List<Bird> birds = [];
 }

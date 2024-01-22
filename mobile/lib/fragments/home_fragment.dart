@@ -4,16 +4,19 @@ import 'package:intl/intl.dart';
 
 import '../l10n/l10n.dart';
 import '../entity/consts.dart';
-import '../pages/new_list_page.dart';
+import '../pages/checklist_page.dart';
+import '../tool/list_tool.dart';
 
 class HomeFragment extends StatefulWidget {
-  const HomeFragment({Key? key}) : super(key: key);
+  const HomeFragment({Key? key, required this.update}) : super(key: key);
+  
+  final VoidCallback update;
 
   @override
-  State<HomeFragment> createState() => _HomeFragmentState();
+  State<HomeFragment> createState() => HomeFragmentState();
 }
 
-class _HomeFragmentState extends State<HomeFragment>
+class HomeFragmentState extends State<HomeFragment>
     with AutomaticKeepAliveClientMixin {
   // override `wantKeepAlive` as `true` to keep page alive
   @override
@@ -43,6 +46,11 @@ class _HomeFragmentState extends State<HomeFragment>
         });
       }
     });
+  }
+
+  update() {
+    widget.update.call();
+    setState(() {});
   }
 
   updateSwitcher() {
@@ -237,7 +245,8 @@ class _HomeFragmentState extends State<HomeFragment>
         ),
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewListPage()));
+              MaterialPageRoute(builder: (context) => const ChecklistPage()))
+              .then((value) => update());
         },
       );
 
@@ -263,16 +272,25 @@ class _HomeFragmentState extends State<HomeFragment>
           fontWeight: FontWeight.w500,
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(child: _dateWidget(context)),
-          _divider,
-          Expanded(child: _timeWidget(context)),
-          _divider,
-          _trackSwitch(),
-          _divider,
-          Expanded(child: _buttons()),
-        ],
+      body: IgnorePointer(
+        ignoring: ListTool.checklist != null,
+        child: Container(
+          foregroundDecoration: ListTool.checklist != null ? const BoxDecoration(
+            color: Colors.grey,
+            backgroundBlendMode: BlendMode.saturation,
+          ) : null,
+          child: Column(
+            children: [
+              Expanded(child: _dateWidget(context)),
+              _divider,
+              Expanded(child: _timeWidget(context)),
+              _divider,
+              _trackSwitch(),
+              _divider,
+              Expanded(child: _buttons()),
+            ],
+          ),
+        ),
       ),
     );
   }

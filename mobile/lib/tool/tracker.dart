@@ -41,6 +41,7 @@ class Tracker {
   Track track = Track.empty(UserProfile.id);
 
   bool get mounted => context.mounted;
+  VoidCallback? callback;
 
   androidBatteryCheck() {
     if (Platform.isAndroid) {
@@ -261,19 +262,6 @@ class Tracker {
         ),
       );
 
-  PolylineLayer getLayer(List<LatLng> latlngList) {
-    return PolylineLayer(
-      polylineCulling: true,
-      polylines: [
-        Polyline(
-          points: latlngList,
-          color: Colors.blue,
-          strokeWidth: 3,
-        ),
-      ],
-    );
-  }
-
   Widget getTrackItem(Track track) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
@@ -373,7 +361,7 @@ class Tracker {
     }
   }
 
-  startTrack({VoidCallback? callback}) async {
+  startTrack() async {
     track = Track.empty(UserProfile.id);
     track.id = uuid.v1();
 
@@ -440,4 +428,17 @@ class Tracker {
       db.trackDao.insertOne(track);
     });
   }
+}
+
+PolylineLayer getLayer(List<LatLng> latlngList) {
+  return PolylineLayer(
+    polylineCulling: true,
+    polylines: [
+      Polyline(
+        points: latlngList,
+        color: Colors.blue,
+        strokeWidth: 3,
+      ),
+    ],
+  );
 }

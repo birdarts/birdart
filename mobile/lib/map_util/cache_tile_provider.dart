@@ -6,7 +6,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/src/layer/tile_layer/tile_provider/network_image_provider.dart'; // this line will be warned as "Don't import Implementation files from other package", just ignore it.
+// ignore: implementation_imports
+import 'package:flutter_map/src/layer/tile_layer/tile_provider/network_image_provider.dart';
 import '../entity/app_dir.dart';
 import 'package:path/path.dart' as path;
 

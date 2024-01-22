@@ -102,9 +102,9 @@ abstract class BirdListDao {
   @update
   Future<int> updateList(List<Checklist> projects);
 
-  @Query("SELECT * FROM BirdList")
+  @Query("SELECT * FROM Checklist")
   Future<List<Checklist>> getAll();
 
-  @Query("SELECT * FROM BirdList WHERE id = :projectId")
+  @Query("SELECT * FROM Checklist WHERE id = :projectId")
   Future<List<Checklist>> getById(String projectId);
 }
