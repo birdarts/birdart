@@ -269,12 +269,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
           recordInit() {
             setState(() {
               record = DbRecord.add(
-                  project: ListTool.checklist!.id,
+                  checklist: ListTool.checklist!.id,
                   species: bird.scientific,
                   speciesRef: bird.id,
-                  notes: '',
                   author: UserProfile.id,
-                  tags: []);
+              );
               ListTool.records.add(record!);
             });
           }
@@ -301,7 +300,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             project: ListTool.checklist!.id,
                           ))).then((value) {
                 // check if amount is zero, delete data.
-                if (value) {
+                if (record!.amount <= 0) {
                   removeRecord();
                 }
               });

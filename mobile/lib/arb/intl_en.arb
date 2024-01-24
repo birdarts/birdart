@@ -89,5 +89,12 @@
   "profileEmail": "Email",
   "profileLogout": "Log out",
   "locationDisabled": "Location services are disabled. Please enable the services",
-  "locationPermissionDenied": "Location permissions are permanently denied, we cannot request permissions"
+  "locationPermissionDenied": "Location permissions are permanently denied, we cannot request permissions",
+  "nestling": "nestling",
+  "juvenile": "juvenile",
+  "adult": "adult",
+  "ageUnknown": "age unknown",
+  "sexUnknown": "sex unknown",
+  "male": "male",
+  "female": "female"
 }

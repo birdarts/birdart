@@ -29,6 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "adult": MessageLookupByLibrary.simpleMessage("adult"),
+        "ageUnknown": MessageLookupByLibrary.simpleMessage("age unknown"),
         "appName": MessageLookupByLibrary.simpleMessage("Birdart"),
         "bottomExplore": MessageLookupByLibrary.simpleMessage("Explore"),
         "bottomHome": MessageLookupByLibrary.simpleMessage("Home"),
@@ -37,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "databaseError": MessageLookupByLibrary.simpleMessage("Database error"),
         "exploreTitle": MessageLookupByLibrary.simpleMessage("Explore nearby"),
+        "female": MessageLookupByLibrary.simpleMessage("female"),
         "homeBirding": MessageLookupByLibrary.simpleMessage("Go birding"),
         "homeDate": MessageLookupByLibrary.simpleMessage("Date"),
         "homeDisableTrack":
@@ -47,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeOldRecord":
             MessageLookupByLibrary.simpleMessage("Start checklist"),
         "homeTime": MessageLookupByLibrary.simpleMessage("Time"),
+        "juvenile": MessageLookupByLibrary.simpleMessage("juvenile"),
         "locationDisabled": MessageLookupByLibrary.simpleMessage(
             "Location services are disabled. Please enable the services"),
         "locationPermissionDenied": MessageLookupByLibrary.simpleMessage(
@@ -86,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Network error."),
         "loginSuccess": MessageLookupByLibrary.simpleMessage("Login success."),
         "lowercaseAppName": MessageLookupByLibrary.simpleMessage("birdart"),
+        "male": MessageLookupByLibrary.simpleMessage("male"),
         "mapCoordinate": m0,
         "mapNameAgol": MessageLookupByLibrary.simpleMessage("Arcgis Satellite"),
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("OSM"),
@@ -100,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myRegister": MessageLookupByLibrary.simpleMessage("Register"),
         "mySettings": MessageLookupByLibrary.simpleMessage("Settings"),
         "myTitle": MessageLookupByLibrary.simpleMessage("My Birdart"),
+        "nestling": MessageLookupByLibrary.simpleMessage("nestling"),
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
         "newListAutoHotspot":
             MessageLookupByLibrary.simpleMessage("Auto select"),
@@ -140,6 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsWifiSyncImage": MessageLookupByLibrary.simpleMessage(
             "Auto upload images under WiFi"),
         "settingsWifiSyncTrack": MessageLookupByLibrary.simpleMessage(
-            "Auto upload tracks under WiFi")
+            "Auto upload tracks under WiFi"),
+        "sexUnknown": MessageLookupByLibrary.simpleMessage("sex unknown")
       };
 }

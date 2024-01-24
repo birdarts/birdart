@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "adult": MessageLookupByLibrary.simpleMessage("成鸟"),
+        "ageUnknown": MessageLookupByLibrary.simpleMessage("年龄不详"),
         "bottomExplore": MessageLookupByLibrary.simpleMessage("探索"),
         "bottomHome": MessageLookupByLibrary.simpleMessage("首页"),
         "bottomMyBirdart": MessageLookupByLibrary.simpleMessage("我的Birdart"),
@@ -35,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "databaseError": MessageLookupByLibrary.simpleMessage("数据库错误"),
         "exploreTitle": MessageLookupByLibrary.simpleMessage("探索周边"),
+        "female": MessageLookupByLibrary.simpleMessage("female"),
         "homeBirding": MessageLookupByLibrary.simpleMessage("去观鸟！"),
         "homeDate": MessageLookupByLibrary.simpleMessage("日期"),
         "homeDisableTrack": MessageLookupByLibrary.simpleMessage("关闭轨迹记录"),
@@ -42,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeJoinTeam": MessageLookupByLibrary.simpleMessage("加入观鸟队伍"),
         "homeOldRecord": MessageLookupByLibrary.simpleMessage("输入记录"),
         "homeTime": MessageLookupByLibrary.simpleMessage("时间"),
+        "juvenile": MessageLookupByLibrary.simpleMessage("未成年"),
         "locationDisabled":
             MessageLookupByLibrary.simpleMessage("定位服务未开启，请开启定位服务"),
         "locationPermissionDenied":
@@ -75,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginHint": MessageLookupByLibrary.simpleMessage("已有账号？立刻登陆。"),
         "loginNetworkError": MessageLookupByLibrary.simpleMessage("网络错误。"),
         "loginSuccess": MessageLookupByLibrary.simpleMessage("登陆成功。"),
+        "male": MessageLookupByLibrary.simpleMessage("male"),
         "mapCoordinate": m0,
         "mapNameAgol": MessageLookupByLibrary.simpleMessage("Arcgis卫星图"),
         "mapNameOSM": MessageLookupByLibrary.simpleMessage("开放街道地图"),
@@ -89,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myRegister": MessageLookupByLibrary.simpleMessage("注册"),
         "mySettings": MessageLookupByLibrary.simpleMessage("设置"),
         "myTitle": MessageLookupByLibrary.simpleMessage("个人中心"),
+        "nestling": MessageLookupByLibrary.simpleMessage("幼鸟"),
         "networkError": MessageLookupByLibrary.simpleMessage("网络错误"),
         "newListAutoHotspot": MessageLookupByLibrary.simpleMessage("自动选择"),
         "newListSearch": MessageLookupByLibrary.simpleMessage("搜索鸟种"),
@@ -120,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsWifiSyncImage":
             MessageLookupByLibrary.simpleMessage("WiFi下自动同步图片"),
         "settingsWifiSyncTrack":
-            MessageLookupByLibrary.simpleMessage("WiFi下自动同步轨迹")
+            MessageLookupByLibrary.simpleMessage("WiFi下自动同步轨迹"),
+        "sexUnknown": MessageLookupByLibrary.simpleMessage("性别不详")
       };
 }

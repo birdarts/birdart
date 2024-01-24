@@ -13,5 +13,6 @@ export 'model/hotspot.dart';
 export 'model/track.dart';
 export 'model/type_converter.dart';
 export 'model/uuid_gen.dart';
+export 'tools/record_tool.dart';
 
 // TODO: Export any libraries intended for clients of this package.

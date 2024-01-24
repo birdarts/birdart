@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:floor_annotation/floor_annotation.dart';
 
 class DateTimeConverter extends TypeConverter<DateTime, int> {
@@ -28,4 +30,18 @@ class StringListConverter extends TypeConverter<List<String>, String> {
 
   @override
   String encode(List<String> value) => value.toString();
+}
+
+class MapConverter extends TypeConverter<Map<String, dynamic>, String> {
+  @override
+  Map<String, dynamic> decode(String databaseValue) {
+    try {
+      return jsonDecode(databaseValue);
+    } catch(e) {
+      return {};
+    }
+  }
+
+  @override
+  String encode(Map<String, dynamic> value) => jsonEncode(value);
 }

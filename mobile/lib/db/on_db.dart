@@ -11,7 +11,7 @@ part 'on_db.g.dart';
   entities: [Bird, Hotspot, DbImage, DbRecord, Checklist, Track],
   version: 2,
 )
-@TypeConverters([DateTimeConverter, StringListConverter])
+@TypeConverters([DateTimeConverter, StringListConverter, MapConverter])
 abstract class OnDb extends FloorDatabase {
   DbImageDao get imageDao;
   BirdListDao get birdListDao;

@@ -819,6 +819,76 @@ class BdL10n {
       args: [],
     );
   }
+
+  /// `nestling`
+  String get nestling {
+    return Intl.message(
+      'nestling',
+      name: 'nestling',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `juvenile`
+  String get juvenile {
+    return Intl.message(
+      'juvenile',
+      name: 'juvenile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `adult`
+  String get adult {
+    return Intl.message(
+      'adult',
+      name: 'adult',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `age unknown`
+  String get ageUnknown {
+    return Intl.message(
+      'age unknown',
+      name: 'ageUnknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `sex unknown`
+  String get sexUnknown {
+    return Intl.message(
+      'sex unknown',
+      name: 'sexUnknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `male`
+  String get male {
+    return Intl.message(
+      'male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `female`
+  String get female {
+    return Intl.message(
+      'female',
+      name: 'female',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<BdL10n> {

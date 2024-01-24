@@ -1,11 +1,12 @@
 import 'package:floor_annotation/floor_annotation.dart';
+import 'package:shared/shared.dart';
 import 'uuid_gen.dart';
 
 @Entity(tableName: 'RECORD')
 class DbRecord {
   @primaryKey
   String id;
-  String project;
+  String checklist;
   String author;
 
   String species;
@@ -14,6 +15,7 @@ class DbRecord {
   List<String> tags;
   String notes;
   int amount;
+  Map<String, dynamic> appendix;
   bool sync; // if changes already uploaded.
 
   DateTime createTime;
@@ -21,7 +23,7 @@ class DbRecord {
 
   DbRecord({
     required this.id,
-    required this.project,
+    required this.checklist,
     required this.author,
     required this.species,
     required this.speciesRef,
@@ -31,47 +33,84 @@ class DbRecord {
     required this.createTime,
     required this.updateTime,
     required this.tags,
+    required this.appendix
   });
 
   factory DbRecord.fromJson(Map<String, dynamic> json) => DbRecord(
         id: (json['id']),
-        project: (json['project']),
+        checklist: (json['checklist']),
         author: (json['author']),
         species: json['species'],
         speciesRef: json['speciesRef'],
         notes: json['notes'],
         sync: true,
         amount: int.tryParse(json['amount'].toString()) ?? 1,
-    createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
-    updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
+        createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
+        updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
         tags: json['tags'],
+        appendix: json['appendix']
       );
 
   Map<String, dynamic> toJson() => {
         '_id': id.toString(),
-        'project': project.toString(),
+        'checklist': checklist.toString(),
         'author': author.toString(),
         'species': species,
         'speciesRef': speciesRef,
         'notes': notes,
         'amount': amount,
-    'createTime': createTime.microsecondsSinceEpoch,
-    'updateTime': updateTime.microsecondsSinceEpoch,
-        'tags': tags
+        'createTime': createTime.microsecondsSinceEpoch,
+        'updateTime': updateTime.microsecondsSinceEpoch,
+        'tags': tags,
+        'appendix': appendix
       };
 
   DbRecord.add(
-      {required this.project,
+      {required this.checklist,
       required this.species,
       required this.speciesRef,
-      required this.notes,
-      required this.author,
-      required this.tags})
+      required this.author,})
       : id = uuid.v1(),
         sync = false,
         amount = 1,
+        appendix = {},
+        notes = '',
+        tags = [],
         createTime = DateTime.now(),
         updateTime = DateTime.now();
+
+  @ignore
+  String get oil => appendix[RecordKeys.oil] ?? '';
+
+  @ignore
+  set oil(String value) {
+    appendix[RecordKeys.oil] = value;
+  }
+
+  @ignore
+  Map<String, Map<String, int>> get ageSex {
+    appendix[RecordKeys.ageSex] = appendix[RecordKeys.ageSex] ?? {
+      RecordKeys.nestling: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+      RecordKeys.juvenile: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+      RecordKeys.adult: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+      RecordKeys.undefined: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+    };
+
+    return appendix[RecordKeys.ageSex];
+  }
+
+  @ignore
+  set ageSex(Map<String, Map<String, int>> value) {
+    appendix[RecordKeys.ageSex] = value;
+  }
+
+  @ignore
+  String get behaviour => appendix[RecordKeys.behaviour] ?? '';
+
+  @ignore
+  set behaviour(String value) {
+    appendix[RecordKeys.behaviour] = value;
+  }
 }
 
 @dao

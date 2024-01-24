@@ -1,47 +1,32 @@
 import 'dart:async';
 
-import '../l10n/l10n.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:shared/shared.dart';
 
-import '../entity/user_profile.dart';
-import '../db/db_manager.dart';
-import '../tool/image_tool.dart';
-import '../widget/picture_grid.dart';
+import '../dialogs/ringing.dart';
+import '../l10n/l10n.dart';
 
 class RecordDetail extends StatefulWidget {
   final DbRecord record;
   final String project;
 
-  const RecordDetail({Key? key, required this.record, required this.project})
-      : super(key: key);
+  const RecordDetail({Key? key, required this.record, required this.project}) : super(key: key);
 
   @override
   State<RecordDetail> createState() => _RecordDetailState();
 }
 
 class _RecordDetailState extends State<RecordDetail> {
-  final _formKey = GlobalKey<FormState>();
-
-  late DbRecord record;
+  late final DbRecord record;
   late final TextEditingController noteController;
-  TextEditingController quantityController = TextEditingController();
-  List<String> tags = [];
-  Map<String, Map<String, int>> birdInfo = {
-    '幼鸟': {'雄性': 0, '雌性': 0, '性别不详': 0},
-    '未成年': {'雄性': 0, '雌性': 0, '性别不详': 0},
-    '成年': {'雄性': 0, '雌性': 0, '性别不详': 0},
-    '年龄不详': {'雄性': 0, '雌性': 0, '性别不详': 0},
-  };
-  String oilBirdStatus = '';
-  String breedingCode = '';
+  late final TextEditingController amountController;
 
   @override
   void initState() {
     record = widget.record;
     noteController = TextEditingController(text: record.notes);
+    amountController = TextEditingController(text: record.amount.toString());
 
     super.initState();
   }
@@ -50,6 +35,7 @@ class _RecordDetailState extends State<RecordDetail> {
   void dispose() {
     // clear controller resources
     noteController.dispose();
+    amountController.dispose();
     super.dispose();
   }
 
@@ -91,9 +77,16 @@ class _RecordDetailState extends State<RecordDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: quantityController,
-                decoration: InputDecoration(labelText: '数量*'),
+              CupertinoTextField(
+                keyboardType: TextInputType.number,
+                onChanged: (val) {
+                  final number = int.tryParse(val);
+                  if (number != null) {
+                    record.amount = number;
+                  }
+                },
+                controller: amountController,
+                prefix: Text('数量'),
               ),
               SizedBox(height: 16),
               Wrap(
@@ -116,9 +109,8 @@ class _RecordDetailState extends State<RecordDetail> {
               SizedBox(height: 16),
               buildBreedingCodeDropdown(),
               SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(labelText: '文字备注'),
-              ),
+              _getNoteItem(),
+              showRingingInfo(),
             ],
           ),
         ),
@@ -134,36 +126,43 @@ class _RecordDetailState extends State<RecordDetail> {
         onSelected: (selected) {
           setState(() {
             if (selected) {
-              tags.add(label);
+              record.tags.add(label);
             } else {
-              tags.remove(label);
+              record.tags.remove(label);
             }
           });
         },
-        selected: tags.contains(label),
+        selected: record.tags.contains(label),
       ),
     );
   }
 
   Widget buildBirdInfoTable() {
     return Table(
-      columnWidths: {
+      columnWidths: const {
         0: FlexColumnWidth(1),
         1: FlexColumnWidth(1),
         2: FlexColumnWidth(1),
         3: FlexColumnWidth(1),
       },
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: [
-        buildTableRow(''),
-        buildTableRow('幼鸟', birdInfo['幼鸟']),
-        buildTableRow('未成年', birdInfo['未成年']),
-        buildTableRow('成年', birdInfo['成年']),
-        buildTableRow('年龄不详', birdInfo['年龄不详']),
+        TableRow(children: [
+          const TableCell(child: Center(child: Text(''))),
+          TableCell(child: Center(child: Text(BdL10n.current.male))),
+          TableCell(child: Center(child: Text(BdL10n.current.female))),
+          TableCell(child: Center(child: Text(BdL10n.current.sexUnknown))),
+        ]),
+        buildTableRow(BdL10n.current.nestling, RecordKeys.nestling),
+        buildTableRow(BdL10n.current.juvenile, RecordKeys.juvenile),
+        buildTableRow(BdL10n.current.adult, RecordKeys.adult),
+        buildTableRow(BdL10n.current.ageUnknown, RecordKeys.undefined),
       ],
     );
   }
 
-  TableRow buildTableRow(String header, [Map<String, int>? data]) {
+  TableRow buildTableRow(String header, String key) {
+    var data = record.ageSex[key];
     return TableRow(
       children: [
         TableCell(
@@ -175,19 +174,46 @@ class _RecordDetailState extends State<RecordDetail> {
         TableCell(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(data?['雄性'].toString() ?? ''),
+            child: CupertinoTextField(
+              keyboardType: TextInputType.number,
+              onChanged: (val) {
+                final number = int.tryParse(val);
+                if (number != null) {
+                  data?[RecordKeys.male] = number;
+                }
+              },
+              controller: TextEditingController(text: data?[RecordKeys.male].toString() ?? '0'),
+            ),
           ),
         ),
         TableCell(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(data?['雌性'].toString() ?? ''),
+            child: CupertinoTextField(
+              keyboardType: TextInputType.number,
+              onChanged: (val) {
+                final number = int.tryParse(val);
+                if (number != null) {
+                  data?[RecordKeys.female] = number;
+                }
+              },
+              controller: TextEditingController(text: data?[RecordKeys.female].toString() ?? '0'),
+            ),
           ),
         ),
         TableCell(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(data?['性别不详'].toString() ?? ''),
+            child: CupertinoTextField(
+              keyboardType: TextInputType.number,
+              onChanged: (val) {
+                final number = int.tryParse(val);
+                if (number != null) {
+                  data?[RecordKeys.undefined] = number;
+                }
+              },
+              controller: TextEditingController(text: data?[RecordKeys.undefined].toString() ?? '0'),
+            ),
           ),
         ),
       ],
@@ -195,84 +221,84 @@ class _RecordDetailState extends State<RecordDetail> {
   }
 
   Widget buildOilBirdStatusRadio() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('沾油鸟'),
-        RadioListTile(
-          title: Text('未沾油污'),
-          value: '未沾油污',
-          groupValue: oilBirdStatus,
-          onChanged: (value) {
-            setState(() {
-              oilBirdStatus = value.toString();
-            });
-          },
-        ),
-        RadioListTile(
-          title: Text('沾有油污，但状态没有明显不佳'),
-          value: '沾有油污，但状态没有明显不佳',
-          groupValue: oilBirdStatus,
-          onChanged: (value) {
-            setState(() {
-              oilBirdStatus = value.toString();
-            });
-          },
-        ),
-        RadioListTile(
-          title: Text('沾有油污，状态明显不佳'),
-          value: '沾有油污，状态明显不佳',
-          groupValue: oilBirdStatus,
-          onChanged: (value) {
-            setState(() {
-              oilBirdStatus = value.toString();
-            });
-          },
-        ),
-        RadioListTile(
-          title: Text('不能确定是否沾油'),
-          value: '不能确定是否沾油',
-          groupValue: oilBirdStatus,
-          onChanged: (value) {
-            setState(() {
-              oilBirdStatus = value.toString();
-            });
-          },
+        const Text('沾油鸟：'),
+        Expanded(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: record.oil,
+            onChanged: (value) {
+              setState(() {
+                record.oil = value!;
+              });
+            },
+            items: const [
+              DropdownMenuItem(
+                value: '',
+                child: Text(''),
+              ),
+              DropdownMenuItem(
+                value: 'Free',
+                child: Text('未沾油污'),
+              ),
+              DropdownMenuItem(
+                value: 'Good',
+                child: Text('沾有油污，但状态没有明显不佳'),
+              ),
+              DropdownMenuItem(
+                value: 'Bad',
+                child: Text('沾有油污，状态明显不佳'),
+              ),
+              DropdownMenuItem(
+                value: 'unknown',
+                child: Text('不能确定是否沾油'), // Add more items as needed
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
   Widget buildBreedingCodeDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('繁殖代码'),
-        DropdownButton<String>(
-          isExpanded: true,
-          value: breedingCode,
-          onChanged: (value) {
-            setState(() {
-              breedingCode = value!;
-            });
-          },
-          items: [
-            DropdownMenuItem(
-              value: '',
-              child: Text(''),
-            ),
-            DropdownMenuItem(
-              value: 'NY',
-              child: Text('NY {0}：巢内有幼鸟'),
-            ),
-            DropdownMenuItem(
-              value: 'NE',
-              child: Text('NE {0}：巢内有鸟蛋'),
-            ),
-            // Add more items as needed
-          ],
+        const Text('繁殖代码：'),
+        Expanded(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: record.behaviour,
+            onChanged: (value) {
+              setState(() {
+                record.behaviour = value!;
+              });
+            },
+            items: const [
+              DropdownMenuItem(
+                value: '',
+                child: Text(''),
+              ),
+              DropdownMenuItem(
+                value: 'NY',
+                child: Text('NY {0}：巢内有幼鸟'),
+              ),
+              DropdownMenuItem(
+                value: 'NE',
+                child: Text('NE {0}：巢内有鸟蛋'),
+              ),
+              // Add more items as needed
+            ],
+          ),
         ),
       ],
     );
   }
+
+  ElevatedButton showRingingInfo() => ElevatedButton(
+        onPressed: () => showRingingDialog(context),
+        child: const Text('编辑环志信息'),
+      );
 }

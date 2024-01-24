@@ -74,5 +74,12 @@
   "profileEmail": "电子邮箱",
   "profileLogout": "退出账号",
   "locationDisabled": "定位服务未开启，请开启定位服务",
-  "locationPermissionDenied": "位置权限已被永久拒绝，无法请求位置权限"
+  "locationPermissionDenied": "位置权限已被永久拒绝，无法请求位置权限",
+  "nestling": "幼鸟",
+  "juvenile": "未成年",
+  "adult": "成鸟",
+  "ageUnknown": "年龄不详",
+  "sexUnknown": "性别不详",
+  "male": "male",
+  "female": "female"
 }
