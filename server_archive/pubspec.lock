@@ -65,6 +65,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  clock:
+    dependency: transitive
+    description:
+      name: clock
+      sha256: cb6d7f03e1de671e34607e909a7213e31d7752be4fb66a86d29fe1eb14bfb5cf
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.1"
   collection:
     dependency: transitive
     description:
@@ -177,6 +185,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.19.0"
   io:
     dependency: transitive
     description:
@@ -201,6 +217,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.8.1"
+  latlong2:
+    dependency: transitive
+    description:
+      name: latlong2
+      sha256: "18712164760cee655bc790122b0fd8f3d5b3c36da2cb7bf94b68a197fbb0811b"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.0"
   lints:
     dependency: "direct dev"
     description:
@@ -516,10 +540,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: "22c94e5ad1e75f9934b766b53c742572ee2677c56bc871d850a57dad0f82127f"
+      sha256: cd210a09f7c18cbe5a02511718e0334de6559871052c90a90c0cca46a4aa81c8
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.2.2"
+    version: "4.3.3"
   vm_service:
     dependency: transitive
     description:
@@ -560,14 +584,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.1"
-  xid:
-    dependency: transitive
-    description:
-      name: xid
-      sha256: c22d6aa5278cbceff7b41f40e187330e028afd34acca901e4b496e830c9c1ec3
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.2"
   xml:
     dependency: transitive
     description:
