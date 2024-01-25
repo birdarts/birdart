@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:birdart/db/db_manager.dart';
 import 'package:birdart/entity/user_profile.dart';
+import 'package:birdart/pages/hotspot_select_page.dart';
 import 'package:birdart/pages/record_details_page.dart';
 import 'package:birdart/pages/track_map_page.dart';
 import 'package:flutter/material.dart';
@@ -186,7 +187,8 @@ class _ChecklistPageState extends State<ChecklistPage> {
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        // TODO
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                            HotspotSelectPage(initLatLng: ListTool.tracker!.geoxml.wpts.last)));
                       },
                       child: Row(
                         children: [
