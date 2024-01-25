@@ -4,6 +4,8 @@ void main() {
   runApp(const MyApp());
 }
 
+// flutter build web --release --base-href=/web/ --web-renderer html
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
