@@ -7,7 +7,14 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  dart_frog: ^1.0.0
+  dart_frog:
+    git:
+      url: https://github.com/sun-jiao/dart_frog.git
+      ref: fix773
+      path: packages/dart_frog
+
+  session_shelf:
+    path: ../../session_shelf/
 
 dev_dependencies:
   mocktail: ^1.0.0
