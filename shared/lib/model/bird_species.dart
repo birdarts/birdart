@@ -1,6 +1,5 @@
 import 'package:floor_annotation/floor_annotation.dart';
 
-
 @entity
 class Bird {
   @primaryKey
