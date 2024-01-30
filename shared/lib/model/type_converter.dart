@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:floor_annotation/floor_annotation.dart';
+import 'user.dart';
 
 class DateTimeConverter extends TypeConverter<DateTime, int> {
   @override
@@ -14,22 +15,27 @@ class DateTimeConverter extends TypeConverter<DateTime, int> {
 class StringListConverter extends TypeConverter<List<String>, String> {
   @override
   List<String> decode(String databaseValue) {
-    if (databaseValue.isEmpty) {
+    try {
+      return jsonDecode(databaseValue);
+    } catch(e) {
       return [];
-    } else {
-      databaseValue =
-          databaseValue.toString().replaceAll('[', '').replaceAll(']', '');
-
-      if (databaseValue.isEmpty) {
-        return [];
-      } else {
-        return databaseValue.split(', ');
-      }
     }
+    // if (databaseValue.isEmpty) {
+    //   return [];
+    // } else {
+    //   databaseValue =
+    //       databaseValue.toString().replaceAll('[', '').replaceAll(']', '');
+    //
+    //   if (databaseValue.isEmpty) {
+    //     return [];
+    //   } else {
+    //     return databaseValue.split(', ');
+    //   }
+    // }
   }
 
   @override
-  String encode(List<String> value) => value.toString();
+  String encode(List<String> value) => jsonEncode(value); // value.toString();
 }
 
 class MapConverter extends TypeConverter<Map<String, dynamic>, String> {
@@ -44,4 +50,20 @@ class MapConverter extends TypeConverter<Map<String, dynamic>, String> {
 
   @override
   String encode(Map<String, dynamic> value) => jsonEncode(value);
+}
+
+class StatusConverter extends TypeConverter<UserStatus, int> {
+  @override
+  UserStatus decode(int databaseValue) => UserStatus.values[databaseValue];
+
+  @override
+  int encode(UserStatus value) => value.value;
+}
+
+class RoleConverter extends TypeConverter<UserRole, int> {
+  @override
+  UserRole decode(int databaseValue) => UserRole.values[databaseValue];
+
+  @override
+  int encode(UserRole value) => value.value;
 }

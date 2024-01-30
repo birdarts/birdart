@@ -1,9 +1,17 @@
 import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
+import 'package:floor_annotation/floor_annotation.dart';
 import 'package:shared/model/uuid_gen.dart';
 
-class UserStatus {
+abstract class ExtendableEnum {
+  const ExtendableEnum();
+  static const List<ExtendableEnum> values = [];
+  int get value;
+}
+
+class UserStatus extends ExtendableEnum {
+  @override
   final int value;
   const UserStatus._(this.value);
 
@@ -15,7 +23,8 @@ class UserStatus {
   static const List<UserStatus> values = [active, blocked, deleted, autoBlocked];
 }
 
-class UserRole {
+class UserRole extends ExtendableEnum {
+  @override
   final int value;
   const UserRole._(this.value);
 
@@ -27,6 +36,7 @@ class UserRole {
   static const List<UserRole> values = [birder, reviewer, admin, sysAdmin];
 }
 
+@entity
 class User {
   User({
     required this.id,
@@ -42,6 +52,7 @@ class User {
     required this.lastLoginTime,
   });
 
+  @primaryKey
   String id;
   String name;
   String password; // in hash
@@ -137,3 +148,39 @@ final _algorithm = Argon2id(
   iterations: 1, // For more security, you should usually raise memory parameter, not iterations.
   hashLength: 32, // Number of bytes in the returned hash
 );
+
+@dao
+abstract class UserDao {
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<int> insertOne(User user);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<List<int>> insertList(List<User> users);
+
+  @delete
+  Future<int> deleteOne(User user);
+
+  @delete
+  Future<int> deleteList(List<User> users);
+
+  @update
+  Future<int> updateOne(User user);
+
+  @update
+  Future<int> updateList(List<User> users);
+
+  @Query("DELETE FROM user WHERE id = :userId")
+  Future<int?> deleteById(String userId);
+
+  @Query("SELECT * FROM user ORDER BY datetime(startTime) desc")
+  Future<List<User>> getAll();
+
+  @Query("SELECT * FROM user WHERE id = :userId")
+  Future<List<User>> getById(String userId);
+
+  @Query("SELECT * FROM user WHERE sync <> 1")
+  Future<List<User>> getUnsynced();
+
+  @Query("SELECT * FROM user WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
+  Future<List<User>> getByDate(String date);
+}
