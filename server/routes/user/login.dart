@@ -1,17 +1,16 @@
+import 'package:birdart_server/responses.dart';
 import 'package:dart_frog/dart_frog.dart';
-
-import '../../lib/user_database.dart';
 
 Response onRequest(RequestContext context) {
   final request = context.request;
   final params = request.uri.queryParameters;
 
   if (params.containsKey('name') &&
-      params.containsKey('password') &&
-      users.containsKey(params['name']) &&
-      users[params['name']] == params['password']) {
+      params.containsKey('password')) {
+
+    // TODO check username existence and password
     return Response(body: 'Login Successful!');
   } else {
-    return Response(body: 'Invalid credentials', statusCode: 404);
+    return Responses.badRequest('Invalid parameters.');
   }
 }
