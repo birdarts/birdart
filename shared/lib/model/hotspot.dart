@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 
-import '../src/uuid_gen.dart';
-
-@UseRowClass(_Hotspot)
+// @UseRowClass(_Hotspot)
 class Hotspot extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -103,7 +102,7 @@ class _Hotspot {
       };
 
   _Hotspot.empty(this.author)
-      : id = uuid.v1(),
+      : id = Uuid().v1(),
         name = '',
         lon = 0.0,
         lat = 0.0,

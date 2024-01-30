@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 
-import '../src/uuid_gen.dart';
-
-@UseRowClass(_Checklist)
+// @UseRowClass(_Checklist)
 class Checklist extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -90,7 +89,7 @@ class _Checklist {
       };
 
   _Checklist.empty(this.author, this.track)
-      : id = uuid.v1(),
+      : id = Uuid().v1(),
         notes = '',
         createTime = DateTime.now(),
         updateTime = DateTime.now(),

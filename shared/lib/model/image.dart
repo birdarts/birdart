@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 
-import '../src/uuid_gen.dart';
-
-@UseRowClass(_DbImage)
+// @UseRowClass(_DbImage)
 class DbImage extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -68,7 +67,7 @@ class _DbImage {
       required this.imageSize,
       required this.exif,
       required this.author})
-      : id = uuid.v1(),
+      : id = Uuid().v1(),
         sync = false;
 }
 

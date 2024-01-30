@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-@UseRowClass(_Bird)
+// @UseRowClass(Bird)
 class Bird extends Table {
   @override
   Set<Column> get primaryKey => {id};

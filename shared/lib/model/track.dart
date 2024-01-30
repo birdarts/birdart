@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 
-import '../src/uuid_gen.dart';
-
-@UseRowClass(_Track)
+// @UseRowClass(_Track)
 class Track extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -100,7 +99,7 @@ class _Track {
       };
 
   _Track.empty(this.author)
-      : id = uuid.v1(),
+      : id = Uuid().v1(),
         startTime = DateTime.fromMicrosecondsSinceEpoch(0),
         endTime = DateTime.fromMicrosecondsSinceEpoch(0),
         sync = false;

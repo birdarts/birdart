@@ -13,7 +13,6 @@ export 'model/record.dart';
 export 'model/hotspot.dart';
 export 'model/track.dart';
 export 'model/type_converter.dart';
-export 'src/uuid_gen.dart';
 export 'model/user.dart';
 export 'tools/record_tool.dart';
 

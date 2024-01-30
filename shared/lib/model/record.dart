@@ -1,7 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:shared/shared.dart';
+import 'package:uuid/uuid.dart';
 
-@UseRowClass(_DbRecord)
+// @UseRowClass(_DbRecord)
 class DbRecord extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -89,7 +90,7 @@ class _DbRecord {
       required this.species,
       required this.speciesRef,
       required this.author,})
-      : id = uuid.v1(),
+      : id = Uuid().v1(),
         sync = false,
         amount = 1,
         appendix = {},

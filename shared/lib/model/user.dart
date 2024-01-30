@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:drift/drift.dart';
-import 'package:shared/src/uuid_gen.dart';
+import 'package:uuid/uuid.dart';
 
 enum UserStatus {
   active(0),
@@ -26,7 +26,7 @@ enum UserRole {
   final int value;
 }
 
-@UseRowClass(_User)
+// @UseRowClass(_User)
 class User extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -82,7 +82,7 @@ class _User {
     UserStatus? status,
     UserRole? role,
   }) async {
-    final id = uuid.v1();
+    final id = Uuid().v1();
     final salt = base64.encode(await SecretKeyData.random(length: 32).extractBytes());
     final result = await hash(password, salt);
 
