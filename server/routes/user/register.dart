@@ -23,7 +23,7 @@ Future<Response> onRequest(RequestContext context) async {
 
   Session session = await getSessionOrNew(request);
   final fields = data.fields;
-  final user = User.fromRegisterData(fields);
+  // final user = User.fromRegisterData(fields);
 
   // TODO write user to database.
 

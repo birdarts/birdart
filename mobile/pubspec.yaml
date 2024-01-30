@@ -41,9 +41,9 @@ dependencies:
   camera: ^0.10.5+8
   device_info: ^2.0.3
   dio: ^5.4.0
+  drift: ^2.15.0
   exif: ^3.3.0
   extended_image: ^8.2.0
-  floor: ^1.4.2
   fluttertoast: ^8.2.4
   flutter_background_service: ^5.0.5
   flutter_localizations:
@@ -55,10 +55,10 @@ dependencies:
   geoxml: ^2.5.2
   intl: ^0.18.1
   latlong2: ^0.9.0
-  mobile_scanner: ^3.5.5
+  mobile_scanner: any
   optimize_battery: ^0.0.4
   path: ^1.8.3
-  path_provider: ^2.1.1
+  path_provider: ^2.1.2
   permission_handler: ^11.1.0
   photo_manager: ^3.0.0-dev.5
   provider: ^6.1.1
@@ -66,6 +66,8 @@ dependencies:
   relative_time: ^4.0.1
   shared_preferences: ^2.2.1
   sqflite: any
+  sqlite3: any
+  sqlite3_flutter_libs: ^0.5.19+1
   url_launcher: ^6.2.2
   vector_map_tiles: ^7.0.1
   wechat_assets_picker: ^9.0.0-dev.2
@@ -81,9 +83,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  build_runner: ^2.4.5
+  build_runner: ^2.4.8
   change_app_package_name: ^1.1.0
-  floor_generator: ^1.4.1
+  drift_dev: ^2.15.0
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
 

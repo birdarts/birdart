@@ -2,7 +2,8 @@ import 'package:drift/drift.dart';
 
 import 'uuid_gen.dart';
 
-class ImageTable extends Table {
+@UseRowClass(_DbImage)
+class DbImage extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -17,7 +18,7 @@ class ImageTable extends Table {
 }
 
 // @Entity(tableName: 'IMAGE')
-class DbImage {
+class _DbImage {
   // @primaryKey
   String id;
   String record;
@@ -28,7 +29,7 @@ class DbImage {
   int imageSize;
   bool sync;
 
-  DbImage({
+  _DbImage({
     required this.id,
     required this.record,
     required this.author,
@@ -39,7 +40,7 @@ class DbImage {
     required this.sync,
   });
 
-  factory DbImage.fromJson(Map<String, dynamic> json) => DbImage(
+  factory _DbImage.fromJson(Map<String, dynamic> json) => _DbImage(
         id: json['_id'],
         record: json['record'],
         author: json['author'],
@@ -60,7 +61,7 @@ class DbImage {
         'exif': exif,
       };
 
-  DbImage.add(
+  _DbImage.add(
       {required this.record,
       required this.imagePath,
       required this.imageId,
@@ -74,16 +75,16 @@ class DbImage {
 // @dao
 abstract class DbImageDao {
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(DbImage image);
+  Future<int> insertOne(_DbImage image);
 
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<DbImage> images);
+  Future<List<int>> insertList(List<_DbImage> images);
 
   // @delete
-  Future<int> deleteOne(DbImage image);
+  Future<int> deleteOne(_DbImage image);
 
   // @delete
-  Future<int> deleteList(List<DbImage> images);
+  Future<int> deleteList(List<_DbImage> images);
 
   // @Query("DELETE FROM image WHERE id = :imageId")
   Future<int?> deleteById(String imageId);
@@ -95,23 +96,23 @@ abstract class DbImageDao {
   Future<int?> deleteByProject(String projectId);
 
   // @update
-  Future<int> updateOne(DbImage image);
+  Future<int> updateOne(_DbImage image);
 
   // @update
-  Future<int> updateList(List<DbImage> images);
+  Future<int> updateList(List<_DbImage> images);
 
   // @Query("SELECT * FROM image")
-  Future<List<DbImage>> getAll();
+  Future<List<_DbImage>> getAll();
 
   // @Query("SELECT * FROM image WHERE project = :projectArg")
-  Future<List<DbImage>> getByProject(String projectArg);
+  Future<List<_DbImage>> getByProject(String projectArg);
 
   // @Query("SELECT * FROM image WHERE record = :recordArg")
-  Future<List<DbImage>> getByRecord(String recordArg);
+  Future<List<_DbImage>> getByRecord(String recordArg);
 
   // @Query("SELECT * FROM image WHERE project = :projectArg and sync <> 1")
-  Future<List<DbImage>> getByProjectUnsynced(String projectArg);
+  Future<List<_DbImage>> getByProjectUnsynced(String projectArg);
 
   // @Query("SELECT * FROM image WHERE record = :recordArg AND imagePath = :pathArg")
-  Future<List<DbImage>> getByRecordAndPath(String recordArg, String pathArg);
+  Future<List<_DbImage>> getByRecordAndPath(String recordArg, String pathArg);
 }

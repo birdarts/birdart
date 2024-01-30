@@ -26,7 +26,8 @@ enum UserRole {
   final int value;
 }
 
-class UserTable extends Table {
+@UseRowClass(_User)
+class User extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -45,8 +46,8 @@ class UserTable extends Table {
   DateTimeColumn get lastLoginTime => dateTime()();
 }
 
-class User {
-  User({
+class _User {
+  _User({
     required this.id,
     required this.name,
     required this.password,
@@ -72,7 +73,7 @@ class User {
   DateTime registerTime;
   DateTime lastLoginTime;
 
-  static Future<User> add({
+  static Future<_User> add({
     required String name,
     required String password,
     required String phone,
@@ -85,7 +86,7 @@ class User {
     final salt = base64.encode(await SecretKeyData.random(length: 32).extractBytes());
     final result = await hash(password, salt);
 
-    return User(
+    return _User(
       id: id,
       name: name,
       phone: phone,
@@ -124,8 +125,8 @@ class User {
     'lastLoginTime': lastLoginTime.microsecondsSinceEpoch,
   };
 
-  factory User.fromJson(Map<String, dynamic> data) =>
-      User(
+  factory _User.fromJson(Map<String, dynamic> data) =>
+      _User(
         id: data['id'],
         name: data['name'],
         password: data['password'],
@@ -139,8 +140,8 @@ class User {
         lastLoginTime: DateTime.fromMicrosecondsSinceEpoch(data['lastLoginTime']),
       );
 
-  static Future<User> fromRegisterData(Map<String, dynamic> data) async =>
-      await User.add(
+  static Future<_User> fromRegisterData(Map<String, dynamic> data) async =>
+      await _User.add(
         name: data['name'],
         password: data['password'],
         phone: data['phone'],

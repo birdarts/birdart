@@ -2,7 +2,8 @@ import 'package:drift/drift.dart';
 
 import 'uuid_gen.dart';
 
-class HotspotTable extends Table {
+@UseRowClass(_Hotspot)
+class Hotspot extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -27,7 +28,7 @@ class HotspotTable extends Table {
 
 
 // @entity
-class Hotspot {
+class _Hotspot {
   // @primaryKey
   String id;
   String author;
@@ -47,7 +48,7 @@ class Hotspot {
   String cityId;
   String countyId;
 
-  Hotspot({
+  _Hotspot({
     required this.id,
     required this.author,
     required this.name,
@@ -65,7 +66,7 @@ class Hotspot {
     required this.countyId,
   });
 
-  factory Hotspot.fromJson(Map<String, dynamic> json) => Hotspot(
+  factory _Hotspot.fromJson(Map<String, dynamic> json) => _Hotspot(
         id: json['_id'],
         author: json['author'],
         name: json['name'].toString(),
@@ -101,7 +102,7 @@ class Hotspot {
         'countyId': countyId,
       };
 
-  Hotspot.empty(this.author)
+  _Hotspot.empty(this.author)
       : id = uuid.v1(),
         name = '',
         lon = 0.0,
@@ -121,35 +122,35 @@ class Hotspot {
 // @dao
 abstract class HotspotDao {
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Hotspot hotspot);
+  Future<int> insertOne(_Hotspot hotspot);
 
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<Hotspot> hotspots);
+  Future<List<int>> insertList(List<_Hotspot> hotspots);
 
   // @delete
-  Future<int> deleteOne(Hotspot hotspot);
+  Future<int> deleteOne(_Hotspot hotspot);
 
   // @delete
-  Future<int> deleteList(List<Hotspot> hotspots);
+  Future<int> deleteList(List<_Hotspot> hotspots);
 
   // @update
-  Future<int> updateOne(Hotspot hotspot);
+  Future<int> updateOne(_Hotspot hotspot);
 
   // @update
-  Future<int> updateList(List<Hotspot> hotspots);
+  Future<int> updateList(List<_Hotspot> hotspots);
 
   // @Query("DELETE FROM hotspot WHERE id = :hotspotId")
   Future<int?> deleteById(String hotspotId);
 
   // @Query("SELECT * FROM hotspot ORDER BY datetime(startTime) desc")
-  Future<List<Hotspot>> getAll();
+  Future<List<_Hotspot>> getAll();
 
   // @Query("SELECT * FROM hotspot WHERE id = :hotspotId")
-  Future<List<Hotspot>> getById(String hotspotId);
+  Future<List<_Hotspot>> getById(String hotspotId);
 
   // @Query("SELECT * FROM hotspot WHERE sync <> 1")
-  Future<List<Hotspot>> getUnsynced();
+  Future<List<_Hotspot>> getUnsynced();
 
   // @Query("SELECT * FROM hotspot WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
-  Future<List<Hotspot>> getByDate(String date);
+  Future<List<_Hotspot>> getByDate(String date);
 }

@@ -1,11 +1,11 @@
-import 'on_db.dart';
+import 'drift_birdart.dart';
 
 class DbManager {
-  static OnDb? database;
+  static BirdartDatabase? database;
 
   static setDb() async {
-    database = await $FloorOnDb.databaseBuilder('on_database.db').build();
+    database = BirdartDatabase();
   }
 
-  static OnDb get db => database!;
+  static BirdartDatabase get db => database!;
 }

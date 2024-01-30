@@ -1,7 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:shared/shared.dart';
 
-class RecordTable extends Table {
+@UseRowClass(_DbRecord)
+class DbRecord extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -22,7 +23,7 @@ class RecordTable extends Table {
 }
 
 // @Entity(tableName: 'RECORD')
-class DbRecord {
+class _DbRecord {
   // @primaryKey
   String id;
   String checklist;
@@ -39,7 +40,7 @@ class DbRecord {
   DateTime createTime;
   DateTime updateTime;
 
-  DbRecord({
+  _DbRecord({
     required this.id,
     required this.checklist,
     required this.author,
@@ -54,7 +55,7 @@ class DbRecord {
     required this.appendix
   });
 
-  factory DbRecord.fromJson(Map<String, dynamic> json) => DbRecord(
+  factory _DbRecord.fromJson(Map<String, dynamic> json) => _DbRecord(
         id: (json['id']),
         checklist: (json['checklist']),
         author: (json['author']),
@@ -83,7 +84,7 @@ class DbRecord {
         'appendix': appendix
       };
 
-  DbRecord.add(
+  _DbRecord.add(
       {required this.checklist,
       required this.species,
       required this.speciesRef,
@@ -134,22 +135,22 @@ class DbRecord {
 // @dao
 abstract class DbRecordDao {
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(DbRecord record);
+  Future<int> insertOne(_DbRecord record);
 
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<DbRecord> records);
+  Future<List<int>> insertList(List<_DbRecord> records);
 
   // @delete
-  Future<int> deleteOne(DbRecord record);
+  Future<int> deleteOne(_DbRecord record);
 
   // @delete
-  Future<int> deleteList(List<DbRecord> records);
+  Future<int> deleteList(List<_DbRecord> records);
 
   // @update
-  Future<int> updateOne(DbRecord record);
+  Future<int> updateOne(_DbRecord record);
 
   // @update
-  Future<int> updateList(List<DbRecord> records);
+  Future<int> updateList(List<_DbRecord> records);
 
   // @Query("DELETE FROM record WHERE id = :recordId")
   Future<int?> deleteById(String recordId);
@@ -158,14 +159,14 @@ abstract class DbRecordDao {
   Future<int?> deleteByProject(String projectId);
 
   // @Query("SELECT * FROM record")
-  Future<List<DbRecord>> getAll();
+  Future<List<_DbRecord>> getAll();
 
   // @Query("SELECT * FROM record WHERE id = :idArg")
-  Future<List<DbRecord>> getById(String idArg);
+  Future<List<_DbRecord>> getById(String idArg);
 
   // @Query("SELECT * FROM record WHERE project = :projectArg")
-  Future<List<DbRecord>> getByProject(String projectArg);
+  Future<List<_DbRecord>> getByProject(String projectArg);
 
   // @Query("SELECT * FROM record WHERE project = :projectArg and sync <> 1")
-  Future<List<DbRecord>> getByProjectUnsynced(String projectArg);
+  Future<List<_DbRecord>> getByProjectUnsynced(String projectArg);
 }

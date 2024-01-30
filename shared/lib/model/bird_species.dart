@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
-class BirdTable extends Table {
+@UseRowClass(_Bird)
+class Bird extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -12,9 +13,8 @@ class BirdTable extends Table {
   TextColumn get genus => text()();
 }
 
-
 // @entity
-class Bird {
+class _Bird {
   // @primaryKey
   String id;
   String scientific;
@@ -23,7 +23,7 @@ class Bird {
   String familia = '';
   String genus;
 
-  Bird({
+  _Bird({
     required this.id,
     required this.scientific,
     required this.vernacular,
@@ -32,7 +32,7 @@ class Bird {
     required this.genus,
   });
 
-  factory Bird.fromJson(Map<String, dynamic> json) => Bird(
+  factory _Bird.fromJson(Map<String, dynamic> json) => _Bird(
     id: json['_id'],
     scientific: json['author'],
     vernacular: json['notes'],
@@ -54,23 +54,23 @@ class Bird {
 
 abstract class BirdDao {
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Bird bird);
+  Future<int> insertOne(_Bird bird);
 
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<Bird> birds);
+  Future<List<int>> insertList(List<_Bird> birds);
 
   // @delete
-  Future<int> deleteOne(Bird bird);
+  Future<int> deleteOne(_Bird bird);
 
   // @delete
-  Future<int> deleteList(List<Bird> birds);
+  Future<int> deleteList(List<_Bird> birds);
 
   // @update
-  Future<int> updateOne(Bird bird);
+  Future<int> updateOne(_Bird bird);
 
   // @update
-  Future<int> updateList(List<Bird> birds);
+  Future<int> updateList(List<_Bird> birds);
 
   // @Query("SELECT * FROM bird ORDER BY datetime(startTime) desc")
-  Future<List<Bird>> getAll();
+  Future<List<_Bird>> getAll();
 }

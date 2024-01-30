@@ -2,7 +2,8 @@ import 'package:drift/drift.dart';
 
 import 'uuid_gen.dart';
 
-class ChecklistTable extends Table {
+@UseRowClass(_Checklist)
+class Checklist extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -17,10 +18,13 @@ class ChecklistTable extends Table {
   RealColumn get distance => real()(); // in kilometers
   BoolColumn get complete => boolean()(); // is complete record or not
   BoolColumn get sync => boolean()(); // if already uploaded.
+  TextColumn get track => text()();
+  TextColumn get comment => text()();
+
 }
 
 // @entity
-class Checklist {
+class _Checklist {
   // @primaryKey
   String id;
   String author;
@@ -38,7 +42,7 @@ class Checklist {
 
   String comment = '';
 
-  Checklist({
+  _Checklist({
     required this.id,
     required this.author,
     required this.notes,
@@ -54,7 +58,7 @@ class Checklist {
     required this.complete,
   });
 
-  factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
+  factory _Checklist.fromJson(Map<String, dynamic> json) => _Checklist(
         id: json['_id'],
         author: json['author'],
         notes: json['notes'],
@@ -85,7 +89,7 @@ class Checklist {
         'complete': complete,
       };
 
-  Checklist.empty(this.author, this.track)
+  _Checklist.empty(this.author, this.track)
       : id = uuid.v1(),
         notes = '',
         createTime = DateTime.now(),
@@ -102,26 +106,26 @@ class Checklist {
 // @dao
 abstract class BirdListDao {
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Checklist project);
+  Future<int> insertOne(_Checklist project);
 
   // @Insert(onConflict: OnConflictStrategy.abort)
-  Future<List<int>> insertList(List<Checklist> project);
+  Future<List<int>> insertList(List<_Checklist> project);
 
   // @delete
-  Future<int> deleteOne(Checklist project);
+  Future<int> deleteOne(_Checklist project);
 
   // @delete
-  Future<int> deleteList(List<Checklist> projects);
+  Future<int> deleteList(List<_Checklist> projects);
 
   // @update
-  Future<int> updateOne(Checklist project);
+  Future<int> updateOne(_Checklist project);
 
   // @update
-  Future<int> updateList(List<Checklist> projects);
+  Future<int> updateList(List<_Checklist> projects);
 
   // @Query("SELECT * FROM Checklist")
-  Future<List<Checklist>> getAll();
+  Future<List<_Checklist>> getAll();
 
   // @Query("SELECT * FROM Checklist WHERE id = :projectId")
-  Future<List<Checklist>> getById(String projectId);
+  Future<List<_Checklist>> getById(String projectId);
 }

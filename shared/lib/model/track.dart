@@ -2,7 +2,8 @@ import 'package:drift/drift.dart';
 
 import 'uuid_gen.dart';
 
-class TrackTable extends Table {
+@UseRowClass(_Track)
+class Track extends Table {
   @override
   Set<Column> get primaryKey => {id};
 
@@ -17,8 +18,8 @@ class TrackTable extends Table {
   RealColumn get endLat => real()();
   RealColumn get endEle => real()();
 
-  DateTimeColumn get createTime => dateTime()();
-  DateTimeColumn get updateTime => dateTime()();
+  DateTimeColumn get startTime => dateTime()();
+  DateTimeColumn get endTime => dateTime()();
 
   IntColumn get pointCount => integer()();
   RealColumn get distance => real()();
@@ -26,7 +27,7 @@ class TrackTable extends Table {
 }
 
 // @entity
-class Track {
+class _Track {
   // @primaryKey
   String id;
   String author;
@@ -45,17 +46,17 @@ class Track {
   double distance = 0.0;
   bool sync;
 
-  String file = '';
+  String filePath = '';
 
   bool isSelected = false;
 
-  Track({
+  _Track({
     required this.id,
     required this.author,
     required this.startTime,
     required this.endTime,
     required this.sync,
-    required this.file,
+    required this.filePath,
     this.startLon = 0.0,
     this.startLat = 0.0,
     this.startEle = 0.0,
@@ -66,7 +67,7 @@ class Track {
     this.distance = 0.0,
   });
 
-  factory Track.fromJson(Map<String, dynamic> json) => Track(
+  factory _Track.fromJson(Map<String, dynamic> json) => _Track(
         id: (json['_id']),
         author: (json['author']),
         startLon: double.parse(json['startLon']),
@@ -80,7 +81,7 @@ class Track {
         pointCount: int.parse(json['pointCount']),
         distance: double.parse(json['distance']),
         sync: true,
-        file: json['file'],
+        filePath: json['filePath'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,7 +99,7 @@ class Track {
         'distance': distance,
       };
 
-  Track.empty(this.author)
+  _Track.empty(this.author)
       : id = uuid.v1(),
         startTime = DateTime.fromMicrosecondsSinceEpoch(0),
         endTime = DateTime.fromMicrosecondsSinceEpoch(0),
@@ -108,35 +109,35 @@ class Track {
 // @dao
 abstract class TrackDao {
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Track track);
+  Future<int> insertOne(_Track track);
 
   // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<Track> tracks);
+  Future<List<int>> insertList(List<_Track> tracks);
 
   // @delete
-  Future<int> deleteOne(Track track);
+  Future<int> deleteOne(_Track track);
 
   // @delete
-  Future<int> deleteList(List<Track> tracks);
+  Future<int> deleteList(List<_Track> tracks);
 
   // @update
-  Future<int> updateOne(Track track);
+  Future<int> updateOne(_Track track);
 
   // @update
-  Future<int> updateList(List<Track> tracks);
+  Future<int> updateList(List<_Track> tracks);
 
   // @Query("DELETE FROM track WHERE id = :trackId")
   Future<int?> deleteById(String trackId);
 
   // @Query("SELECT * FROM track ORDER BY datetime(startTime) desc")
-  Future<List<Track>> getAll();
+  Future<List<_Track>> getAll();
 
   // @Query("SELECT * FROM track WHERE id = :trackId")
-  Future<List<Track>> getById(String trackId);
+  Future<List<_Track>> getById(String trackId);
 
   // @Query("SELECT * FROM track WHERE sync <> 1")
-  Future<List<Track>> getUnsynced();
+  Future<List<_Track>> getUnsynced();
 
   // @Query("SELECT * FROM track WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
-  Future<List<Track>> getByDate(String date);
+  Future<List<_Track>> getByDate(String date);
 }

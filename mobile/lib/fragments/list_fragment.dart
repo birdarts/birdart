@@ -28,7 +28,7 @@ class _ListFragmentState extends State<ListFragment>
 
   @override
   void initState() {
-    _future = DbManager.db.birdListDao.getAll();
+    _future = DbManager.db.checklistGetAll;
     super.initState();
     _fetchProjects();
   }
