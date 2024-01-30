@@ -10,6 +10,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   # path: ^1.8.0
+  cryptography: ^2.7.0
   floor_annotation: ^1.4.2
   uuid: ^4.3.3
   latlong2: any

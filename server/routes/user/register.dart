@@ -1,15 +1,31 @@
+import 'package:birdart_server/responses.dart';
+import 'package:birdart_server/session_utils.dart';
 import 'package:dart_frog/dart_frog.dart';
+import 'package:session_shelf/session/session.dart';
+import 'package:shared/shared.dart';
 
-import '../../lib/user_database.dart';
-
-Response onRequest(RequestContext context) {
+Future<Response> onRequest(RequestContext context) async {
   final request = context.request;
-  final params = request.uri.queryParameters;
+  final method = request.method;
 
-  if (params.containsKey('name') && params.containsKey('password')) {
-    users[params['name']!] = params['password']!;
-    return Response(body: 'Registered successfully!');
-  } else {
-    return Response(body: 'Invalid parameters', statusCode: 404);
+  if (method != HttpMethod.post) {
+    return Responses.methodNotAllowed([HttpMethod.post]);
   }
+
+  final data = await request.formData();
+  final dataCheck = ['phone', 'name', 'email', 'password', 'sms_code']
+      .map((e) => data.fields.containsKey(e))
+      .reduce((e1, e2) => e1 && e2);
+  if (!dataCheck) {
+    return Responses.badRequest("Please provide all the following fields in your formdata: "
+        "'phone', 'name', 'email', 'password', 'sms_code'");
+  }
+
+  Session session = await getSessionOrNew(request);
+  final fields = data.fields;
+  final user = User.fromRegisterData(fields);
+
+  // TODO write user to database.
+
+  return Response(body: 'Registered successfully!');
 }

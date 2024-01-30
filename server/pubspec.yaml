@@ -16,6 +16,9 @@ dependencies:
   session_shelf:
     path: ../../session_shelf/
 
+  shared:
+    path: ../shared
+
 dev_dependencies:
   mocktail: ^1.0.0
   test: ^1.19.2
