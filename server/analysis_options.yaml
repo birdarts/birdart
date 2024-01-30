@@ -4,5 +4,5 @@ analyzer:
     - build/**
 linter:
   rules:
-    file_names: false
-      - public_member_api_docs
+    public_member_api_docs: false
+    always_declare_return_types: false

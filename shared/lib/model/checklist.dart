@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import 'uuid_gen.dart';
+import '../src/uuid_gen.dart';
 
 @UseRowClass(_Checklist)
 class Checklist extends Table {

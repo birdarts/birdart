@@ -56,8 +56,8 @@ class ImageTool {
 }
 
 Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
-    List<DbImage> oldImages, String recordId) async {
-  List<DbImage> addImages = [];
+    List<DbImageT> oldImages, String recordId) async {
+  List<DbImageT> addImages = [];
   List<String> imgPaths = [];
 
   List<String?> imagePathList = [
@@ -67,15 +67,15 @@ Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
   pictureGrid.imageData.asMap().forEach((index, img) {
     final imagePath = imagePathList[index];
     if (imagePath != null &&
-        !oldImages.any((DbImage image) => image.imagePath == imagePath)) {
+        !oldImages.any((DbImageT image) => image.imagePath == imagePath)) {
       imgPaths.add(imagePath);
 
       if (oldImages.isEmpty) {
-        DbImage dbImage;
+        DbImageT dbImage;
         ImageTool imageTool = ImageTool(imagePath);
 
         try {
-          dbImage = DbImage.add(
+          dbImage = DbImageT.add(
             record: recordId,
             imagePath: imagePath,
             imageId: img.id,
@@ -93,8 +93,8 @@ Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
     }
   });
 
-  List<DbImage> deleteImages = [];
-  for (DbImage image in oldImages) {
+  List<DbImageT> deleteImages = [];
+  for (DbImageT image in oldImages) {
     if (!imagePathList
         .any((String? path) => image.imagePath == path.toString())) {
       deleteImages.add(image);

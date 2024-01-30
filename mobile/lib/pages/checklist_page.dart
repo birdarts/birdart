@@ -45,49 +45,49 @@ class _ChecklistPageState extends State<ChecklistPage> {
       await Future.delayed(const Duration(seconds: 1));
       setState(() {
         ListTool.birds = [
-          Bird(
+          BirdT(
               id: 'XIQUE',
               scientific: 'Pica serica',
               vernacular: '喜鹊',
               ordo: 'Pass',
               familia: 'Corv',
               genus: 'Pica'),
-          Bird(
+          BirdT(
               id: 'SONYA',
               scientific: 'Garrulus glandarius',
               vernacular: '松鸦',
               ordo: 'Pass',
               familia: 'Corv',
               genus: 'Garrulus'),
-          Bird(
+          BirdT(
               id: 'ZUOYA',
               scientific: 'Phasianus colchicus',
               vernacular: '雉鸡',
               ordo: 'Phasianidae',
               familia: 'Phasianidae',
               genus: 'Phasianus'),
-          Bird(
+          BirdT(
               id: 'KULIA',
               scientific: 'Columbina minuta',
               vernacular: '地鸽',
               ordo: 'Columbiformes',
               familia: 'Columbidae',
               genus: 'Columbina'),
-          Bird(
+          BirdT(
               id: 'ZHFEI',
               scientific: 'Turdus merula',
               vernacular: '乌鸫',
               ordo: 'Passeriformes',
               familia: 'Turdidae',
               genus: 'Turdus'),
-          Bird(
+          BirdT(
               id: 'HONMA',
               scientific: 'Eudromia elegans',
               vernacular: '红嘴鸥',
               ordo: 'Charadriiformes',
               familia: 'Laridae',
               genus: 'Eudromia'),
-          Bird(
+          BirdT(
               id: 'DONFA',
               scientific: 'Ciconia boyciana',
               vernacular: '东方白鹳',
@@ -131,7 +131,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
     _getExpectedList();
     _startTrack();
     ListTool.checklist =
-        ListTool.checklist ?? Checklist.empty(UserProfile.id, ListTool.tracker!.track.id);
+        ListTool.checklist ?? ChecklistT.empty(UserProfile.id, ListTool.tracker!.track.id);
     super.initState();
   }
 
@@ -270,7 +270,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
               ListTool.records.where((element) => element.speciesRef == bird.id).firstOrNull;
           recordInit() {
             setState(() {
-              record = DbRecord.add(
+              record = DbRecordT.add(
                   checklist: ListTool.checklist!.id,
                   species: bird.scientific,
                   speciesRef: bird.id,
@@ -353,7 +353,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
       );
 }
 
-extension on Track {
+extension on TrackT {
   String getTimeText() {
     Duration difference = endTime.difference(startTime);
     return BdL10n.current.newListTrackDuration(difference.inHours, difference.inMinutes % 60);

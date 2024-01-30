@@ -38,7 +38,7 @@ class Tracker {
 
   StreamSubscription? subscription;
   GeoXml geoxml = GeoXml();
-  Track track = Track.empty(UserProfile.id);
+  TrackT track = TrackT.empty(UserProfile.id);
 
   bool get mounted => context.mounted;
   VoidCallback? callback;
@@ -262,7 +262,7 @@ class Tracker {
         ),
       );
 
-  Widget getTrackItem(Track track) => ClipRRect(
+  Widget getTrackItem(TrackT track) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
           child: Container(
@@ -362,7 +362,7 @@ class Tracker {
   }
 
   startTrack() async {
-    track = Track.empty(UserProfile.id);
+    track = TrackT.empty(UserProfile.id);
     track.id = uuid.v1();
 
     geoxml = GeoXml();

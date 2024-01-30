@@ -1,7 +1,7 @@
 name: shared
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
-publish_to: none
+publish_to: 'none'
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -16,5 +16,7 @@ dependencies:
   latlong2: any
 
 dev_dependencies:
+  build_runner: ^2.4.8
+  drift_dev: ^2.15.0
   lints: ^2.0.0
   test: ^1.21.0

@@ -1,4 +1,4 @@
-import 'package:shared/model/uuid_gen.dart';
+import 'package:shared/src/uuid_gen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/sharedpref.dart';

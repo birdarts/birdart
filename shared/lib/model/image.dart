@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import 'uuid_gen.dart';
+import '../src/uuid_gen.dart';
 
 @UseRowClass(_DbImage)
 class DbImage extends Table {

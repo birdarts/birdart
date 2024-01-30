@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:drift/drift.dart';
-import 'package:shared/model/uuid_gen.dart';
+import 'package:shared/src/uuid_gen.dart';
 
 enum UserStatus {
   active(0),
