@@ -1,9 +1,21 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
+
+class BirdTable extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
+
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get scientific => text()();
+  TextColumn get vernacular => text()();
+  TextColumn get ordo => text()();
+  TextColumn get familia => text()();
+  TextColumn get genus => text()();
+}
 
 
-@entity
+// @entity
 class Bird {
-  @primaryKey
+  // @primaryKey
   String id;
   String scientific;
   String vernacular;
@@ -40,26 +52,25 @@ class Bird {
 }
 
 
-@dao
 abstract class BirdDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertOne(Bird bird);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<List<int>> insertList(List<Bird> birds);
 
-  @delete
+  // @delete
   Future<int> deleteOne(Bird bird);
 
-  @delete
+  // @delete
   Future<int> deleteList(List<Bird> birds);
 
-  @update
+  // @update
   Future<int> updateOne(Bird bird);
 
-  @update
+  // @update
   Future<int> updateList(List<Bird> birds);
 
-  @Query("SELECT * FROM bird ORDER BY datetime(startTime) desc")
+  // @Query("SELECT * FROM bird ORDER BY datetime(startTime) desc")
   Future<List<Bird>> getAll();
 }

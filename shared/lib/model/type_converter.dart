@@ -1,47 +1,42 @@
 import 'dart:convert';
 
-import 'package:floor_annotation/floor_annotation.dart';
-
-class DateTimeConverter extends TypeConverter<DateTime, int> {
-  @override
-  DateTime decode(int databaseValue) =>
-      DateTime.fromMicrosecondsSinceEpoch(databaseValue);
-
-  @override
-  int encode(DateTime value) => value.microsecondsSinceEpoch;
-}
+import 'package:drift/drift.dart';
 
 class StringListConverter extends TypeConverter<List<String>, String> {
   @override
-  List<String> decode(String databaseValue) {
-    if (databaseValue.isEmpty) {
+  List<String> fromSql(String fromDb) {
+    try {
+      return jsonDecode(fromDb);
+    } catch(e) {
       return [];
-    } else {
-      databaseValue =
-          databaseValue.toString().replaceAll('[', '').replaceAll(']', '');
-
-      if (databaseValue.isEmpty) {
-        return [];
-      } else {
-        return databaseValue.split(', ');
-      }
     }
+    // if (fromDb.isEmpty) {
+    //   return [];
+    // } else {
+    //   fromDb = fromDb.toString().replaceAll('[', '').replaceAll(']', '');
+    //
+    //   if (fromDb.isEmpty) {
+    //     return [];
+    //   } else {
+    //     return fromDb.split(', ');
+    //   }
+    // }
   }
 
   @override
-  String encode(List<String> value) => value.toString();
+  String toSql(List<String> value) => jsonEncode(value); //value.toString();
 }
 
 class MapConverter extends TypeConverter<Map<String, dynamic>, String> {
   @override
-  Map<String, dynamic> decode(String databaseValue) {
+  Map<String, dynamic> fromSql(String fromDb) {
     try {
-      return jsonDecode(databaseValue);
+      return jsonDecode(fromDb);
     } catch(e) {
       return {};
     }
   }
 
   @override
-  String encode(Map<String, dynamic> value) => jsonEncode(value);
+  String toSql(Map<String, dynamic> value) => jsonEncode(value);
 }

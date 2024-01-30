@@ -1,10 +1,27 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
 
 import 'uuid_gen.dart';
 
-@entity
+class ChecklistTable extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
+
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get author => text()();
+  TextColumn get notes => text()();
+  TextColumn get type => text()(); // list type
+  DateTimeColumn get createTime => dateTime()();
+  DateTimeColumn get updateTime => dateTime()();
+  IntColumn get time => integer()(); // in minutes
+  IntColumn get birders => integer()(); // birder amount
+  RealColumn get distance => real()(); // in kilometers
+  BoolColumn get complete => boolean()(); // is complete record or not
+  BoolColumn get sync => boolean()(); // if already uploaded.
+}
+
+// @entity
 class Checklist {
-  @primaryKey
+  // @primaryKey
   String id;
   String author;
   String notes;
@@ -82,29 +99,29 @@ class Checklist {
         complete = true;
 }
 
-@dao
+// @dao
 abstract class BirdListDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertOne(Checklist project);
 
-  @Insert(onConflict: OnConflictStrategy.abort)
+  // @Insert(onConflict: OnConflictStrategy.abort)
   Future<List<int>> insertList(List<Checklist> project);
 
-  @delete
+  // @delete
   Future<int> deleteOne(Checklist project);
 
-  @delete
+  // @delete
   Future<int> deleteList(List<Checklist> projects);
 
-  @update
+  // @update
   Future<int> updateOne(Checklist project);
 
-  @update
+  // @update
   Future<int> updateList(List<Checklist> projects);
 
-  @Query("SELECT * FROM Checklist")
+  // @Query("SELECT * FROM Checklist")
   Future<List<Checklist>> getAll();
 
-  @Query("SELECT * FROM Checklist WHERE id = :projectId")
+  // @Query("SELECT * FROM Checklist WHERE id = :projectId")
   Future<List<Checklist>> getById(String projectId);
 }

@@ -1,17 +1,31 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
+
 import 'uuid_gen.dart';
 
-@Entity(tableName: 'IMAGE')
+class ImageTable extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
+
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get record => text()();
+  TextColumn get author => text()();
+  TextColumn get imagePath => text()();
+  TextColumn get imageId => text()();
+  TextColumn get exif => text()();
+  IntColumn get imageSize => integer()();
+  BoolColumn get sync => boolean()();
+}
+
+// @Entity(tableName: 'IMAGE')
 class DbImage {
-  @primaryKey
+  // @primaryKey
   String id;
   String record;
   String author;
-
   String imagePath;
   String imageId;
-  int imageSize;
   String exif;
+  int imageSize;
   bool sync;
 
   DbImage({
@@ -57,48 +71,47 @@ class DbImage {
         sync = false;
 }
 
-@dao
+// @dao
 abstract class DbImageDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertOne(DbImage image);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<List<int>> insertList(List<DbImage> images);
 
-  @delete
+  // @delete
   Future<int> deleteOne(DbImage image);
 
-  @delete
+  // @delete
   Future<int> deleteList(List<DbImage> images);
 
-  @Query("DELETE FROM image WHERE id = :imageId")
+  // @Query("DELETE FROM image WHERE id = :imageId")
   Future<int?> deleteById(String imageId);
 
-  @Query("DELETE FROM image WHERE record = :recordId")
+  // @Query("DELETE FROM image WHERE record = :recordId")
   Future<int?> deleteByRecord(String recordId);
 
-  @Query("DELETE FROM image WHERE project = :projectId")
+  // @Query("DELETE FROM image WHERE project = :projectId")
   Future<int?> deleteByProject(String projectId);
 
-  @update
+  // @update
   Future<int> updateOne(DbImage image);
 
-  @update
+  // @update
   Future<int> updateList(List<DbImage> images);
 
-  @Query("SELECT * FROM image")
+  // @Query("SELECT * FROM image")
   Future<List<DbImage>> getAll();
 
-  @Query("SELECT * FROM image WHERE project = :projectArg")
+  // @Query("SELECT * FROM image WHERE project = :projectArg")
   Future<List<DbImage>> getByProject(String projectArg);
 
-  @Query("SELECT * FROM image WHERE record = :recordArg")
+  // @Query("SELECT * FROM image WHERE record = :recordArg")
   Future<List<DbImage>> getByRecord(String recordArg);
 
-  @Query("SELECT * FROM image WHERE project = :projectArg and sync <> 1")
+  // @Query("SELECT * FROM image WHERE project = :projectArg and sync <> 1")
   Future<List<DbImage>> getByProjectUnsynced(String projectArg);
 
-  @Query(
-      "SELECT * FROM image WHERE record = :recordArg AND imagePath = :pathArg")
+  // @Query("SELECT * FROM image WHERE record = :recordArg AND imagePath = :pathArg")
   Future<List<DbImage>> getByRecordAndPath(String recordArg, String pathArg);
 }

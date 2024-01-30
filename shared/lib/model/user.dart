@@ -1,30 +1,48 @@
 import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
+import 'package:drift/drift.dart';
 import 'package:shared/model/uuid_gen.dart';
 
-class UserStatus {
+enum UserStatus {
+  active(0),
+  blocked(1),
+  deleted(2),
+  autoBlocked(3);
+
+  const UserStatus(this.value);
+
   final int value;
-  const UserStatus._(this.value);
-
-  static const active = UserStatus._(0);
-  static const blocked = UserStatus._(1);
-  static const deleted = UserStatus._(2);
-  static const autoBlocked = UserStatus._(3); // Automatically blocked by system
-
-  static const List<UserStatus> values = [active, blocked, deleted, autoBlocked];
 }
 
-class UserRole {
+enum UserRole {
+  birder(0),
+  reviewer(1),
+  admin(2),
+  sysAdmin(3);
+
+  const UserRole(this.value);
+
   final int value;
-  const UserRole._(this.value);
+}
 
-  static const birder = UserRole._(0);
-  static const reviewer = UserRole._(1);
-  static const admin = UserRole._(2);
-  static const sysAdmin = UserRole._(3);
+class UserTable extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
 
-  static const List<UserRole> values = [birder, reviewer, admin, sysAdmin];
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get name => text()();
+  TextColumn get password => text()();
+  TextColumn get salt => text()();
+  TextColumn get phone => text()();
+  TextColumn get email => text()();
+  TextColumn get biography => text()();
+
+  IntColumn get status => integer().map(EnumIndexConverter(UserStatus.values))();
+  IntColumn get role => integer().map(EnumIndexConverter(UserRole.values))();
+
+  DateTimeColumn get registerTime => dateTime()();
+  DateTimeColumn get lastLoginTime => dateTime()();
 }
 
 class User {
@@ -48,8 +66,8 @@ class User {
   String salt; // in clear text
   String phone;
   String email;
-  UserStatus status;
   String biography;
+  UserStatus status;
   UserRole role;
   DateTime registerTime;
   DateTime lastLoginTime;

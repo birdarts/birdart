@@ -1,9 +1,34 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
+
 import 'uuid_gen.dart';
 
-@entity
+class HotspotTable extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
+
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get author => text()();
+  TextColumn get name => text()();
+  RealColumn get lon => real()();
+  RealColumn get lat => real()();
+  DateTimeColumn get createTime => dateTime()();
+  DateTimeColumn get updateTime => dateTime()();
+
+  TextColumn get country => text()();
+  TextColumn get province => text()();
+  TextColumn get city => text()();
+  TextColumn get county => text()();
+
+  TextColumn get countryId => text()();
+  TextColumn get provinceId => text()();
+  TextColumn get cityId => text()();
+  TextColumn get countyId => text()();
+}
+
+
+// @entity
 class Hotspot {
-  @primaryKey
+  // @primaryKey
   String id;
   String author;
   String name;
@@ -93,38 +118,38 @@ class Hotspot {
         countyId = '';
 }
 
-@dao
+// @dao
 abstract class HotspotDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertOne(Hotspot hotspot);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<List<int>> insertList(List<Hotspot> hotspots);
 
-  @delete
+  // @delete
   Future<int> deleteOne(Hotspot hotspot);
 
-  @delete
+  // @delete
   Future<int> deleteList(List<Hotspot> hotspots);
 
-  @update
+  // @update
   Future<int> updateOne(Hotspot hotspot);
 
-  @update
+  // @update
   Future<int> updateList(List<Hotspot> hotspots);
 
-  @Query("DELETE FROM hotspot WHERE id = :hotspotId")
+  // @Query("DELETE FROM hotspot WHERE id = :hotspotId")
   Future<int?> deleteById(String hotspotId);
 
-  @Query("SELECT * FROM hotspot ORDER BY datetime(startTime) desc")
+  // @Query("SELECT * FROM hotspot ORDER BY datetime(startTime) desc")
   Future<List<Hotspot>> getAll();
 
-  @Query("SELECT * FROM hotspot WHERE id = :hotspotId")
+  // @Query("SELECT * FROM hotspot WHERE id = :hotspotId")
   Future<List<Hotspot>> getById(String hotspotId);
 
-  @Query("SELECT * FROM hotspot WHERE sync <> 1")
+  // @Query("SELECT * FROM hotspot WHERE sync <> 1")
   Future<List<Hotspot>> getUnsynced();
 
-  @Query("SELECT * FROM hotspot WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
+  // @Query("SELECT * FROM hotspot WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
   Future<List<Hotspot>> getByDate(String date);
 }

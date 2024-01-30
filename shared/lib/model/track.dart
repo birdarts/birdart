@@ -1,9 +1,33 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
+
 import 'uuid_gen.dart';
 
-@entity
+class TrackTable extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
+
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get author => text()();
+  TextColumn get filePath => text()();
+
+  RealColumn get startLon => real()();
+  RealColumn get startLat => real()();
+  RealColumn get startEle => real()();
+  RealColumn get endLon => real()();
+  RealColumn get endLat => real()();
+  RealColumn get endEle => real()();
+
+  DateTimeColumn get createTime => dateTime()();
+  DateTimeColumn get updateTime => dateTime()();
+
+  IntColumn get pointCount => integer()();
+  RealColumn get distance => real()();
+  BoolColumn get sync => boolean()();
+}
+
+// @entity
 class Track {
-  @primaryKey
+  // @primaryKey
   String id;
   String author;
 
@@ -81,39 +105,38 @@ class Track {
         sync = false;
 }
 
-@dao
+// @dao
 abstract class TrackDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<int> insertOne(Track track);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
+  // @Insert(onConflict: OnConflictStrategy.replace)
   Future<List<int>> insertList(List<Track> tracks);
 
-  @delete
+  // @delete
   Future<int> deleteOne(Track track);
 
-  @delete
+  // @delete
   Future<int> deleteList(List<Track> tracks);
 
-  @update
+  // @update
   Future<int> updateOne(Track track);
 
-  @update
+  // @update
   Future<int> updateList(List<Track> tracks);
 
-  @Query("DELETE FROM track WHERE id = :trackId")
+  // @Query("DELETE FROM track WHERE id = :trackId")
   Future<int?> deleteById(String trackId);
 
-  @Query("SELECT * FROM track ORDER BY datetime(startTime) desc")
+  // @Query("SELECT * FROM track ORDER BY datetime(startTime) desc")
   Future<List<Track>> getAll();
 
-  @Query("SELECT * FROM track WHERE id = :trackId")
+  // @Query("SELECT * FROM track WHERE id = :trackId")
   Future<List<Track>> getById(String trackId);
 
-  @Query("SELECT * FROM track WHERE sync <> 1")
+  // @Query("SELECT * FROM track WHERE sync <> 1")
   Future<List<Track>> getUnsynced();
 
-  @Query(
-      "SELECT * FROM track WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
+  // @Query("SELECT * FROM track WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
   Future<List<Track>> getByDate(String date);
 }
