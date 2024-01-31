@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:drift/drift.dart';
+import 'package:shared/model/user.drift.dart';
 import 'package:uuid/uuid.dart';
+
+import '../db/drift_db.dart';
 
 enum UserStatus {
   active(0),
@@ -46,34 +49,8 @@ class User extends Table {
   DateTimeColumn get lastLoginTime => dateTime()();
 }
 
-class _User {
-  _User({
-    required this.id,
-    required this.name,
-    required this.password,
-    required this.salt,
-    required this.phone,
-    required this.email,
-    required this.status,
-    required this.biography,
-    required this.role,
-    required this.registerTime,
-    required this.lastLoginTime,
-  });
-
-  String id;
-  String name;
-  String password; // in hash
-  String salt; // in clear text
-  String phone;
-  String email;
-  String biography;
-  UserStatus status;
-  UserRole role;
-  DateTime registerTime;
-  DateTime lastLoginTime;
-
-  static Future<_User> add({
+extension UserExt on UserData {
+  static Future<UserData> add({
     required String name,
     required String password,
     required String phone,
@@ -86,7 +63,7 @@ class _User {
     final salt = base64.encode(await SecretKeyData.random(length: 32).extractBytes());
     final result = await hash(password, salt);
 
-    return _User(
+    return UserData(
       id: id,
       name: name,
       phone: phone,
@@ -111,37 +88,8 @@ class _User {
   Future<bool> checkPassword(String password) async =>
       (await hash(password, salt)) == this.password;
 
-  Map toJson() => {
-    'id': id,
-    'name': name,
-    'password': password,
-    'salt': salt,
-    'phone': phone,
-    'email': email,
-    'status': status.value,
-    'biography': biography,
-    'role': role.value,
-    'registerTime': registerTime.microsecondsSinceEpoch,
-    'lastLoginTime': lastLoginTime.microsecondsSinceEpoch,
-  };
-
-  factory _User.fromJson(Map<String, dynamic> data) =>
-      _User(
-        id: data['id'],
-        name: data['name'],
-        password: data['password'],
-        salt: data['salt'],
-        phone: data['phone'],
-        email: data['email'],
-        status: UserStatus.values[data['status']],
-        biography: data['biography'],
-        role: UserRole.values[data['role']],
-        registerTime: DateTime.fromMicrosecondsSinceEpoch(data['registerTime']),
-        lastLoginTime: DateTime.fromMicrosecondsSinceEpoch(data['lastLoginTime']),
-      );
-
-  static Future<_User> fromRegisterData(Map<String, dynamic> data) async =>
-      await _User.add(
+  static Future<UserData> fromRegisterData(Map<String, dynamic> data) async =>
+      await add(
         name: data['name'],
         password: data['password'],
         phone: data['phone'],
@@ -156,3 +104,38 @@ final _algorithm = Argon2id(
   iterations: 1, // For more security, you should usually raise memory parameter, not iterations.
   hashLength: 32, // Number of bytes in the returned hash
 );
+
+
+@DriftAccessor(tables: [User])
+class UserDao extends DatabaseAccessor<BirdartDB> with $UserDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  UserDao(super.db);
+
+  Future<int> insertOne(UserData user) =>
+      into(db.user).insertOnConflictUpdate(user);
+
+  Future<void> insertList(List<UserData> users) => batch((batch) {
+    batch.insertAllOnConflictUpdate(db.user, users);
+  });
+
+  Future<int> deleteOne(UserData user) =>
+      (delete(db.user)..whereSamePrimaryKey(user)).go();
+
+  Future<void> deleteList(List<UserData> users) =>
+      (delete(db.user)..where((tbl) => tbl.id.isIn(users.map((e) => e.id)))).go();
+
+  Future<int> deleteById(String userId) =>
+      (delete(db.user)..where((tbl) => tbl.id.equals(userId))).go();
+
+  Future<int> updateOne(UserData user) =>
+      (update(db.user)..whereSamePrimaryKey(user)).write(user);
+
+  Future<void> updateList(List<UserData> users) => batch((batch) {
+    users.map((e) => batch.update(db.user, e));
+  });
+
+  Future<List<UserData>> getAll() => (select(db.user)).get();
+
+  Future<UserData> getById(String userId) =>
+      (select(db.user)..where((tbl) => tbl.id.equals(userId))).getSingle();
+}

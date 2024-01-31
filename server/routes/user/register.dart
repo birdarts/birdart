@@ -21,7 +21,7 @@ Future<Response> onRequest(RequestContext context) async {
         "'phone', 'name', 'email', 'password', 'sms_code'");
   }
 
-  Session session = await getSessionOrNew(request);
+  final session = await getSessionOrNew(request);
   final fields = data.fields;
   // final user = User.fromRegisterData(fields);
 

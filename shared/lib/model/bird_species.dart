@@ -1,6 +1,12 @@
-import 'package:drift/drift.dart';
+import 'dart:convert';
 
-// @UseRowClass(Bird)
+import 'package:drift/drift.dart';
+import 'package:shared/db/drift_db.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
+
+import 'bird_species.drift.dart';
+
+@j.JsonSerializable()
 class Bird extends Table {
   @override
   Set<Column> get primaryKey => {id};
@@ -13,64 +19,30 @@ class Bird extends Table {
   TextColumn get genus => text()();
 }
 
-// @entity
-class _Bird {
-  // @primaryKey
-  String id;
-  String scientific;
-  String vernacular;
-  String ordo; 
-  String familia = '';
-  String genus;
+// _TodosDaoMixin 会被 drift 创建。
+// 它包含表需要的所有必要字段。
+// <MyDatabase> 类型注释是数据库类，会使用这个 DAO。
+@DriftAccessor(tables: [Bird])
+class BirdDao extends DatabaseAccessor<BirdartDB> with $BirdDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  BirdDao(super.db);
 
-  _Bird({
-    required this.id,
-    required this.scientific,
-    required this.vernacular,
-    required this.ordo,
-    required this.familia,
-    required this.genus,
+  Future<int> insertOne(BirdData bird) => into(db.bird).insertOnConflictUpdate(bird);
+
+  Future<void> insertList(List<BirdData> birds) => batch((batch) {
+    batch.insertAllOnConflictUpdate(db.bird, birds);
   });
 
-  factory _Bird.fromJson(Map<String, dynamic> json) => _Bird(
-    id: json['_id'],
-    scientific: json['author'],
-    vernacular: json['notes'],
-    ordo: json['track'],
-    familia: json['comment'],
-    genus: json['type'],
-  );
+  Future<int> deleteOne(BirdData bird) => (delete(db.bird)..whereSamePrimaryKey(bird)).go();
 
-  Map<String, dynamic> toJson() => {
-    '_id': id,
-    'author': scientific,
-    'notes': vernacular,
-    'track': ordo,
-    'comment': familia,
-    'type': genus,
-  };
-}
+  Future<void> deleteList(List<BirdData> birds) =>
+      (delete(db.bird)..where((tbl) => tbl.id.isIn(birds.map((e) => e.id)))).go();
 
+  Future<int> updateOne(BirdData bird) => (update(db.bird)..whereSamePrimaryKey(bird)).write(bird);
 
-abstract class BirdDao {
-  // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(_Bird bird);
+  Future<void> updateList(List<BirdData> birds) => batch((batch) {
+    birds.map((e) => batch.update(db.bird, e));
+  });
 
-  // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<_Bird> birds);
-
-  // @delete
-  Future<int> deleteOne(_Bird bird);
-
-  // @delete
-  Future<int> deleteList(List<_Bird> birds);
-
-  // @update
-  Future<int> updateOne(_Bird bird);
-
-  // @update
-  Future<int> updateList(List<_Bird> birds);
-
-  // @Query("SELECT * FROM bird ORDER BY datetime(startTime) desc")
-  Future<List<_Bird>> getAll();
+  Future<List<BirdData>> getAll() => (select(db.bird)).get();
 }

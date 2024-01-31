@@ -5,7 +5,7 @@ library;
 
 export 'src/shared_base.dart';
 export 'src/in_china_tester.dart';
-export 'db/drift_mobile.dart';
+export 'db/drift_db.dart';
 export 'model/bird_species.dart';
 export 'model/checklist.dart';
 export 'model/image.dart';

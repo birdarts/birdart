@@ -4,20 +4,19 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:shared/db/drift_mobile.dart';
+import 'package:shared/db/drift_db.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 class DbManager {
-  static MobileDB? database;
+  static BirdartDB? database;
 
   static setDb() async {
-    database = MobileDB(_openConnection());
+    database = BirdartDB(_openConnection());
   }
 
-  static MobileDB get db => database!;
+  static BirdartDB get db => database!;
 }
-
 
 LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.

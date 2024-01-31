@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
+import '../db/drift_db.dart';
+import 'image.drift.dart';
+
 // @UseRowClass(_DbImage)
 class DbImage extends Table {
   @override
@@ -13,105 +16,64 @@ class DbImage extends Table {
   TextColumn get imageId => text()();
   TextColumn get exif => text()();
   IntColumn get imageSize => integer()();
+  DateTimeColumn get createTime => dateTime()();
   BoolColumn get sync => boolean()();
-}
 
-// @Entity(tableName: 'IMAGE')
-class _DbImage {
-  // @primaryKey
-  String id;
-  String record;
-  String author;
-  String imagePath;
-  String imageId;
-  String exif;
-  int imageSize;
-  bool sync;
-
-  _DbImage({
-    required this.id,
-    required this.record,
-    required this.author,
-    required this.imagePath,
-    required this.imageId,
-    required this.imageSize,
-    required this.exif,
-    required this.sync,
-  });
-
-  factory _DbImage.fromJson(Map<String, dynamic> json) => _DbImage(
-        id: json['_id'],
-        record: json['record'],
-        author: json['author'],
-        imagePath: json['imagePath'],
-        imageId: json['imageId'],
-        imageSize: json['imageSize'],
-        exif: json['exif'],
-        sync: true,
+  static DbImageData add(
+          {required String record,
+          required String imagePath,
+          required String imageId,
+          required int imageSize,
+          required String exif,
+          required String author}) =>
+      DbImageData(
+        id: Uuid().v1(),
+        sync: false,
+        record: record,
+        imagePath: imagePath,
+        imageId: imageId,
+        imageSize: imageSize,
+        exif: exif,
+        author: author,
+        createTime: DateTime.now(),
       );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id.toString(),
-        'record': record.toString(),
-        'author': author.toString(),
-        'imagePath': imagePath,
-        'imageId': imageId,
-        'imageSize': imageSize,
-        'exif': exif,
-      };
-
-  _DbImage.add(
-      {required this.record,
-      required this.imagePath,
-      required this.imageId,
-      required this.imageSize,
-      required this.exif,
-      required this.author})
-      : id = Uuid().v1(),
-        sync = false;
 }
 
-// @dao
-abstract class DbImageDao {
-  // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(_DbImage image);
+@DriftAccessor(tables: [DbImage])
+class DbImageDao extends DatabaseAccessor<BirdartDB> with $DbImageDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  DbImageDao(super.db);
 
-  // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<_DbImage> images);
+  Future<int> insertOne(DbImageData dbImage) => into(db.dbImage).insertOnConflictUpdate(dbImage);
 
-  // @delete
-  Future<int> deleteOne(_DbImage image);
+  Future<void> insertList(List<DbImageData> dbImages) => batch((batch) {
+        batch.insertAllOnConflictUpdate(db.dbImage, dbImages);
+      });
 
-  // @delete
-  Future<int> deleteList(List<_DbImage> images);
+  Future<int> deleteOne(DbImageData dbImage) =>
+      (delete(db.dbImage)..whereSamePrimaryKey(dbImage)).go();
 
-  // @Query("DELETE FROM image WHERE id = :imageId")
-  Future<int?> deleteById(String imageId);
+  Future<void> deleteList(List<DbImageData> dbImages) =>
+      (delete(db.dbImage)..where((tbl) => tbl.id.isIn(dbImages.map((e) => e.id)))).go();
 
-  // @Query("DELETE FROM image WHERE record = :recordId")
-  Future<int?> deleteByRecord(String recordId);
+  Future<int> deleteById(String dbImageId) =>
+      (delete(db.dbImage)..where((tbl) => tbl.id.equals(dbImageId))).go();
 
-  // @Query("DELETE FROM image WHERE project = :projectId")
-  Future<int?> deleteByProject(String projectId);
+  Future<int> updateOne(DbImageData dbImage) =>
+      (update(db.dbImage)..whereSamePrimaryKey(dbImage)).write(dbImage);
 
-  // @update
-  Future<int> updateOne(_DbImage image);
+  Future<void> updateList(List<DbImageData> dbImages) => batch((batch) {
+        dbImages.map((e) => batch.update(db.dbImage, e));
+      });
 
-  // @update
-  Future<int> updateList(List<_DbImage> images);
+  Future<List<DbImageData>> getAll() => (select(db.dbImage)).get();
 
-  // @Query("SELECT * FROM image")
-  Future<List<_DbImage>> getAll();
+  Future<DbImageData> getById(String dbImageId) =>
+      (select(db.dbImage)..where((tbl) => tbl.id.equals(dbImageId))).getSingle();
 
-  // @Query("SELECT * FROM image WHERE project = :projectArg")
-  Future<List<_DbImage>> getByProject(String projectArg);
+  Future<List<DbImageData>> getUnsynced() =>
+      (select(db.dbImage)..where((tbl) => tbl.sync.equals(false))).get();
 
-  // @Query("SELECT * FROM image WHERE record = :recordArg")
-  Future<List<_DbImage>> getByRecord(String recordArg);
-
-  // @Query("SELECT * FROM image WHERE project = :projectArg and sync <> 1")
-  Future<List<_DbImage>> getByProjectUnsynced(String projectArg);
-
-  // @Query("SELECT * FROM image WHERE record = :recordArg AND imagePath = :pathArg")
-  Future<List<_DbImage>> getByRecordAndPath(String recordArg, String pathArg);
+  Future<List<DbImageData>> getByDate(String date) =>
+      (select(db.dbImage)..where((tbl) => tbl.createTime.equals(DateTime.parse(date)))).get();
 }

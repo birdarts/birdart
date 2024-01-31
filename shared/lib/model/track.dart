@@ -1,5 +1,8 @@
 import 'package:drift/drift.dart';
+import 'package:shared/model/track.drift.dart';
 import 'package:uuid/uuid.dart';
+
+import '../db/drift_db.dart';
 
 // @UseRowClass(_Track)
 class Track extends Table {
@@ -23,120 +26,59 @@ class Track extends Table {
   IntColumn get pointCount => integer()();
   RealColumn get distance => real()();
   BoolColumn get sync => boolean()();
-}
 
-// @entity
-class _Track {
-  // @primaryKey
-  String id;
-  String author;
-
-  double startLon = 0.0;
-  double startLat = 0.0;
-  double startEle = 0.0;
-  double endLon = 0.0;
-  double endLat = 0.0;
-  double endEle = 0.0;
-
-  DateTime startTime;
-  DateTime endTime;
-
-  int pointCount = 0;
-  double distance = 0.0;
-  bool sync;
-
-  String filePath = '';
-
-  bool isSelected = false;
-
-  _Track({
-    required this.id,
-    required this.author,
-    required this.startTime,
-    required this.endTime,
-    required this.sync,
-    required this.filePath,
-    this.startLon = 0.0,
-    this.startLat = 0.0,
-    this.startEle = 0.0,
-    this.endLon = 0.0,
-    this.endLat = 0.0,
-    this.endEle = 0.0,
-    this.pointCount = 0,
-    this.distance = 0.0,
-  });
-
-  factory _Track.fromJson(Map<String, dynamic> json) => _Track(
-        id: (json['_id']),
-        author: (json['author']),
-        startLon: double.parse(json['startLon']),
-        startLat: double.parse(json['startLat']),
-        startEle: double.parse(json['startEle']),
-        endLon: double.parse(json['endLon']),
-        endLat: double.parse(json['endLat']),
-        endEle: double.parse(json['endEle']),
-        startTime: DateTime.fromMicrosecondsSinceEpoch(json['startTime']),
-        endTime: DateTime.fromMicrosecondsSinceEpoch(json['endTime']),
-        pointCount: int.parse(json['pointCount']),
-        distance: double.parse(json['distance']),
-        sync: true,
-        filePath: json['filePath'],
+  static TrackData empty(String author) => TrackData(
+        id: Uuid().v1(),
+        startTime: DateTime.fromMicrosecondsSinceEpoch(0),
+        endTime: DateTime.fromMicrosecondsSinceEpoch(0),
+        sync: false,
+        author: author,
+        filePath: '',
+        startLon: 0.0,
+        startLat: 0.0,
+        startEle: 0.0,
+        endLon: 0.0,
+        endLat: 0.0,
+        endEle: 0.0,
+        pointCount: 0,
+        distance: 0.0,
       );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id.toString(),
-        'author': author.toString(),
-        'startLon': startLon,
-        'startLat': startLat,
-        'startEle': startEle,
-        'endLon': endLon,
-        'endLat': endLat,
-        'endEle': endEle,
-        'startTime': startTime.microsecondsSinceEpoch,
-        'endTime': endTime.microsecondsSinceEpoch,
-        'pointCount': pointCount,
-        'distance': distance,
-      };
-
-  _Track.empty(this.author)
-      : id = Uuid().v1(),
-        startTime = DateTime.fromMicrosecondsSinceEpoch(0),
-        endTime = DateTime.fromMicrosecondsSinceEpoch(0),
-        sync = false;
 }
 
-// @dao
-abstract class TrackDao {
-  // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(_Track track);
+@DriftAccessor(tables: [Track])
+class TrackDao extends DatabaseAccessor<BirdartDB> with $TrackDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  TrackDao(super.db);
 
-  // @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<_Track> tracks);
+  Future<int> insertOne(TrackData track) => into(db.track).insertOnConflictUpdate(track);
 
-  // @delete
-  Future<int> deleteOne(_Track track);
+  Future<void> insertList(List<TrackData> tracks) => batch((batch) {
+        batch.insertAllOnConflictUpdate(db.track, tracks);
+      });
 
-  // @delete
-  Future<int> deleteList(List<_Track> tracks);
+  Future<int> deleteOne(TrackData track) => (delete(db.track)..whereSamePrimaryKey(track)).go();
 
-  // @update
-  Future<int> updateOne(_Track track);
+  Future<void> deleteList(List<TrackData> tracks) =>
+      (delete(db.track)..where((tbl) => tbl.id.isIn(tracks.map((e) => e.id)))).go();
 
-  // @update
-  Future<int> updateList(List<_Track> tracks);
+  Future<int> deleteById(String trackId) =>
+      (delete(db.track)..where((tbl) => tbl.id.equals(trackId))).go();
 
-  // @Query("DELETE FROM track WHERE id = :trackId")
-  Future<int?> deleteById(String trackId);
+  Future<int> updateOne(TrackData track) =>
+      (update(db.track)..whereSamePrimaryKey(track)).write(track);
 
-  // @Query("SELECT * FROM track ORDER BY datetime(startTime) desc")
-  Future<List<_Track>> getAll();
+  Future<void> updateList(List<TrackData> tracks) => batch((batch) {
+        tracks.map((e) => batch.update(db.track, e));
+      });
 
-  // @Query("SELECT * FROM track WHERE id = :trackId")
-  Future<List<_Track>> getById(String trackId);
+  Future<List<TrackData>> getAll() => (select(db.track)).get();
 
-  // @Query("SELECT * FROM track WHERE sync <> 1")
-  Future<List<_Track>> getUnsynced();
+  Future<TrackData> getById(String trackId) =>
+      (select(db.track)..where((tbl) => tbl.id.equals(trackId))).getSingle();
 
-  // @Query("SELECT * FROM track WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
-  Future<List<_Track>> getByDate(String date);
+  Future<List<TrackData>> getUnsynced() =>
+      (select(db.track)..where((tbl) => tbl.sync.equals(false))).get();
+
+  Future<List<TrackData>> getByDate(String date) =>
+      (select(db.track)..where((tbl) => tbl.startTime.equals(DateTime.parse(date)))).get();
 }
