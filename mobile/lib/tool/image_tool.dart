@@ -102,6 +102,8 @@ Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
   }
 
   return 1;
+
+  // TODO return int;
   // int addNumber = await DbManager.db.dbImageDao.insertList(addImages);
   // int deleteNumber = await DbManager.db.dbImageDao.deleteList(deleteImages);
   //
