@@ -24,6 +24,9 @@ class _ChecklistPageState extends State<ChecklistPage> {
   bool loadComplete = false;
   late StreamController<bool> _streamController;
 
+  String sortingOption = "smart sort";
+  bool showRarities = false;
+
   Future<void> _onCompleted() async {
     _endTrack();
 
@@ -44,7 +47,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
     if (ListTool.birds.isEmpty) {
       await Future.delayed(const Duration(seconds: 1));
       setState(() {
-        ListTool.birds =  [
+        ListTool.birds = [
           BirdData(
               id: 'XIQUE',
               scientific: 'Pica serica',
@@ -187,8 +190,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            HotspotSelectPage(initLatLng: ListTool.tracker!.geoxml.wpts.last)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HotspotSelectPage(
+                                    initLatLng: ListTool.tracker!.geoxml.wpts.last)));
                       },
                       child: Row(
                         children: [
@@ -243,11 +249,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
           children: [
             IconButton(
               icon: const Icon(Icons.comment_rounded),
-              onPressed: () {},
+              onPressed: _showBottomNotes,
             ),
             IconButton(
               icon: const Icon(Icons.settings_rounded),
-              onPressed: () {},
+              onPressed: _showBottomSetting,
             ),
             IconButton(
               icon: const Icon(Icons.check_circle_rounded),
@@ -271,10 +277,10 @@ class _ChecklistPageState extends State<ChecklistPage> {
           recordInit() {
             setState(() {
               record = DbRecord.add(
-                  checklist: ListTool.checklist!.id,
-                  species: bird.scientific,
-                  speciesRef: bird.id,
-                  author: UserProfile.id,
+                checklist: ListTool.checklist!.id,
+                species: bird.scientific,
+                speciesRef: bird.id,
+                author: UserProfile.id,
               );
               ListTool.records.add(record!);
             });
@@ -309,7 +315,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
             },
             onLongPress: () {
               if (record != null) {
-                showClearDialog(removeRecord);
+                _showClearDialog(removeRecord);
               }
             },
             leading: IconButton(
@@ -334,7 +340,115 @@ class _ChecklistPageState extends State<ChecklistPage> {
     );
   }
 
-  void showClearDialog(void Function() clear) => showDialog(
+  void _showBottomSetting() => showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (context, setState) => Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        title: Text("Sorting Options:"),
+                      ),
+                      RadioListTile(
+                        title: Text("Smart Sort"),
+                        value: "smart sort",
+                        groupValue: sortingOption,
+                        onChanged: (value) {
+                          setState(() {
+                            sortingOption = value!;
+                          });
+                        },
+                      ),
+                      RadioListTile(
+                        title: Text("Taxonomic Sort"),
+                        value: "taxonomic sort",
+                        groupValue: sortingOption,
+                        onChanged: (value) {
+                          setState(() {
+                            sortingOption = value!;
+                          });
+                        },
+                      ),
+                      SwitchListTile(
+                        title: Text("Show Rarities"),
+                        value: showRarities,
+                        onChanged: (value) => setState(() {
+                          showRarities = value;
+                        }),
+                      ),
+                      ListTile(
+                        title: Text("Observation Type"),
+                        subtitle: Text(ListTool.checklist!.type),
+                        onTap: () => _showObservationTypeDialog(setState),
+                      ),
+                    ],
+                  ),
+                )),
+      );
+
+  void _showObservationTypeDialog(Function setState) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Select Observation Type"),
+          content: Column(
+            children: [
+              ListTile(
+                title: Text("Observation Type 1"),
+                onTap: () {
+                  setState(() {
+                    ListTool.checklist!.type = "Observation Type 1";
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text("Observation Type 2"),
+                onTap: () {
+                  setState(() {
+                    ListTool.checklist!.type = "Observation Type 2";
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              // Add more observation types as needed
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showBottomNotes() => showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) => StatefulBuilder(
+          builder: (context, setState) => Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text('Comments'),
+                ),
+                TextField(
+                  onChanged: (val) => ListTool.checklist?.notes = val,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: '详细描述您的问题',
+                  ),
+                  keyboardType: TextInputType.multiline,
+                  minLines: 5,
+                  maxLines: 5,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  void _showClearDialog(void Function() clear) => showDialog(
         context: context,
         builder: (context) {
           return Dialog(

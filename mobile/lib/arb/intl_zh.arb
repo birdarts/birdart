@@ -80,6 +80,6 @@
   "adult": "成鸟",
   "ageUnknown": "年龄不详",
   "sexUnknown": "性别不详",
-  "male": "male",
-  "female": "female"
+  "male": "雄鸟",
+  "female": "雌鸟"
 }
