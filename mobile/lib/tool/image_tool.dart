@@ -4,7 +4,7 @@ import 'package:exif/exif.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 
-import '../db/db_manager.dart';
+// import '../db/db_manager.dart';
 import '../entity/user_profile.dart';
 import '../widget/picture_grid.dart';
 

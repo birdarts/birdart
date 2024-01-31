@@ -9,13 +9,7 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 class DbManager {
-  static BirdartDB? database;
-
-  static setDb() async {
-    database = BirdartDB(_openConnection());
-  }
-
-  static BirdartDB get db => database!;
+  static BirdartDB db = BirdartDB(_openConnection());
 }
 
 LazyDatabase _openConnection() {
