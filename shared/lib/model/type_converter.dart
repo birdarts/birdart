@@ -7,7 +7,7 @@ class StringListConverter extends TypeConverter<List<String>, String> {
   List<String> fromSql(String fromDb) {
     try {
       return jsonDecode(fromDb);
-    } catch(e) {
+    } catch (e) {
       return [];
     }
     // if (fromDb.isEmpty) {
@@ -32,7 +32,7 @@ class MapConverter extends TypeConverter<Map<String, dynamic>, String> {
   Map<String, dynamic> fromSql(String fromDb) {
     try {
       return jsonDecode(fromDb);
-    } catch(e) {
+    } catch (e) {
       return {};
     }
   }

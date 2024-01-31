@@ -27,9 +27,10 @@ class BirdDao extends DatabaseAccessor<BirdartDB> with $BirdDaoMixin {
 
   Future<int> insertOne(BirdData bird) => into(db.bird).insertOnConflictUpdate(bird);
 
-  Future<void> insertList(List<BirdData> birds) => batch((batch) {
-    batch.insertAllOnConflictUpdate(db.bird, birds);
-  });
+  Future<void> insertList(List<BirdData> birds) =>
+      batch((batch) {
+        batch.insertAllOnConflictUpdate(db.bird, birds);
+      });
 
   Future<int> deleteOne(BirdData bird) => (delete(db.bird)..whereSamePrimaryKey(bird)).go();
 
@@ -38,9 +39,10 @@ class BirdDao extends DatabaseAccessor<BirdartDB> with $BirdDaoMixin {
 
   Future<int> updateOne(BirdData bird) => (update(db.bird)..whereSamePrimaryKey(bird)).write(bird);
 
-  Future<void> updateList(List<BirdData> birds) => batch((batch) {
-    birds.map((e) => batch.update(db.bird, e));
-  });
+  Future<void> updateList(List<BirdData> birds) =>
+      batch((batch) {
+        birds.map((e) => batch.update(db.bird, e));
+      });
 
   Future<List<BirdData>> getAll() => (select(db.bird)).get();
 }

@@ -449,10 +449,10 @@ bool isTileInChina(int x, int y, int z) => isPointInChina(tileToLatLng(x, y, z))
 
 LatLng tileToLatLng(int x, int y, int z) {
   final n = pow(2, z);
-  final lon_deg = x / n * 360.0 - 180.0;
-  final lat_rad = atan(sinh(pi * (1 - 2 * y / n)));
-  final lat_deg = lat_rad * 180.0 / pi;
-  return LatLng(lat_deg, lon_deg);
+  final lonDeg = x / n * 360.0 - 180.0;
+  final latRad = atan(sinh(pi * (1 - 2 * y / n)));
+  final latDeg = latRad * 180.0 / pi;
+  return LatLng(latDeg, lonDeg);
 }
 
 double sinh(double x) => (pow(e, x) - pow(e, -1 * x)) / 2;

@@ -83,14 +83,14 @@ extension UserExt on UserData {
     return base64.encode(await (await _algorithm.deriveKeyFromPassword(
       password: password,
       nonce: base64.decode(salt),
-    )).extractBytes());
+    ))
+        .extractBytes());
   }
-  
+
   Future<bool> checkPassword(String password) async =>
       (await hash(password, salt)) == this.password;
 
-  static Future<UserData> fromRegisterData(Map<String, dynamic> data) async =>
-      await add(
+  static Future<UserData> fromRegisterData(Map<String, dynamic> data) async => await add(
         name: data['name'],
         password: data['password'],
         phone: data['phone'],
@@ -106,21 +106,19 @@ final _algorithm = Argon2id(
   hashLength: 32, // Number of bytes in the returned hash
 );
 
-
 @DriftAccessor(tables: [User])
 class UserDao extends DatabaseAccessor<BirdartDB> with $UserDaoMixin {
   // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
   UserDao(super.db);
 
-  Future<int> insertOne(UserData user) =>
-      into(db.user).insertOnConflictUpdate(user);
+  Future<int> insertOne(UserData user) => into(db.user).insertOnConflictUpdate(user);
 
-  Future<void> insertList(List<UserData> users) => batch((batch) {
-    batch.insertAllOnConflictUpdate(db.user, users);
-  });
+  Future<void> insertList(List<UserData> users) =>
+      batch((batch) {
+        batch.insertAllOnConflictUpdate(db.user, users);
+      });
 
-  Future<int> deleteOne(UserData user) =>
-      (delete(db.user)..whereSamePrimaryKey(user)).go();
+  Future<int> deleteOne(UserData user) => (delete(db.user)..whereSamePrimaryKey(user)).go();
 
   Future<void> deleteList(List<UserData> users) =>
       (delete(db.user)..where((tbl) => tbl.id.isIn(users.map((e) => e.id)))).go();
@@ -128,12 +126,12 @@ class UserDao extends DatabaseAccessor<BirdartDB> with $UserDaoMixin {
   Future<int> deleteById(String userId) =>
       (delete(db.user)..where((tbl) => tbl.id.equals(userId))).go();
 
-  Future<int> updateOne(UserData user) =>
-      (update(db.user)..whereSamePrimaryKey(user)).write(user);
+  Future<int> updateOne(UserData user) => (update(db.user)..whereSamePrimaryKey(user)).write(user);
 
-  Future<void> updateList(List<UserData> users) => batch((batch) {
-    users.map((e) => batch.update(db.user, e));
-  });
+  Future<void> updateList(List<UserData> users) =>
+      batch((batch) {
+        users.map((e) => batch.update(db.user, e));
+      });
 
   Future<List<UserData>> getAll() => (select(db.user)).get();
 
