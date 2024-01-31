@@ -1,7 +1,7 @@
 name: birdart_server
 description: An new Dart Frog application
 version: 1.0.0+1
-publish_to: none
+publish_to: 'none'
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -18,6 +18,8 @@ dependencies:
 
   shared:
     path: ../shared
+
+  drift_postgres: ^1.1.0
 
 dev_dependencies:
   mocktail: ^1.0.0

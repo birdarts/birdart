@@ -1,130 +1,90 @@
-import 'package:floor_annotation/floor_annotation.dart';
-import 'uuid_gen.dart';
+import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
-@entity
-class Hotspot {
-  @primaryKey
-  String id;
-  String author;
-  String name;
-  double lon;
-  double lat;
-  DateTime createTime;
-  DateTime updateTime;
+import '../db/drift_db.dart';
+import 'hotspot.drift.dart';
 
-  String country;
-  String province;
-  String city;
-  String county;
+@j.JsonSerializable()
+class Hotspot extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
 
-  String countryId;
-  String provinceId;
-  String cityId;
-  String countyId;
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get author => text()();
+  TextColumn get name => text()();
+  RealColumn get lon => real()();
+  RealColumn get lat => real()();
+  DateTimeColumn get createTime => dateTime()();
+  DateTimeColumn get updateTime => dateTime()();
 
-  Hotspot({
-    required this.id,
-    required this.author,
-    required this.name,
-    required this.lon,
-    required this.lat,
-    required this.createTime,
-    required this.updateTime,
-    required this.country,
-    required this.province,
-    required this.city,
-    required this.county,
-    required this.countryId,
-    required this.provinceId,
-    required this.cityId,
-    required this.countyId,
-  });
+  TextColumn get country => text()();
+  TextColumn get province => text()();
+  TextColumn get city => text()();
+  TextColumn get county => text()();
 
-  factory Hotspot.fromJson(Map<String, dynamic> json) => Hotspot(
-        id: json['_id'],
-        author: json['author'],
-        name: json['name'].toString(),
-        lon: double.tryParse(json['lon'] ?? '0.0') ?? json['lon'] ?? 0.0,
-        lat: double.tryParse(json['lat'] ?? '0.0') ?? json['lat'] ?? 0.0,
-        createTime: DateTime.fromMicrosecondsSinceEpoch(int.tryParse(json['createTime']) ?? 0),
-        updateTime: DateTime.fromMicrosecondsSinceEpoch(int.tryParse(json['updateTime']) ?? 0),
-        country: json['country'],
-        province: json['province'],
-        city: json['city'],
-        county: json['county'],
-        countryId: json['countryId'],
-        provinceId: json['provinceId'],
-        cityId: json['cityId'],
-        countyId: json['countyId'],
+  TextColumn get countryId => text()();
+  TextColumn get provinceId => text()();
+  TextColumn get cityId => text()();
+  TextColumn get countyId => text()();
+
+  BoolColumn get sync => boolean()();
+
+  static HotspotData empty(String author) => HotspotData(
+        author: author,
+        id: Uuid().v1(),
+        name: '',
+        lon: 0.0,
+        lat: 0.0,
+        createTime: DateTime.now(),
+        updateTime: DateTime.now(),
+        country: '',
+        province: '',
+        city: '',
+        county: '',
+        countryId: '',
+        provinceId: '',
+        cityId: '',
+        countyId: '',
+        sync: false,
       );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id.toString(),
-        'author': author.toString(),
-        'name': name,
-        'lon': lon,
-        'lat': lat,
-        'createTime': createTime.microsecondsSinceEpoch,
-        'updateTime': updateTime.microsecondsSinceEpoch,
-        'country': country,
-        'province': province,
-        'city': city,
-        'county': county,
-        'countryId': countryId,
-        'provinceId': provinceId,
-        'cityId': cityId,
-        'countyId': countyId,
-      };
-
-  Hotspot.empty(this.author)
-      : id = uuid.v1(),
-        name = '',
-        lon = 0.0,
-        lat = 0.0,
-        createTime = DateTime.now(),
-        updateTime = DateTime.now(),
-        country = '',
-        province = '',
-        city = '',
-        county = '',
-        countryId = '',
-        provinceId = '',
-        cityId = '',
-        countyId = '';
 }
 
-@dao
-abstract class HotspotDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Hotspot hotspot);
+@DriftAccessor(tables: [Hotspot])
+class HotspotDao extends DatabaseAccessor<BirdartDB> with $HotspotDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  HotspotDao(super.db);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<Hotspot> hotspots);
+  Future<int> insertOne(HotspotData hotspot) => into(db.hotspot).insertOnConflictUpdate(hotspot);
 
-  @delete
-  Future<int> deleteOne(Hotspot hotspot);
+  Future<void> insertList(List<HotspotData> hotspots) => batch((batch) {
+        batch.insertAllOnConflictUpdate(db.hotspot, hotspots);
+      });
 
-  @delete
-  Future<int> deleteList(List<Hotspot> hotspots);
+  Future<int> deleteOne(HotspotData hotspot) =>
+      (delete(db.hotspot)..whereSamePrimaryKey(hotspot)).go();
 
-  @update
-  Future<int> updateOne(Hotspot hotspot);
+  Future<void> deleteList(List<HotspotData> hotspots) =>
+      (delete(db.hotspot)..where((tbl) => tbl.id.isIn(hotspots.map((e) => e.id)))).go();
 
-  @update
-  Future<int> updateList(List<Hotspot> hotspots);
+  Future<int> deleteById(String hotspotId) =>
+      (delete(db.hotspot)..where((tbl) => tbl.id.equals(hotspotId))).go();
 
-  @Query("DELETE FROM hotspot WHERE id = :hotspotId")
-  Future<int?> deleteById(String hotspotId);
+  Future<int> updateOne(HotspotData hotspot) =>
+      (update(db.hotspot)..whereSamePrimaryKey(hotspot)).write(hotspot);
 
-  @Query("SELECT * FROM hotspot ORDER BY datetime(startTime) desc")
-  Future<List<Hotspot>> getAll();
+  Future<void> updateList(List<HotspotData> hotspots) => batch((batch) {
+        hotspots.map((e) => batch.update(db.hotspot, e));
+      });
 
-  @Query("SELECT * FROM hotspot WHERE id = :hotspotId")
-  Future<List<Hotspot>> getById(String hotspotId);
+  Future<List<HotspotData>> getAll() => (select(db.hotspot)).get();
 
-  @Query("SELECT * FROM hotspot WHERE sync <> 1")
-  Future<List<Hotspot>> getUnsynced();
+  Future<HotspotData?> getById(String hotspotId) =>
+      (select(db.hotspot)..where((tbl) => tbl.id.equals(hotspotId))).getSingleOrNull();
 
-  @Query("SELECT * FROM hotspot WHERE instr(startTime, :date) ORDER BY datetime(startTime) desc")
-  Future<List<Hotspot>> getByDate(String date);
+  Future<List<HotspotData>> getUnsynced() =>
+      (select(db.hotspot)..where((tbl) => tbl.sync.equals(false))).get();
+
+  Future<List<HotspotData>> getByDate(String date) =>
+      (select(db.hotspot)..where((tbl) => tbl.createTime.equals(DateTime.parse(date)))).get();
 }

@@ -28,7 +28,7 @@ class _ListFragmentState extends State<ListFragment>
 
   @override
   void initState() {
-    _future = DbManager.db.birdListDao.getAll();
+    _future = DbManager.db.checklistDao.getAll();
     super.initState();
     _fetchProjects();
   }
@@ -42,18 +42,20 @@ class _ListFragmentState extends State<ListFragment>
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
           List<dynamic> dataList = data['data']['list'];
-          List<Checklist> projectList = List.generate(
-              dataList.length, (index) => Checklist.fromJson(dataList[index]));
-          for (var item in projectList) {
-            final oldProject =
-                await DbManager.db.birdListDao.getById(item.id.toString());
-            if (oldProject.isNotEmpty) {
-              projectList.remove(item);
+          List<ChecklistData> projectList = List.generate(
+              dataList.length, (index) => ChecklistData.fromJson(dataList[index]));
+
+          final oldRemoval = projectList.map((e) async {
+            final oldProjectList = await DbManager.db.checklistDao.getById(e.id);
+            if (oldProjectList != null) {
+              projectList.remove(e);
             }
-          }
-          await DbManager.db.birdListDao.insertList(projectList);
+          });
+          await Future.wait(oldRemoval);
+
+          await DbManager.db.checklistDao.insertList(projectList);
           setState(() {
-            _future = DbManager.db.birdListDao.getAll();
+            _future = DbManager.db.checklistDao.getAll();
           });
         }
       } else {}
@@ -125,7 +127,7 @@ class _ListFragmentState extends State<ListFragment>
     );
   }
 
-  Widget getProjectItem(Checklist project) => ClipRRect(
+  Widget getProjectItem(ChecklistData project) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
           child: SizedBox(
@@ -241,16 +243,16 @@ class _ListFragmentState extends State<ListFragment>
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
-          Checklist project = Checklist.fromJson(data['data']);
+          ChecklistData project = ChecklistData.fromJson(data['data']);
           final oldProject =
-              await DbManager.db.birdListDao.getById(project.id.toString());
-          if (oldProject.isNotEmpty) {
+              await DbManager.db.checklistDao.getById(project.id.toString());
+          if (oldProject != null) {
             _qrCodeGetFailed('项目已存在');
             return;
           } else {
-            await DbManager.db.birdListDao.insertOne(project);
+            await DbManager.db.checklistDao.insertOne(project);
             setState(() {
-              _future = DbManager.db.birdListDao.getAll();
+              _future = DbManager.db.checklistDao.getAll();
             });
           }
           return;

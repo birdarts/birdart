@@ -29,8 +29,8 @@ class _ChecklistPageState extends State<ChecklistPage> {
 
     if (ListTool.checklist != null) {
       await Future.wait([
-        DbManager.db.birdListDao.insertOne(ListTool.checklist!),
-        DbManager.db.recordDao.insertList(ListTool.records)
+        DbManager.db.checklistDao.insertOne(ListTool.checklist!),
+        DbManager.db.dbRecordDao.insertList(ListTool.records)
       ]);
     }
     ListTool.checklist = null;
@@ -44,50 +44,50 @@ class _ChecklistPageState extends State<ChecklistPage> {
     if (ListTool.birds.isEmpty) {
       await Future.delayed(const Duration(seconds: 1));
       setState(() {
-        ListTool.birds = [
-          Bird(
+        ListTool.birds =  [
+          BirdData(
               id: 'XIQUE',
               scientific: 'Pica serica',
               vernacular: '喜鹊',
               ordo: 'Pass',
               familia: 'Corv',
               genus: 'Pica'),
-          Bird(
+          BirdData(
               id: 'SONYA',
               scientific: 'Garrulus glandarius',
               vernacular: '松鸦',
               ordo: 'Pass',
               familia: 'Corv',
               genus: 'Garrulus'),
-          Bird(
+          BirdData(
               id: 'ZUOYA',
               scientific: 'Phasianus colchicus',
               vernacular: '雉鸡',
               ordo: 'Phasianidae',
               familia: 'Phasianidae',
               genus: 'Phasianus'),
-          Bird(
+          BirdData(
               id: 'KULIA',
               scientific: 'Columbina minuta',
               vernacular: '地鸽',
               ordo: 'Columbiformes',
               familia: 'Columbidae',
               genus: 'Columbina'),
-          Bird(
+          BirdData(
               id: 'ZHFEI',
               scientific: 'Turdus merula',
               vernacular: '乌鸫',
               ordo: 'Passeriformes',
               familia: 'Turdidae',
               genus: 'Turdus'),
-          Bird(
+          BirdData(
               id: 'HONMA',
               scientific: 'Eudromia elegans',
               vernacular: '红嘴鸥',
               ordo: 'Charadriiformes',
               familia: 'Laridae',
               genus: 'Eudromia'),
-          Bird(
+          BirdData(
               id: 'DONFA',
               scientific: 'Ciconia boyciana',
               vernacular: '东方白鹳',
@@ -353,7 +353,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
       );
 }
 
-extension on Track {
+extension on TrackData {
   String getTimeText() {
     Duration difference = endTime.difference(startTime);
     return BdL10n.current.newListTrackDuration(difference.inHours, difference.inMinutes % 60);

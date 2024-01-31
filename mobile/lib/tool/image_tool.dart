@@ -4,7 +4,7 @@ import 'package:exif/exif.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared/shared.dart';
 
-import '../db/db_manager.dart';
+// import '../db/db_manager.dart';
 import '../entity/user_profile.dart';
 import '../widget/picture_grid.dart';
 
@@ -56,8 +56,8 @@ class ImageTool {
 }
 
 Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
-    List<DbImage> oldImages, String recordId) async {
-  List<DbImage> addImages = [];
+    List<DbImageData> oldImages, String recordId) async {
+  List<DbImageData> addImages = [];
   List<String> imgPaths = [];
 
   List<String?> imagePathList = [
@@ -67,11 +67,11 @@ Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
   pictureGrid.imageData.asMap().forEach((index, img) {
     final imagePath = imagePathList[index];
     if (imagePath != null &&
-        !oldImages.any((DbImage image) => image.imagePath == imagePath)) {
+        !oldImages.any((DbImageData image) => image.imagePath == imagePath)) {
       imgPaths.add(imagePath);
 
       if (oldImages.isEmpty) {
-        DbImage dbImage;
+        DbImageData dbImage;
         ImageTool imageTool = ImageTool(imagePath);
 
         try {
@@ -93,19 +93,22 @@ Future<int> imageMapForEach(String type, PictureGridState pictureGrid,
     }
   });
 
-  List<DbImage> deleteImages = [];
-  for (DbImage image in oldImages) {
+  List<DbImageData> deleteImages = [];
+  for (DbImageData image in oldImages) {
     if (!imagePathList
         .any((String? path) => image.imagePath == path.toString())) {
       deleteImages.add(image);
     }
   }
 
-  int addNumber = (await DbManager.db.imageDao.insertList(addImages)).length;
-  int deleteNumber = await DbManager.db.imageDao.deleteList(deleteImages);
+  return 1;
 
-  if (addNumber == addImages.length && deleteNumber == deleteImages.length) {
-    return 1;
-  }
-  return 0;
+  // TODO return int;
+  // int addNumber = await DbManager.db.dbImageDao.insertList(addImages);
+  // int deleteNumber = await DbManager.db.dbImageDao.deleteList(deleteImages);
+  //
+  // if (addNumber == addImages.length && deleteNumber == deleteImages.length) {
+  //   return 1;
+  // }
+  // return 0;
 }

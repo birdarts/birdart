@@ -43,20 +43,15 @@ void main() async {
 Future<void> mainCheck() async {
   while (AppDir.data.path.isEmpty ||
       AppDir.cache.path.isEmpty ||
-      DbManager.database == null ||
       !SharedPref.inited ||
       !UserProfile.inited) {
     Future? prefFuture;
     Future? dirFuture;
-    Future? dbFuture;
     if (!SharedPref.inited) {
       prefFuture = SharedPref.init();
     }
     if (AppDir.data.path.isEmpty || AppDir.cache.path.isEmpty) {
       dirFuture = AppDir.setDir();
-    }
-    if (DbManager.database == null) {
-      dbFuture = DbManager.setDb();
     }
     if (!UserProfile.inited) {
       if (prefFuture != null) {
@@ -67,9 +62,6 @@ Future<void> mainCheck() async {
     }
     if (dirFuture != null) {
       await dirFuture;
-    }
-    if (dbFuture != null) {
-      await dbFuture;
     }
   }
 }

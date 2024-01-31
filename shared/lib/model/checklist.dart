@@ -1,110 +1,74 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
+import 'package:shared/model/track.dart';
+import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
-import 'uuid_gen.dart';
+import '../db/drift_db.dart';
+import 'checklist.drift.dart';
 
-@entity
-class Checklist {
-  @primaryKey
-  String id;
-  String author;
-  String notes;
-  DateTime createTime;
-  DateTime updateTime;
-  int time; // in minutes
-  int birders; // birder amount
-  double distance; //
-  String type = ''; // list type
-  bool complete; // is complete record or not
-  bool sync; // if already uploaded.
+@j.JsonSerializable()
+class Checklist extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
 
-  String track;
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get author => text()();
+  TextColumn get notes => text()();
+  TextColumn get type => text()(); // list type
+  DateTimeColumn get createTime => dateTime()();
+  DateTimeColumn get updateTime => dateTime()();
+  IntColumn get time => integer()(); // in minutes
+  IntColumn get birders => integer()(); // birder amount
+  RealColumn get distance => real()(); // in kilometers
+  BoolColumn get complete => boolean()(); // is complete record or not
+  BoolColumn get sync => boolean()(); // if already uploaded.
+  TextColumn get track => text().references(Track, #id)();
+  TextColumn get comment => text()();
 
-  String comment = '';
-
-  Checklist({
-    required this.id,
-    required this.author,
-    required this.notes,
-    required this.createTime,
-    required this.updateTime,
-    required this.sync,
-    required this.track,
-    required this.comment,
-    required this.type,
-    required this.time,
-    required this.birders,
-    required this.distance,
-    required this.complete,
-  });
-
-  factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
-        id: json['_id'],
-        author: json['author'],
-        notes: json['notes'],
-        createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
-        updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
-        sync: true,
-        track: json['track'],
-        comment: json['comment'],
-        type: json['type'],
-        time: json['time'],
-        birders: json['birders'],
-        distance: json['distance'],
-        complete: json['complete'],
+  static ChecklistData empty(String author, String track) => ChecklistData(
+        id: Uuid().v1(),
+        author: author,
+        track: track,
+        notes: '',
+        createTime: DateTime.now(),
+        updateTime: DateTime.now(),
+        sync: false,
+        comment: '',
+        type: '',
+        time: 0,
+        birders: 1,
+        distance: 0,
+        complete: true,
       );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id.toString(),
-        'author': author.toString(),
-        'notes': notes,
-        'createTime': createTime.microsecondsSinceEpoch,
-        'updateTime': createTime.microsecondsSinceEpoch,
-        'track': track,
-        'comment': comment,
-        'type': type,
-        'time': time,
-        'birders': birders,
-        'distance': distance,
-        'complete': complete,
-      };
-
-  Checklist.empty(this.author, this.track)
-      : id = uuid.v1(),
-        notes = '',
-        createTime = DateTime.now(),
-        updateTime = DateTime.now(),
-        sync = false,
-        comment = '',
-        type = '',
-        time = 0,
-        birders = 1,
-        distance = 0,
-        complete = true;
 }
 
-@dao
-abstract class BirdListDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Checklist project);
+@DriftAccessor(tables: [Checklist])
+class ChecklistDao extends DatabaseAccessor<BirdartDB> with $ChecklistDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  ChecklistDao(super.db);
 
-  @Insert(onConflict: OnConflictStrategy.abort)
-  Future<List<int>> insertList(List<Checklist> project);
+  Future<int> insertOne(ChecklistData checklist) =>
+      into(db.checklist).insertOnConflictUpdate(checklist);
 
-  @delete
-  Future<int> deleteOne(Checklist project);
+  Future<void> insertList(List<ChecklistData> checklists) => batch((batch) {
+        batch.insertAllOnConflictUpdate(db.checklist, checklists);
+      });
 
-  @delete
-  Future<int> deleteList(List<Checklist> projects);
+  Future<int> deleteOne(ChecklistData checklist) =>
+      (delete(db.checklist)..whereSamePrimaryKey(checklist)).go();
 
-  @update
-  Future<int> updateOne(Checklist project);
+  Future<void> deleteList(List<ChecklistData> checklists) =>
+      (delete(db.checklist)..where((tbl) => tbl.id.isIn(checklists.map((e) => e.id)))).go();
 
-  @update
-  Future<int> updateList(List<Checklist> projects);
+  Future<int> updateOne(ChecklistData checklist) =>
+      (update(db.checklist)..whereSamePrimaryKey(checklist)).write(checklist);
 
-  @Query("SELECT * FROM Checklist")
-  Future<List<Checklist>> getAll();
+  Future<void> updateList(List<ChecklistData> checklists) => batch((batch) {
+        checklists.map((e) => batch.update(db.checklist, e));
+      });
 
-  @Query("SELECT * FROM Checklist WHERE id = :projectId")
-  Future<List<Checklist>> getById(String projectId);
+  Future<List<ChecklistData>> getAll() => (select(db.checklist)).get();
+
+  Future<ChecklistData?> getById(String checklistId) =>
+      (select(db.checklist)..where((tbl) => tbl.id.equals(checklistId))).getSingleOrNull();
 }

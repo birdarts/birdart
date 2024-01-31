@@ -18,7 +18,6 @@ import 'package:shared/shared.dart';
 import '../entity/user_profile.dart';
 import '../pages/track_map_page.dart';
 import '../db/db_manager.dart';
-import '../db/on_db.dart';
 import '../entity/app_dir.dart';
 import '../l10n/l10n.dart';
 import 'coordinator_tool.dart';
@@ -33,12 +32,12 @@ class Tracker {
   }
 
   late Future _future;
-  OnDb db = DbManager.db;
+  BirdartDB db = DbManager.db;
   BuildContext context;
 
   StreamSubscription? subscription;
   GeoXml geoxml = GeoXml();
-  Track track = Track.empty(UserProfile.id);
+  TrackData track = Track.empty(UserProfile.id);
 
   bool get mounted => context.mounted;
   VoidCallback? callback;
@@ -262,7 +261,7 @@ class Tracker {
         ),
       );
 
-  Widget getTrackItem(Track track) => ClipRRect(
+  Widget getTrackItem(TrackData track) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
           child: Container(
@@ -304,7 +303,7 @@ class Tracker {
                 TextButton(
                   onPressed: () async {
                     final geoxml = await GeoXml.fromGpxStream(
-                        File(track.file).openRead().transform(utf8.decoder));
+                        File(track.filePath).openRead().transform(utf8.decoder));
                     List<LatLng> latlngList = List.generate(geoxml.wpts.length,
                         (index) => LatLng(geoxml.wpts[index].lat!, geoxml.wpts[index].lon!));
                     if (mounted) {
@@ -412,12 +411,12 @@ class Tracker {
       return;
     }
     var gpxString = geoxml.toGpxString(pretty: true);
-    track.file = path.join(
+    track.filePath = path.join(
       AppDir.data.path,
       'files',
       '${track.id.toString()}.gpx',
     );
-    final file = File(track.file);
+    final file = File(track.filePath);
     Directory parent = file.parent;
     if (!await parent.exists()) {
       await parent.create(recursive: true);

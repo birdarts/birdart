@@ -1,153 +1,136 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
 import 'package:shared/shared.dart';
-import 'uuid_gen.dart';
+import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
-@Entity(tableName: 'RECORD')
-class DbRecord {
-  @primaryKey
-  String id;
-  String checklist;
-  String author;
+@j.JsonSerializable()
+class DbRecord extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
 
-  String species;
-  String speciesRef;
+  TextColumn get id => text().withLength(max: 36, min: 36)();
 
-  List<String> tags;
-  String notes;
-  int amount;
-  Map<String, dynamic> appendix;
-  bool sync; // if changes already uploaded.
+  TextColumn get checklist => text()();
 
-  DateTime createTime;
-  DateTime updateTime;
+  TextColumn get author => text()();
 
-  DbRecord({
-    required this.id,
-    required this.checklist,
-    required this.author,
-    required this.species,
-    required this.speciesRef,
-    required this.notes,
-    required this.amount,
-    required this.sync,
-    required this.createTime,
-    required this.updateTime,
-    required this.tags,
-    required this.appendix
-  });
+  TextColumn get species => text()();
 
-  factory DbRecord.fromJson(Map<String, dynamic> json) => DbRecord(
-        id: (json['id']),
-        checklist: (json['checklist']),
-        author: (json['author']),
-        species: json['species'],
-        speciesRef: json['speciesRef'],
-        notes: json['notes'],
-        sync: true,
-        amount: int.tryParse(json['amount'].toString()) ?? 1,
-        createTime: DateTime.fromMicrosecondsSinceEpoch(json['createTime']),
-        updateTime: DateTime.fromMicrosecondsSinceEpoch(json['updateTime']),
-        tags: json['tags'],
-        appendix: json['appendix']
+  TextColumn get speciesRef => text()();
+
+  TextColumn get tags => text().map(StringListConverter())();
+
+  TextColumn get notes => text()();
+
+  IntColumn get amount => integer()();
+
+  TextColumn get appendix => text().map(MapConverter())();
+
+  BoolColumn get sync => boolean()();
+
+  DateTimeColumn get createTime => dateTime()();
+
+  DateTimeColumn get updateTime => dateTime()();
+
+  static DbRecordData add({
+    required String checklist,
+    required String species,
+    required String speciesRef,
+    required String author,
+  }) =>
+      DbRecordData(
+        id: Uuid().v1(),
+        checklist: checklist,
+        species: species,
+        speciesRef: speciesRef,
+        author: author,
+        sync: false,
+        amount: 1,
+        appendix: {},
+        notes: '',
+        tags: [],
+        createTime: DateTime.now(),
+        updateTime: DateTime.now(),
       );
+}
 
-  Map<String, dynamic> toJson() => {
-        '_id': id.toString(),
-        'checklist': checklist.toString(),
-        'author': author.toString(),
-        'species': species,
-        'speciesRef': speciesRef,
-        'notes': notes,
-        'amount': amount,
-        'createTime': createTime.microsecondsSinceEpoch,
-        'updateTime': updateTime.microsecondsSinceEpoch,
-        'tags': tags,
-        'appendix': appendix
-      };
-
-  DbRecord.add(
-      {required this.checklist,
-      required this.species,
-      required this.speciesRef,
-      required this.author,})
-      : id = uuid.v1(),
-        sync = false,
-        amount = 1,
-        appendix = {},
-        notes = '',
-        tags = [],
-        createTime = DateTime.now(),
-        updateTime = DateTime.now();
-
-  @ignore
+extension RecordExt on DbRecordData {
   String get oil => appendix[RecordKeys.oil] ?? '';
 
-  @ignore
   set oil(String value) {
     appendix[RecordKeys.oil] = value;
   }
 
-  @ignore
   Map<String, Map<String, int>> get ageSex {
-    appendix[RecordKeys.ageSex] = appendix[RecordKeys.ageSex] ?? {
-      RecordKeys.nestling: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
-      RecordKeys.juvenile: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
-      RecordKeys.adult: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
-      RecordKeys.undefined: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
-    };
+    appendix[RecordKeys.ageSex] = appendix[RecordKeys.ageSex] ??
+        {
+          RecordKeys.nestling: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+          RecordKeys.juvenile: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+          RecordKeys.adult: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+          RecordKeys.undefined: {RecordKeys.male: 0, RecordKeys.female: 0, RecordKeys.undefined: 0},
+        };
 
     return appendix[RecordKeys.ageSex];
   }
 
-  @ignore
   set ageSex(Map<String, Map<String, int>> value) {
     appendix[RecordKeys.ageSex] = value;
   }
 
-  @ignore
   String get behaviour => appendix[RecordKeys.behaviour] ?? '';
 
-  @ignore
   set behaviour(String value) {
     appendix[RecordKeys.behaviour] = value;
   }
 }
 
-@dao
-abstract class DbRecordDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(DbRecord record);
+@DriftAccessor(tables: [DbRecord])
+class DbRecordDao extends DatabaseAccessor<BirdartDB> with $DbRecordDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  DbRecordDao(super.db);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<DbRecord> records);
+  Future<int> insertOne(DbRecordData dbRecord) =>
+      into(db.dbRecord).insertOnConflictUpdate(dbRecord);
 
-  @delete
-  Future<int> deleteOne(DbRecord record);
+  Future<void> insertList(List<DbRecordData> dbRecords) => batch((batch) {
+        batch.insertAllOnConflictUpdate(db.dbRecord, dbRecords);
+      });
 
-  @delete
-  Future<int> deleteList(List<DbRecord> records);
+  Future<int> deleteOne(DbRecordData dbRecord) =>
+      (delete(db.dbRecord)..whereSamePrimaryKey(dbRecord)).go();
 
-  @update
-  Future<int> updateOne(DbRecord record);
+  Future<void> deleteList(List<DbRecordData> dbRecords) =>
+      (delete(db.dbRecord)..where((tbl) => tbl.id.isIn(dbRecords.map((e) => e.id)))).go();
 
-  @update
-  Future<int> updateList(List<DbRecord> records);
+  Future<int> deleteById(String dbRecordId) =>
+      (delete(db.dbRecord)..where((tbl) => tbl.id.equals(dbRecordId))).go();
 
-  @Query("DELETE FROM record WHERE id = :recordId")
-  Future<int?> deleteById(String recordId);
+  Future<int> deleteByChecklist(String checklistId) =>
+      (delete(db.dbRecord)..where((tbl) => tbl.checklist.equals(checklistId))).go();
 
-  @Query("DELETE FROM record WHERE project = :projectId")
-  Future<int?> deleteByProject(String projectId);
+  Future<int> updateOne(DbRecordData dbRecord) =>
+      (update(db.dbRecord)..whereSamePrimaryKey(dbRecord)).write(dbRecord);
 
-  @Query("SELECT * FROM record")
-  Future<List<DbRecord>> getAll();
+  Future<void> updateList(List<DbRecordData> dbRecords) => batch((batch) {
+        dbRecords.map((e) => batch.update(db.dbRecord, e));
+      });
 
-  @Query("SELECT * FROM record WHERE id = :idArg")
-  Future<List<DbRecord>> getById(String idArg);
+  Future<List<DbRecordData>> getAll() => (select(db.dbRecord)).get();
 
-  @Query("SELECT * FROM record WHERE project = :projectArg")
-  Future<List<DbRecord>> getByProject(String projectArg);
+  Future<DbRecordData?> getById(String dbRecordId) =>
+      (select(db.dbRecord)..where((tbl) => tbl.id.equals(dbRecordId))).getSingleOrNull();
 
-  @Query("SELECT * FROM record WHERE project = :projectArg and sync <> 1")
-  Future<List<DbRecord>> getByProjectUnsynced(String projectArg);
+  Future<List<DbRecordData>> getUnsynced() =>
+      (select(db.dbRecord)..where((tbl) => tbl.sync.equals(false))).get();
+
+  Future<List<DbRecordData>> getByDate(String date) =>
+      (select(db.dbRecord)..where((tbl) => tbl.createTime.equals(DateTime.parse(date)))).get();
+
+  Future<List<DbRecordData>> getByChecklist(String checklistId) =>
+      (select(db.dbRecord)..where((tbl) => tbl.checklist.equals(checklistId))).get();
+
+  Future<List<DbRecordData>> getByChecklistUnsynced(String checklistId) => (select(db.dbRecord)
+        ..where((tbl) => tbl.checklist.equals(checklistId))
+        ..where((tbl) => tbl.sync.equals(false)))
+      .get();
 }

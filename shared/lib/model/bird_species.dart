@@ -1,64 +1,46 @@
-import 'package:floor_annotation/floor_annotation.dart';
+import 'package:drift/drift.dart';
+import 'package:shared/db/drift_db.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
-@entity
-class Bird {
-  @primaryKey
-  String id;
-  String scientific;
-  String vernacular;
-  String ordo; 
-  String familia = '';
-  String genus;
+import 'bird_species.drift.dart';
 
-  Bird({
-    required this.id,
-    required this.scientific,
-    required this.vernacular,
-    required this.ordo,
-    required this.familia,
-    required this.genus,
-  });
+@j.JsonSerializable()
+class Bird extends Table {
+  @override
+  Set<Column> get primaryKey => {id};
 
-  factory Bird.fromJson(Map<String, dynamic> json) => Bird(
-    id: json['_id'],
-    scientific: json['author'],
-    vernacular: json['notes'],
-    ordo: json['track'],
-    familia: json['comment'],
-    genus: json['type'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    '_id': id,
-    'author': scientific,
-    'notes': vernacular,
-    'track': ordo,
-    'comment': familia,
-    'type': genus,
-  };
+  TextColumn get id => text().withLength(max: 36, min: 36)();
+  TextColumn get scientific => text()();
+  TextColumn get vernacular => text()();
+  TextColumn get ordo => text()();
+  TextColumn get familia => text()();
+  TextColumn get genus => text()();
 }
 
+// _TodosDaoMixin 会被 drift 创建。
+// 它包含表需要的所有必要字段。
+// <MyDatabase> 类型注释是数据库类，会使用这个 DAO。
+@DriftAccessor(tables: [Bird])
+class BirdDao extends DatabaseAccessor<BirdartDB> with $BirdDaoMixin {
+  // 构造方法是必需的，这样主数据库可以创建这个对象的实例。
+  BirdDao(super.db);
 
-@dao
-abstract class BirdDao {
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<int> insertOne(Bird bird);
+  Future<int> insertOne(BirdData bird) => into(db.bird).insertOnConflictUpdate(bird);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<List<int>> insertList(List<Bird> birds);
+  Future<void> insertList(List<BirdData> birds) => batch((batch) {
+    batch.insertAllOnConflictUpdate(db.bird, birds);
+  });
 
-  @delete
-  Future<int> deleteOne(Bird bird);
+  Future<int> deleteOne(BirdData bird) => (delete(db.bird)..whereSamePrimaryKey(bird)).go();
 
-  @delete
-  Future<int> deleteList(List<Bird> birds);
+  Future<void> deleteList(List<BirdData> birds) =>
+      (delete(db.bird)..where((tbl) => tbl.id.isIn(birds.map((e) => e.id)))).go();
 
-  @update
-  Future<int> updateOne(Bird bird);
+  Future<int> updateOne(BirdData bird) => (update(db.bird)..whereSamePrimaryKey(bird)).write(bird);
 
-  @update
-  Future<int> updateList(List<Bird> birds);
+  Future<void> updateList(List<BirdData> birds) => batch((batch) {
+    birds.map((e) => batch.update(db.bird, e));
+  });
 
-  @Query("SELECT * FROM bird ORDER BY datetime(startTime) desc")
-  Future<List<Bird>> getAll();
+  Future<List<BirdData>> getAll() => (select(db.bird)).get();
 }
