@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:shared/model/record.drift.dart';
 import 'package:shared/shared.dart';
 import 'package:uuid/uuid.dart';
+import 'record.drift.dart';
 
 // @UseRowClass(_DbRecord)
 class DbRecord extends Table {
@@ -117,8 +117,8 @@ class DbRecordDao extends DatabaseAccessor<BirdartDB> with $DbRecordDaoMixin {
 
   Future<List<DbRecordData>> getAll() => (select(db.dbRecord)).get();
 
-  Future<DbRecordData> getById(String dbRecordId) =>
-      (select(db.dbRecord)..where((tbl) => tbl.id.equals(dbRecordId))).getSingle();
+  Future<DbRecordData?> getById(String dbRecordId) =>
+      (select(db.dbRecord)..where((tbl) => tbl.id.equals(dbRecordId))).getSingleOrNull();
 
   Future<List<DbRecordData>> getUnsynced() =>
       (select(db.dbRecord)..where((tbl) => tbl.sync.equals(false))).get();

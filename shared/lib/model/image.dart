@@ -68,8 +68,8 @@ class DbImageDao extends DatabaseAccessor<BirdartDB> with $DbImageDaoMixin {
 
   Future<List<DbImageData>> getAll() => (select(db.dbImage)).get();
 
-  Future<DbImageData> getById(String dbImageId) =>
-      (select(db.dbImage)..where((tbl) => tbl.id.equals(dbImageId))).getSingle();
+  Future<DbImageData?> getById(String dbImageId) =>
+      (select(db.dbImage)..where((tbl) => tbl.id.equals(dbImageId))).getSingleOrNull();
 
   Future<List<DbImageData>> getUnsynced() =>
       (select(db.dbImage)..where((tbl) => tbl.sync.equals(false))).get();

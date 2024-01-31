@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
-import 'package:shared/model/track.drift.dart';
 import 'package:uuid/uuid.dart';
 
 import '../db/drift_db.dart';
+import 'track.drift.dart';
 
 // @UseRowClass(_Track)
 class Track extends Table {
@@ -73,8 +73,8 @@ class TrackDao extends DatabaseAccessor<BirdartDB> with $TrackDaoMixin {
 
   Future<List<TrackData>> getAll() => (select(db.track)).get();
 
-  Future<TrackData> getById(String trackId) =>
-      (select(db.track)..where((tbl) => tbl.id.equals(trackId))).getSingle();
+  Future<TrackData?> getById(String trackId) =>
+      (select(db.track)..where((tbl) => tbl.id.equals(trackId))).getSingleOrNull();
 
   Future<List<TrackData>> getUnsynced() =>
       (select(db.track)..where((tbl) => tbl.sync.equals(false))).get();

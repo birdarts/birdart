@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:drift/drift.dart';
-import 'package:shared/model/user.drift.dart';
 import 'package:uuid/uuid.dart';
 
 import '../db/drift_db.dart';
+import 'user.drift.dart';
 
 enum UserStatus {
   active(0),
@@ -136,6 +136,6 @@ class UserDao extends DatabaseAccessor<BirdartDB> with $UserDaoMixin {
 
   Future<List<UserData>> getAll() => (select(db.user)).get();
 
-  Future<UserData> getById(String userId) =>
-      (select(db.user)..where((tbl) => tbl.id.equals(userId))).getSingle();
+  Future<UserData?> getById(String userId) =>
+      (select(db.user)..where((tbl) => tbl.id.equals(userId))).getSingleOrNull();
 }

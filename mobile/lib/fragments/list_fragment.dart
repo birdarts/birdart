@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared/model/checklist.drift.dart';
 import 'package:shared/shared.dart';
 
 import '../l10n/l10n.dart';
@@ -30,7 +28,7 @@ class _ListFragmentState extends State<ListFragment>
 
   @override
   void initState() {
-    _future = DbManager.db.checklist.select().map((p0) => p0).get();
+    _future = DbManager.db.checklistDao.getAll();
     super.initState();
     _fetchProjects();
   }
@@ -46,15 +44,18 @@ class _ListFragmentState extends State<ListFragment>
           List<dynamic> dataList = data['data']['list'];
           List<ChecklistData> projectList = List.generate(
               dataList.length, (index) => ChecklistData.fromJson(dataList[index]));
-          for (var item in projectList) {
-            final oldProject = await (DbManager.db.checklist.select()..where((tbl) => tbl.id.equals(item.id.toString()))).get();
-            if (oldProject.isNotEmpty) {
-              projectList.remove(item);
+
+          final oldRemoval = projectList.map((e) async {
+            final oldProjectList = await DbManager.db.checklistDao.getById(e.id);
+            if (oldProjectList != null) {
+              projectList.remove(e);
             }
-          }
-          await DbManager.db.checklist.insertAll(projectList);
+          });
+          await Future.wait(oldRemoval);
+
+          await DbManager.db.checklistDao.insertList(projectList);
           setState(() {
-            _future = DbManager.db.checklist.select().map((p0) => p0).get();
+            _future = DbManager.db.checklistDao.getAll();
           });
         }
       } else {}
@@ -126,7 +127,7 @@ class _ListFragmentState extends State<ListFragment>
     );
   }
 
-  Widget getProjectItem(Checklist project) => ClipRRect(
+  Widget getProjectItem(ChecklistData project) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: Card(
           child: SizedBox(
@@ -142,7 +143,7 @@ class _ListFragmentState extends State<ListFragment>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        project.createTime.strftime('%Y-%m-%d').,
+                        project.createTime.toIso8601String(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: const TextStyle(
@@ -244,14 +245,14 @@ class _ListFragmentState extends State<ListFragment>
         if (data['success'] = true) {
           ChecklistData project = ChecklistData.fromJson(data['data']);
           final oldProject =
-              await DbManager.db.birdListDao.getById(project.id.toString());
-          if (oldProject.isNotEmpty) {
+              await DbManager.db.checklistDao.getById(project.id.toString());
+          if (oldProject != null) {
             _qrCodeGetFailed('项目已存在');
             return;
           } else {
-            await DbManager.db.birdListDao.insertOne(project);
+            await DbManager.db.checklistDao.insertOne(project);
             setState(() {
-              _future = DbManager.db.birdListDao.getAll();
+              _future = DbManager.db.checklistDao.getAll();
             });
           }
           return;

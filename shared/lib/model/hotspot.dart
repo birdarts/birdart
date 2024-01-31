@@ -78,8 +78,8 @@ class HotspotDao extends DatabaseAccessor<BirdartDB> with $HotspotDaoMixin {
 
   Future<List<HotspotData>> getAll() => (select(db.hotspot)).get();
 
-  Future<HotspotData> getById(String hotspotId) =>
-      (select(db.hotspot)..where((tbl) => tbl.id.equals(hotspotId))).getSingle();
+  Future<HotspotData?> getById(String hotspotId) =>
+      (select(db.hotspot)..where((tbl) => tbl.id.equals(hotspotId))).getSingleOrNull();
 
   Future<List<HotspotData>> getUnsynced() =>
       (select(db.hotspot)..where((tbl) => tbl.sync.equals(false))).get();

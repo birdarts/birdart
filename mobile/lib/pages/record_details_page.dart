@@ -8,7 +8,7 @@ import '../dialogs/ringing.dart';
 import '../l10n/l10n.dart';
 
 class RecordDetail extends StatefulWidget {
-  final DbRecordT record;
+  final DbRecordData record;
   final String project;
 
   const RecordDetail({Key? key, required this.record, required this.project}) : super(key: key);
@@ -18,7 +18,7 @@ class RecordDetail extends StatefulWidget {
 }
 
 class _RecordDetailState extends State<RecordDetail> {
-  late final DbRecordT record;
+  late final DbRecordData record;
   late final TextEditingController noteController;
   late final TextEditingController amountController;
 

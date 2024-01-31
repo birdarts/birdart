@@ -68,6 +68,6 @@ class ChecklistDao extends DatabaseAccessor<BirdartDB> with $ChecklistDaoMixin {
 
   Future<List<ChecklistData>> getAll() => (select(db.checklist)).get();
 
-  Future<ChecklistData> getById(String checklistId) =>
-      (select(db.checklist)..where((tbl) => tbl.id.equals(checklistId))).getSingle();
+  Future<ChecklistData?> getById(String checklistId) =>
+      (select(db.checklist)..where((tbl) => tbl.id.equals(checklistId))).getSingleOrNull();
 }
