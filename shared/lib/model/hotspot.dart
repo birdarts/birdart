@@ -1,10 +1,11 @@
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
 import '../db/drift_db.dart';
 import 'hotspot.drift.dart';
 
-// @UseRowClass(_Hotspot)
+@j.JsonSerializable()
 class Hotspot extends Table {
   @override
   Set<Column> get primaryKey => {id};

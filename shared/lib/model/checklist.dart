@@ -1,11 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:shared/model/track.dart';
 import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
 import '../db/drift_db.dart';
 import 'checklist.drift.dart';
 
-// @UseRowClass(_Checklist)
+@j.JsonSerializable()
 class Checklist extends Table {
   @override
   Set<Column> get primaryKey => {id};

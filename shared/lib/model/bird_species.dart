@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:drift/drift.dart';
 import 'package:shared/db/drift_db.dart';
 import 'package:json_annotation/json_annotation.dart' as j;

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
 import '../db/drift_db.dart';
 import 'user.drift.dart';
@@ -29,7 +30,7 @@ enum UserRole {
   final int value;
 }
 
-// @UseRowClass(_User)
+@j.JsonSerializable()
 class User extends Table {
   @override
   Set<Column> get primaryKey => {id};

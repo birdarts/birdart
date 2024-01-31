@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:shared/shared.dart';
 import 'package:uuid/uuid.dart';
-import 'record.drift.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
-// @UseRowClass(_DbRecord)
+@j.JsonSerializable()
 class DbRecord extends Table {
   @override
   Set<Column> get primaryKey => {id};
