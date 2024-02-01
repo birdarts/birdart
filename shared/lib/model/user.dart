@@ -60,7 +60,7 @@ class User extends Table {
   }) async {
     final id = Uuid().v1();
     final salt = base64.encode(await SecretKeyData.random(length: 32).extractBytes());
-    final result = await hash(password, salt);
+    final result = await _hash(password, salt);
 
     return UserData(
       id: id,
@@ -77,14 +77,6 @@ class User extends Table {
     );
   }
 
-  static Future<String> hash(String password, String salt) async {
-    return base64.encode(await (await _algorithm.deriveKeyFromPassword(
-      password: password,
-      nonce: base64.decode(salt),
-    ))
-        .extractBytes());
-  }
-
   static Future<UserData> fromRegisterData(Map<String, dynamic> data) async => await add(
     name: data['name'],
     password: data['password'],
@@ -96,7 +88,20 @@ class User extends Table {
 
 extension UserExt on UserData {
   Future<bool> checkPassword(String password) async =>
-      (await User.hash(password, salt)) == this.password;
+      (await _hash(password, salt)) == this.password;
+  
+  Future<void> resetPassword(String password) async {
+    salt = base64.encode(await SecretKeyData.random(length: 32).extractBytes());
+    this.password = await _hash(password, salt);
+  }
+}
+
+Future<String> _hash(String password, String salt) async {
+  return base64.encode(await (await _algorithm.deriveKeyFromPassword(
+    password: password,
+    nonce: base64.decode(salt),
+  ))
+      .extractBytes());
 }
 
 final _algorithm = Argon2id(

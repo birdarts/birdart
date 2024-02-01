@@ -3,7 +3,7 @@ import 'package:birdart_server/responses.dart';
 import 'package:birdart_server/session_utils.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:session_shelf/session/session.dart';
-import 'package:shared/model/user.dart';
+import 'package:shared/shared.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   final request = context.request;
@@ -17,9 +17,14 @@ Future<Response> onRequest(RequestContext context) async {
   final fields = data.fields;
 
   if ((fields['phone'] == null && fields['email'] == null)
-      || fields['password'] == null) {
-    return Responses.badRequest('Please provide phone or email and password.');
+      || fields['password'] == null || fields['sms_code'] == null) {
+    return Responses.badRequest('Please provide phone or email and sms code, password.');
   }
+
+  // TODO: uncomment it in production.
+  // if (fields['sms_code'] != session.data['sms_code']) {
+  //   Responses.badRequest('Verification code mismatch.');
+  // }
 
   final session = await getSessionOrNew(request);
   final user = fields['phone'] != null
@@ -30,8 +35,12 @@ Future<Response> onRequest(RequestContext context) async {
     return Responses.badRequest('User not registered.');
   }
 
-  if (!await user.checkPassword(fields['password']!)) {
-    return Responses.unauthorized('Wrong password.');
+  await user.resetPassword(fields['password']!);
+
+  final result = await DbManager.db.userDao.updateOne(user);
+
+  if (result != 1) {
+    Responses.internalServerError('Database error.');
   }
 
   session.data.addAll(user.toJson());

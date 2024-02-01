@@ -5,7 +5,6 @@ Future<Session> getSessionOrNew(Request request) async {
   var session = await Session.getSession(request);
   if (session == null || ! await Session.storage.sessionExist(session.id)) {
     session = await Session.createSession(request);
-    Session.storage.saveSession(session, session.id);
   }
 
   return session;

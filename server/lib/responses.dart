@@ -48,7 +48,11 @@ extension Responses on Response {
       Response(
         statusCode: 401,
         body: body,
-        headers: headers,
+        headers: (headers?..addAll({
+          'WWW-Authenticate': '/user/login',
+        })) ?? {
+          'WWW-Authenticate': '/user/login',
+        },
         encoding: encoding,
       );
 

@@ -32,9 +32,10 @@ Future<Response> onRequest(RequestContext context) async {
     Responses.badRequest('Email address invalid.');
   }
 
-  if (fields['sms_code'] != session.data['sms_code']) {
-    Responses.badRequest('Verification code mismatch.');
-  }
+  // TODO: uncomment it in production.
+  // if (fields['sms_code'] != session.data['sms_code']) {
+  //   Responses.badRequest('Verification code mismatch.');
+  // }
 
   final currentUsers = await DbManager.db.userDao.getAll();
 
@@ -65,7 +66,7 @@ Future<Response> onRequest(RequestContext context) async {
   return Response.json(
     body: {
       'message': 'Registered successfully!',
-      'data': user.toJson(),
+      'data': user.toJson()..remove('password')..remove('salt'),
     },
   );
 }
