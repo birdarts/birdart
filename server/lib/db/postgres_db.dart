@@ -8,13 +8,9 @@ import 'package:shared/db/drift_db.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class DbManager {
-  static BirdartDB? database;
+  static final BirdartDB _database = BirdartDB(_openConnection());
 
-  static Future<void> setDb() async {
-    database = BirdartDB(_openConnection());
-  }
-
-  static BirdartDB get db => database!;
+  static BirdartDB get db => _database;
 }
 
 // use sqlite for dev

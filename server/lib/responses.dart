@@ -9,22 +9,19 @@ extension Responses on Response {
     Encoding? encoding,
   }) =>
       Response(
-        statusCode: 200,
         body: body,
         headers: headers,
         encoding: encoding,
       );
 
-  static Response created(String location) =>
-      Response(
+  static Response created(String location) => Response(
         statusCode: 201,
         headers: {
           'Location': location,
         },
       );
 
-  static Response redirect(String location) =>
-      Response(
+  static Response redirect(String location) => Response(
         statusCode: 302,
         headers: {
           'Location': location,
@@ -67,11 +64,22 @@ extension Responses on Response {
         encoding: encoding,
       );
 
-  static Response methodNotAllowed(List<HttpMethod> allows) =>
-      Response(
+  static Response methodNotAllowed(List<HttpMethod> allows) => Response(
         statusCode: 403,
         headers: {
-          'Allow': allows.map((e) => e.value).reduce((m1, m2) =>  '$m1, $m2')
+          'Allow': allows.map((e) => e.value).reduce((m1, m2) => '$m1, $m2'),
         },
+      );
+
+  static Response internalServerError(
+    String? body, {
+    Map<String, Object>? headers,
+    Encoding? encoding,
+  }) =>
+      Response(
+        statusCode: 500,
+        body: body,
+        headers: headers,
+        encoding: encoding,
       );
 }

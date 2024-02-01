@@ -39,8 +39,8 @@ class User extends Table {
   TextColumn get name => text()();
   TextColumn get password => text()();
   TextColumn get salt => text()();
-  TextColumn get phone => text()();
-  TextColumn get email => text()();
+  TextColumn get phone => text().unique()();
+  TextColumn get email => text().unique()();
   TextColumn get biography => text()();
 
   IntColumn get status => integer().map(EnumIndexConverter(UserStatus.values))();
@@ -48,9 +48,7 @@ class User extends Table {
 
   DateTimeColumn get registerTime => dateTime()();
   DateTimeColumn get lastLoginTime => dateTime()();
-}
 
-extension UserExt on UserData {
   static Future<UserData> add({
     required String name,
     required String password,
@@ -87,16 +85,18 @@ extension UserExt on UserData {
         .extractBytes());
   }
 
-  Future<bool> checkPassword(String password) async =>
-      (await hash(password, salt)) == this.password;
-
   static Future<UserData> fromRegisterData(Map<String, dynamic> data) async => await add(
-        name: data['name'],
-        password: data['password'],
-        phone: data['phone'],
-        email: data['email'],
-        biography: data['biography'],
-      );
+    name: data['name'],
+    password: data['password'],
+    phone: data['phone'],
+    email: data['email'],
+    biography: data['biography'],
+  );
+}
+
+extension UserExt on UserData {
+  Future<bool> checkPassword(String password) async =>
+      (await User.hash(password, salt)) == this.password;
 }
 
 final _algorithm = Argon2id(
@@ -137,4 +137,10 @@ class UserDao extends DatabaseAccessor<BirdartDB> with $UserDaoMixin {
 
   Future<UserData?> getById(String userId) =>
       (select(db.user)..where((tbl) => tbl.id.equals(userId))).getSingleOrNull();
+
+  Future<UserData?> getByPhone(String phone) =>
+      (select(db.user)..where((tbl) => tbl.phone.equals(phone))).getSingleOrNull();
+
+  Future<UserData?> getByEmail(String email) =>
+      (select(db.user)..where((tbl) => tbl.email.equals(email))).getSingleOrNull();
 }

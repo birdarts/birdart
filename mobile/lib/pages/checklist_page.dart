@@ -429,7 +429,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                ListTile(
+                const ListTile(
                   title: Text('Comments'),
                 ),
                 TextField(
