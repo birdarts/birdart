@@ -20,6 +20,7 @@ dependencies:
     path: ../shared
 
   drift_postgres: ^1.1.0
+  image: ^4.1.6
 
 dev_dependencies:
   mocktail: ^1.0.0
