@@ -15,6 +15,7 @@ Future<HttpServer> run(Handler handler, InternetAddress ip, int port) {
   if (!dir.existsSync()) {
     dir.createSync();
   }
+  Session.lifetime = const Duration(days: 7);
   Session.storage = FileStorage.crypto(dir, AesGcm.with256bits(), secretKey);
 
   return serve(handler, ip, port);

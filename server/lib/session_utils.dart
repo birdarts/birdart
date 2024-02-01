@@ -6,6 +6,6 @@ Future<Session> getSessionOrNew(Request request) async {
   if (session == null || ! await Session.storage.sessionExist(session.id)) {
     session = await Session.createSession(request);
   }
-
+  session.expires = DateTime.now().add(Session.lifetime);
   return session;
 }
