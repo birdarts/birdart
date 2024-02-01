@@ -6,3 +6,4 @@ linter:
   rules:
     public_member_api_docs: false
     always_declare_return_types: false
+    cascade_invocations: false
