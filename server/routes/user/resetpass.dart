@@ -48,7 +48,7 @@ Future<Response> onRequest(RequestContext context) async {
 
   return Response.json(
     body: {
-      'message': 'Registered successfully!',
+      'message': 'Password reset successfully!',
       'data': user.toJson()..remove('password')..remove('salt'),
     },
   );
