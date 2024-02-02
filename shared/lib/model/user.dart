@@ -78,11 +78,11 @@ class User extends Table {
   }
 
   static Future<UserData> fromRegisterData(Map<String, dynamic> data) async => await add(
-    name: data['name'],
+    name: data['name'] ?? '',
     password: data['password'],
-    phone: data['phone'],
-    email: data['email'],
-    biography: data['biography'],
+    phone: data['phone'] ?? '',
+    email: data['email'] ?? '',
+    biography: data['biography'] ?? '',
   );
 }
 

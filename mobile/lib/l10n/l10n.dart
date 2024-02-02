@@ -340,6 +340,16 @@ class BdL10n {
     );
   }
 
+  /// `Reset password`
+  String get myResetPassword {
+    return Intl.message(
+      'Reset password',
+      name: 'myResetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get mySettings {
     return Intl.message(
@@ -530,6 +540,26 @@ class BdL10n {
     );
   }
 
+  /// `Phone`
+  String get loginFormPhone {
+    return Intl.message(
+      'Phone',
+      name: 'loginFormPhone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please provide a valid phone number.`
+  String get loginFormPhoneHint {
+    return Intl.message(
+      'Please provide a valid phone number.',
+      name: 'loginFormPhoneHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get loginFormEmail {
     return Intl.message(
@@ -660,6 +690,56 @@ class BdL10n {
     );
   }
 
+  /// `Get SMS code`
+  String get smsCodeButton {
+    return Intl.message(
+      'Get SMS code',
+      name: 'smsCodeButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SMS sent successfully.`
+  String get smsCodeSendSuccessful {
+    return Intl.message(
+      'SMS sent successfully.',
+      name: 'smsCodeSendSuccessful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SMS sent failed.`
+  String get smsCodeSendFailed {
+    return Intl.message(
+      'SMS sent failed.',
+      name: 'smsCodeSendFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don’t request SMS code frequently.`
+  String get smsTooFrequently {
+    return Intl.message(
+      'Don’t request SMS code frequently.',
+      name: 'smsTooFrequently',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry in {second} seconds.`
+  String smsRetryInSeconds(Object second) {
+    return Intl.message(
+      'Retry in $second seconds.',
+      name: 'smsRetryInSeconds',
+      desc: '',
+      args: [second],
+    );
+  }
+
   /// `Have no account? Register now.`
   String get registerHint {
     return Intl.message(
@@ -675,6 +755,46 @@ class BdL10n {
     return Intl.message(
       'Have an account? Login immediately.',
       name: 'loginHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return to login form`
+  String get loginFromReset {
+    return Intl.message(
+      'Return to login form',
+      name: 'loginFromReset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forget password?`
+  String get forgetPassword {
+    return Intl.message(
+      'Forget password?',
+      name: 'forgetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password reset successfully, please login using your new password.`
+  String get resetPasswordSuccessful {
+    return Intl.message(
+      'Password reset successfully, please login using your new password.',
+      name: 'resetPasswordSuccessful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password reset failed.`
+  String get resetPasswordFailed {
+    return Intl.message(
+      'Password reset failed.',
+      name: 'resetPasswordFailed',
       desc: '',
       args: [],
     );

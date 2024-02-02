@@ -113,7 +113,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ListTile(
               leading: const Icon(Icons.face_rounded),
               title: Text(BdL10n.current.profileUserID),
-              subtitle: Text(UserProfile.number.toString().padLeft(6, '0'))),
+              subtitle: Text(UserProfile.id.toString().padLeft(6, '0'))),
           const Divider(),
           // Email row
           ListTile(

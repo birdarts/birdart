@@ -40,7 +40,9 @@ Future<Response> onRequest(RequestContext context) async {
   return Response.json(
     body: {
       'message': 'Registered successfully!',
-      'data': user.toJson()..remove('password')..remove('salt'),
+      'data': user.toJson()..remove('password')..remove('salt')..addAll({
+        'session': session.id,
+      }),
     },
   );
 }

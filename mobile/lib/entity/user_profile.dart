@@ -10,9 +10,8 @@ class UserProfile {
   static String? _email;
   static String? _name;
   static String _session = '';
-  static String? _role;
+  static int? _role;
   static int? _status;
-  static int? _number;
   static int? _project;
   static int? _record;
   static int? _image;
@@ -29,9 +28,8 @@ class UserProfile {
     _email = _pref.getString('email');
     _name = _pref.getString('name');
     _session = _pref.getString('session').toString();
-    _role = _pref.getString('role');
+    _role = _pref.getInt('role');
     _status = _pref.getInt('status');
-    _number = _pref.getInt('number');
     _project = _pref.getInt('project');
     _record = _pref.getInt('record');
     _image = _pref.getInt('image');
@@ -47,8 +45,7 @@ class UserProfile {
       (_email != null) &&
       (_name != null) &&
       (_role != null) &&
-      (_status != null) &&
-      (_number != null);
+      (_status != null);
 
   static get hasData =>
       (_project != null) &&
@@ -86,19 +83,14 @@ class UserProfile {
     _pref.setString('session', value);
   }
 
-  static set role(String value) {
+  static set role(int value) {
     _role = value;
-    _pref.setString('role', value);
+    _pref.setInt('role', value);
   }
 
   static set status(int value) {
     _status = value;
     _pref.setInt('status', value);
-  }
-
-  static set number(int value) {
-    _number = value;
-    _pref.setInt('number', value);
   }
 
   static set project(int value) {
@@ -133,11 +125,9 @@ class UserProfile {
 
   static String get session => _session;
 
-  static String get role => _role!;
+  static int get role => _role!;
 
   static int get status => _status!;
-
-  static int get number => _number!;
 
   static int get project => _project ?? 0;
 
@@ -156,7 +146,6 @@ class UserProfile {
     _session = '';
     _role = null;
     _status = null;
-    _number = null;
     _project = null;
     _record = null;
     _image = null;
@@ -170,7 +159,6 @@ class UserProfile {
     _pref.remove('session');
     _pref.remove('role');
     _pref.remove('status');
-    _pref.remove('number');
     _pref.remove('project');
     _pref.remove('record');
     _pref.remove('image');

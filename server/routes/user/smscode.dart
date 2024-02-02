@@ -26,5 +26,10 @@ Future<Response> onRequest(RequestContext context) async {
   final session = await getSessionOrNew(request);
   session.data['sms_code'] = code;
 
-  return Responses.ok('Sms code already sent.');
+  return Response.json(
+    body: {
+      'message': 'Sms code already sent.',
+      'data': session.id,
+    },
+  );
 }

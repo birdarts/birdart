@@ -62,10 +62,5 @@ Future<Response> onRequest(RequestContext context) async {
   session.data.addAll(user.toJson());
   Session.storage.saveSession(session, session.id); // This is required if you use a file storage.
 
-  return Response.json(
-    body: {
-      'message': 'Registered successfully!',
-      'data': user.toJson()..remove('password')..remove('salt'),
-    },
-  );
+  return Responses.ok('Registered successfully!');
 }

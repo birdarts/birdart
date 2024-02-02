@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(second) => "${second} seconds";
 
+  static String m3(second) => "Retry in ${second} seconds.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "adult": MessageLookupByLibrary.simpleMessage("adult"),
@@ -40,6 +42,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "databaseError": MessageLookupByLibrary.simpleMessage("Database error"),
         "exploreTitle": MessageLookupByLibrary.simpleMessage("Explore nearby"),
         "female": MessageLookupByLibrary.simpleMessage("female"),
+        "forgetPassword":
+            MessageLookupByLibrary.simpleMessage("Forget password?"),
         "homeBirding": MessageLookupByLibrary.simpleMessage("Go birding"),
         "homeDate": MessageLookupByLibrary.simpleMessage("Date"),
         "homeDisableTrack":
@@ -76,6 +80,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter a complex password."),
         "loginFormPasswordNotEmpty": MessageLookupByLibrary.simpleMessage(
             "Password should not be empty"),
+        "loginFormPhone": MessageLookupByLibrary.simpleMessage("Phone"),
+        "loginFormPhoneHint": MessageLookupByLibrary.simpleMessage(
+            "Please provide a valid phone number."),
         "loginFormUsername": MessageLookupByLibrary.simpleMessage("Username"),
         "loginFormUsernameHint": MessageLookupByLibrary.simpleMessage(
             "Please choose your favour username."),
@@ -84,6 +91,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "VerCode should not be empty."),
         "loginFormVerHint": MessageLookupByLibrary.simpleMessage(
             "Verification code, case insensitive."),
+        "loginFromReset":
+            MessageLookupByLibrary.simpleMessage("Return to login form"),
         "loginHint": MessageLookupByLibrary.simpleMessage(
             "Have an account? Login immediately."),
         "loginNetworkError":
@@ -103,6 +112,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "myLogin": MessageLookupByLibrary.simpleMessage("Login"),
         "myOpenSource": MessageLookupByLibrary.simpleMessage("Open source"),
         "myRegister": MessageLookupByLibrary.simpleMessage("Register"),
+        "myResetPassword":
+            MessageLookupByLibrary.simpleMessage("Reset password"),
         "mySettings": MessageLookupByLibrary.simpleMessage("Settings"),
         "myTitle": MessageLookupByLibrary.simpleMessage("My Birdart"),
         "nestling": MessageLookupByLibrary.simpleMessage("nestling"),
@@ -137,6 +148,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Username should not be empty."),
         "registerSuccess": MessageLookupByLibrary.simpleMessage(
             "Register success, please check your email inbox."),
+        "resetPasswordFailed":
+            MessageLookupByLibrary.simpleMessage("Password reset failed."),
+        "resetPasswordSuccessful": MessageLookupByLibrary.simpleMessage(
+            "Password reset successfully, please login using your new password."),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "settingsSelectTrackInterval":
             MessageLookupByLibrary.simpleMessage("Select time interval"),
@@ -147,6 +162,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Auto upload images under WiFi"),
         "settingsWifiSyncTrack": MessageLookupByLibrary.simpleMessage(
             "Auto upload tracks under WiFi"),
-        "sexUnknown": MessageLookupByLibrary.simpleMessage("sex unknown")
+        "sexUnknown": MessageLookupByLibrary.simpleMessage("sex unknown"),
+        "smsCodeButton": MessageLookupByLibrary.simpleMessage("Get SMS code"),
+        "smsCodeSendFailed":
+            MessageLookupByLibrary.simpleMessage("SMS sent failed."),
+        "smsCodeSendSuccessful":
+            MessageLookupByLibrary.simpleMessage("SMS sent successfully."),
+        "smsRetryInSeconds": m3,
+        "smsTooFrequently": MessageLookupByLibrary.simpleMessage(
+            "Don’t request SMS code frequently.")
       };
 }

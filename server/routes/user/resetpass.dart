@@ -46,10 +46,5 @@ Future<Response> onRequest(RequestContext context) async {
   session.data.addAll(user.toJson());
   Session.storage.saveSession(session, session.id); // This is required if you use a file storage.
 
-  return Response.json(
-    body: {
-      'message': 'Password reset successfully!',
-      'data': user.toJson()..remove('password')..remove('salt'),
-    },
-  );
+  return Responses.ok('Password reset successfully!');
 }

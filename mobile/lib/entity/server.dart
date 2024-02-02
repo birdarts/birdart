@@ -4,7 +4,7 @@ import 'user_profile.dart';
 
 class Server {
   static const String url =
-      kDebugMode ? 'http://192.168.1.11:5000/' : 'https://sun-jiao.github.io/';
+      kDebugMode ? 'http://192.168.2.21:8080/' : 'https://sun-jiao.github.io/';
   static Dio? _dio;
 
   static Dio get dio {

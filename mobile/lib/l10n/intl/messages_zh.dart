@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "databaseError": MessageLookupByLibrary.simpleMessage("数据库错误"),
         "exploreTitle": MessageLookupByLibrary.simpleMessage("探索周边"),
         "female": MessageLookupByLibrary.simpleMessage("雌鸟"),
+        "forgetPassword": MessageLookupByLibrary.simpleMessage("忘记密码？"),
         "homeBirding": MessageLookupByLibrary.simpleMessage("去观鸟！"),
         "homeDate": MessageLookupByLibrary.simpleMessage("日期"),
         "homeDisableTrack": MessageLookupByLibrary.simpleMessage("关闭轨迹记录"),
@@ -69,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("请选择一个复杂的密码。"),
         "loginFormPasswordNotEmpty":
             MessageLookupByLibrary.simpleMessage("密码不能为空。"),
+        "loginFormPhone": MessageLookupByLibrary.simpleMessage("电话号码"),
+        "loginFormPhoneHint":
+            MessageLookupByLibrary.simpleMessage("请输入一个有效的电话号码。"),
         "loginFormUsername": MessageLookupByLibrary.simpleMessage("用户名"),
         "loginFormUsernameHint":
             MessageLookupByLibrary.simpleMessage("请选择一个您喜欢的用户名。"),
@@ -76,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginFormVerFormat": MessageLookupByLibrary.simpleMessage("验证码不能为空。"),
         "loginFormVerHint":
             MessageLookupByLibrary.simpleMessage("请输入验证码，不区分大小写。"),
+        "loginFromReset": MessageLookupByLibrary.simpleMessage("返回登录"),
         "loginHint": MessageLookupByLibrary.simpleMessage("已有账号？立刻登陆。"),
         "loginNetworkError": MessageLookupByLibrary.simpleMessage("网络错误。"),
         "loginSuccess": MessageLookupByLibrary.simpleMessage("登陆成功。"),
@@ -92,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myLogin": MessageLookupByLibrary.simpleMessage("登陆"),
         "myOpenSource": MessageLookupByLibrary.simpleMessage("开放源代码"),
         "myRegister": MessageLookupByLibrary.simpleMessage("注册"),
+        "myResetPassword": MessageLookupByLibrary.simpleMessage("重置密码"),
         "mySettings": MessageLookupByLibrary.simpleMessage("设置"),
         "myTitle": MessageLookupByLibrary.simpleMessage("个人中心"),
         "nestling": MessageLookupByLibrary.simpleMessage("幼鸟"),
@@ -118,6 +124,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("用户名不能为空。"),
         "registerSuccess":
             MessageLookupByLibrary.simpleMessage("注册成功，请检查您的收件箱。"),
+        "resetPasswordFailed": MessageLookupByLibrary.simpleMessage("找回密码失败。"),
+        "resetPasswordSuccessful":
+            MessageLookupByLibrary.simpleMessage("找回密码成功，请用新密码登陆。"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "settingsSelectTrackInterval":
             MessageLookupByLibrary.simpleMessage("选择轨迹时间间隔"),
@@ -127,6 +136,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("WiFi下自动同步图片"),
         "settingsWifiSyncTrack":
             MessageLookupByLibrary.simpleMessage("WiFi下自动同步轨迹"),
-        "sexUnknown": MessageLookupByLibrary.simpleMessage("性别不详")
+        "sexUnknown": MessageLookupByLibrary.simpleMessage("性别不详"),
+        "smsCodeSendFailed": MessageLookupByLibrary.simpleMessage("短信发送失败。"),
+        "smsCodeSendSuccessful":
+            MessageLookupByLibrary.simpleMessage("短信发送成功，请及时查收。")
       };
 }
