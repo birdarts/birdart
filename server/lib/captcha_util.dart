@@ -1,26 +1,27 @@
 import 'dart:math';
 import 'package:image/image.dart';
 
-class VerCode {
-  static final List<String> randomChoice = [
+class Captcha {
+  static final List<String> _randomChoice = [
     'acdefhijkmnpqrstuvwxyz',
     'ABCDEFGHJKLMNPQRSTUVWXYZ',
     '234578',
   ];
 
-  static final List<int> choiceIndex = [0, 1, 2];
-  static const int width = 250;
-  static const int height = 75;
+  static final List<int> _choiceIndex = [0, 1, 2];
 
-  static (Image, String) generateVerCode() {
+  static (Image, String) generate({
+    int width = 250,
+    int height = 75,
+  }) {
     final image = Image(width: width, height: height);
-    
+
     // background color
     fill(image, color: _bgColor());
 
     // add random character
     for (var x = 0; x < 40; x++) {
-      final letterPool = randomChoice[choiceIndex[x % 3]];
+      final letterPool = _randomChoice[_choiceIndex[x % 3]];
       final letter = letterPool[random.nextInt(letterPool.length)];
       drawChar(
         image,
@@ -33,12 +34,12 @@ class VerCode {
     }
 
     // generate random captcha
-    var index = choiceIndex[random.nextInt(choiceIndex.length)];
-    final verCode = StringBuffer();
+    var index = _choiceIndex[random.nextInt(_choiceIndex.length)];
+    final sb = StringBuffer();
     for (var item = 0; item < 5; item++) {
-      final codePool = randomChoice[choiceIndex[index % 3]];
+      final codePool = _randomChoice[_choiceIndex[index % 3]];
       final code = codePool[random.nextInt(codePool.length)];
-      verCode.write(code);
+      sb.write(code);
 
       drawChar(
         image,
@@ -67,7 +68,7 @@ class VerCode {
     // add filter
     chromaticAberration(image, shift: 2);
 
-    return (image, verCode.toString().toLowerCase());
+    return (image, sb.toString().toLowerCase());
   }
 
   static final Random random = Random();
@@ -91,12 +92,12 @@ class VerCode {
 
     return ColorRgba8(red, green, blue, a);
   }
-  
+
   static Color _bgColor() {
     final shuffled = [245, 245, 230]..shuffle();
     return ColorRgb8(
-      shuffled[0] + random.nextInt(10), 
-      shuffled[1] + random.nextInt(10), 
+      shuffled[0] + random.nextInt(10),
+      shuffled[1] + random.nextInt(10),
       shuffled[2] + random.nextInt(10),
     );
   }
@@ -104,7 +105,7 @@ class VerCode {
 
 // test code:
 // main() async {
-//   final (image, code) = VerCode.generateVerCode();
+//   final (image, code) = Captcha.generate();
 //   await encodePngFile('assets/test.png', image);
 //   print(code);
 // }
