@@ -8,19 +8,19 @@ class VerCode {
     '234578',
   ];
 
-  static final List<int> randomIndex = [0, 1, 2];
+  static final List<int> choiceIndex = [0, 1, 2];
   static const int width = 250;
   static const int height = 75;
 
   static (Image, String) generateVerCode() {
     final image = Image(width: width, height: height);
+    
+    // background color
+    fill(image, color: _bgColor());
 
-    // 设置背景颜色
-    _fill(image, ColorRgb8(255, 255, 255));
-
-    // 生成随机数字字母干扰
+    // add random character
     for (var x = 0; x < 40; x++) {
-      final letterPool = randomChoice[randomIndex[x % 3]];
+      final letterPool = randomChoice[choiceIndex[x % 3]];
       final letter = letterPool[random.nextInt(letterPool.length)];
       drawChar(
         image,
@@ -32,11 +32,11 @@ class VerCode {
       );
     }
 
-    // 生成随机验证码
-    var index = randomIndex[random.nextInt(randomIndex.length)];
+    // generate random captcha
+    var index = choiceIndex[random.nextInt(choiceIndex.length)];
     final verCode = StringBuffer();
     for (var item = 0; item < 5; item++) {
-      final codePool = randomChoice[randomIndex[index % 3]];
+      final codePool = randomChoice[choiceIndex[index % 3]];
       final code = codePool[random.nextInt(codePool.length)];
       verCode.write(code);
 
@@ -51,39 +51,29 @@ class VerCode {
       index = index + 1;
     }
 
-    // 随机线
-    for (var i = 0; i < 3; i++) {
+    // add some random lines
+    for (var i = 0; i < 7; i++) {
       drawLine(
         image,
         x1: random.nextInt(width),
         y1: random.nextInt(height),
         x2: random.nextInt(width),
         y2: random.nextInt(height),
-        color: _lightColor(188),
-        thickness: 5,
+        color: _lightColor(175),
+        thickness: 4,
       );
     }
 
-    // 加上一层滤波器滤镜
-    // image.filter(ImageFilter.edgeEnhanceMore());
+    // add filter
+    chromaticAberration(image, shift: 2);
 
-    return (image, verCode.toString());
-  }
-
-  static void _fill(Image image, Color color) {
-    final (x, y) = (0, 0);
-
-    for (var i = x; i < x + width; i++) {
-      for (var j = y; j < y + height; j++) {
-        image.setPixel(i, j, color);
-      }
-    }
+    return (image, verCode.toString().toLowerCase());
   }
 
   static final Random random = Random();
 
   static Color _darkColor([int a = 255]) {
-    const minBrightness = 90;
+    const minBrightness = 60;
     const randomNum = 40;
     final red = random.nextInt(randomNum) + minBrightness;
     final green = random.nextInt(randomNum) + minBrightness;
@@ -100,6 +90,15 @@ class VerCode {
     final blue = random.nextInt(randomNum) + maxBrightness;
 
     return ColorRgba8(red, green, blue, a);
+  }
+  
+  static Color _bgColor() {
+    final shuffled = [245, 245, 230]..shuffle();
+    return ColorRgb8(
+      shuffled[0] + random.nextInt(10), 
+      shuffled[1] + random.nextInt(10), 
+      shuffled[2] + random.nextInt(10),
+    );
   }
 }
 
