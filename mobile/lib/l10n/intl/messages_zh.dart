@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(second) => "${second}秒";
 
+  static String m3(second) => "${second}秒后重试";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "adult": MessageLookupByLibrary.simpleMessage("成鸟"),
@@ -113,6 +115,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "profileEmail": MessageLookupByLibrary.simpleMessage("电子邮箱"),
         "profileEnterUserName": MessageLookupByLibrary.simpleMessage("输入用户名"),
         "profileLogout": MessageLookupByLibrary.simpleMessage("退出账号"),
+        "profilePhone": MessageLookupByLibrary.simpleMessage("手机号码"),
+        "profileRole": MessageLookupByLibrary.simpleMessage("用户权限"),
+        "profileStatus": MessageLookupByLibrary.simpleMessage("用户状态"),
         "profileTitle": MessageLookupByLibrary.simpleMessage("个人资料"),
         "profileUserID": MessageLookupByLibrary.simpleMessage("用户ID"),
         "recordsTitle": MessageLookupByLibrary.simpleMessage("观鸟记录"),
@@ -137,8 +142,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingsWifiSyncTrack":
             MessageLookupByLibrary.simpleMessage("WiFi下自动同步轨迹"),
         "sexUnknown": MessageLookupByLibrary.simpleMessage("性别不详"),
+        "smsCodeButton": MessageLookupByLibrary.simpleMessage("发送验证码"),
         "smsCodeSendFailed": MessageLookupByLibrary.simpleMessage("短信发送失败。"),
         "smsCodeSendSuccessful":
-            MessageLookupByLibrary.simpleMessage("短信发送成功，请及时查收。")
+            MessageLookupByLibrary.simpleMessage("短信发送成功，请及时查收。"),
+        "smsRetryInSeconds": m3,
+        "smsTooFrequently": MessageLookupByLibrary.simpleMessage("请勿频繁发送短信。")
       };
 }

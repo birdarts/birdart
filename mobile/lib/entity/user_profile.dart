@@ -1,4 +1,3 @@
-import 'package:shared/src/uuid_gen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/sharedpref.dart';
@@ -21,7 +20,7 @@ class UserProfile {
 
   static init() {
     _pref = SharedPref.pref;
-    _id = _pref.getString('id') ?? uuid.v1(); // TODO remove `uuid.v1()` when the backend is ready
+    _id = _pref.getString('id');
     _phone = _pref.getString('phone');
     _email = _pref.getString('email');
     _name = _pref.getString('name');
