@@ -6,13 +6,12 @@ import '../entity/sharedpref.dart';
 class UserProfile {
   static String? _id;
   static String? _phone;
-  static String? _password;
   static String? _email;
   static String? _name;
   static String _session = '';
   static int? _role;
   static int? _status;
-  static int? _project;
+  static int? _checklist;
   static int? _record;
   static int? _image;
   static int? _track;
@@ -24,13 +23,12 @@ class UserProfile {
     _pref = SharedPref.pref;
     _id = _pref.getString('id') ?? uuid.v1(); // TODO remove `uuid.v1()` when the backend is ready
     _phone = _pref.getString('phone');
-    _password = _pref.getString('password');
     _email = _pref.getString('email');
     _name = _pref.getString('name');
     _session = _pref.getString('session').toString();
     _role = _pref.getInt('role');
     _status = _pref.getInt('status');
-    _project = _pref.getInt('project');
+    _checklist = _pref.getInt('checklist');
     _record = _pref.getInt('record');
     _image = _pref.getInt('image');
     _track = _pref.getInt('track');
@@ -41,14 +39,13 @@ class UserProfile {
       inited &&
       (_id != null) &&
       (_phone != null) &&
-      (_password != null) &&
       (_email != null) &&
       (_name != null) &&
       (_role != null) &&
       (_status != null);
 
   static get hasData =>
-      (_project != null) &&
+      (_checklist != null) &&
       (_record != null) &&
       (_image != null) &&
       (_track != null);
@@ -61,11 +58,6 @@ class UserProfile {
   static set phone(String value) {
     _phone = value;
     _pref.setString('phone', value);
-  }
-
-  static set password(String value) {
-    _password = value;
-    _pref.setString('password', value);
   }
 
   static set email(String value) {
@@ -93,9 +85,9 @@ class UserProfile {
     _pref.setInt('status', value);
   }
 
-  static set project(int value) {
-    _project = value;
-    _pref.setInt('project', value);
+  static set checklist(int value) {
+    _checklist = value;
+    _pref.setInt('checklist', value);
   }
 
   static set record(int value) {
@@ -117,8 +109,6 @@ class UserProfile {
 
   static String get phone => _phone!;
 
-  static String get password => _password!;
-
   static String get email => _email!;
 
   static String get name => _name!;
@@ -129,7 +119,7 @@ class UserProfile {
 
   static int get status => _status!;
 
-  static int get project => _project ?? 0;
+  static int get checklist => _checklist ?? 0;
 
   static int get record => _record ?? 0;
 
@@ -140,26 +130,24 @@ class UserProfile {
   static clear() {
     _id = null;
     _phone = null;
-    _password = null;
     _email = null;
     _name = null;
     _session = '';
     _role = null;
     _status = null;
-    _project = null;
+    _checklist = null;
     _record = null;
     _image = null;
     _track = null;
 
     _pref.remove('id');
     _pref.remove('phone');
-    _pref.remove('password');
     _pref.remove('email');
     _pref.remove('name');
     _pref.remove('session');
     _pref.remove('role');
     _pref.remove('status');
-    _pref.remove('project');
+    _pref.remove('checklist');
     _pref.remove('record');
     _pref.remove('image');
     _pref.remove('track');

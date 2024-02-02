@@ -26,7 +26,7 @@ Future<Response> onRequest(RequestContext context) async {
     final avatarId = data.fields['id'];
 
     if (userId != avatarId && userPower != 'admin') {
-      return Responses.forbidden('You can not change this user\'s avatar.');
+      return Responses.forbidden("You can not change other user's avatar.");
     }
 
     final avatarFile = data.files['avatar'];
@@ -40,7 +40,12 @@ Future<Response> onRequest(RequestContext context) async {
 
   if (params.containsKey('id')) {
     final avatarId = params['id'];
-    return Responses.redirect('/static/user/avatar/$avatarId.png');
+
+    if (File('public/static/user/avatar/$avatarId.png').existsSync()) {
+      return Responses.redirect('/static/user/avatar/$avatarId.png');
+    } else {
+      return Responses.redirect('/web/favicon.png');
+    }
   }
 
   return Responses.ok('Please provide user id.');

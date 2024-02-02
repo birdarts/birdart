@@ -131,10 +131,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pick avatar from storage"),
         "profileEditUserName":
             MessageLookupByLibrary.simpleMessage("Edit username"),
-        "profileEmail": MessageLookupByLibrary.simpleMessage("Email"),
+        "profileEmail": MessageLookupByLibrary.simpleMessage("Email address"),
         "profileEnterUserName":
             MessageLookupByLibrary.simpleMessage("Enter username"),
         "profileLogout": MessageLookupByLibrary.simpleMessage("Log out"),
+        "profilePhone": MessageLookupByLibrary.simpleMessage("Phone number"),
+        "profileRole": MessageLookupByLibrary.simpleMessage("User role"),
+        "profileStatus": MessageLookupByLibrary.simpleMessage("User status"),
         "profileTitle": MessageLookupByLibrary.simpleMessage("User profile"),
         "profileUserID": MessageLookupByLibrary.simpleMessage("User ID"),
         "recordsTitle": MessageLookupByLibrary.simpleMessage("My checklists"),

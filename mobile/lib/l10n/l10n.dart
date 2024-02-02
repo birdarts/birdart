@@ -900,11 +900,41 @@ class BdL10n {
     );
   }
 
-  /// `Email`
+  /// `Email address`
   String get profileEmail {
     return Intl.message(
-      'Email',
+      'Email address',
       name: 'profileEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number`
+  String get profilePhone {
+    return Intl.message(
+      'Phone number',
+      name: 'profilePhone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User role`
+  String get profileRole {
+    return Intl.message(
+      'User role',
+      name: 'profileRole',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User status`
+  String get profileStatus {
+    return Intl.message(
+      'User status',
+      name: 'profileStatus',
       desc: '',
       args: [],
     );

@@ -1,3 +1,5 @@
+import 'package:shared/model/user.dart';
+
 import '../l10n/l10n.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfilePageState extends State<UserProfilePage> {
   // Mock user data
-  String avatarUrl = '${Server.url}/defaultAvatar';
+  String avatarUrl = '${Server.url}user/avatar?id=${UserProfile.id}';
 
   // A flag to control the expansion tile
   bool isExpanded = false;
@@ -34,8 +36,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundImage:
-                    ExtendedNetworkImageProvider(avatarUrl, cache: true),
+                backgroundImage: ExtendedNetworkImageProvider(avatarUrl, cache: true),
               ),
               IconButton(
                 icon: const Icon(Icons.edit),
@@ -76,8 +77,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             children: [
               Text(
                 UserProfile.name,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 icon: const Icon(Icons.edit),
@@ -89,7 +89,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         return AlertDialog(
                             title: Text(BdL10n.current.profileEditUserName),
                             content: TextField(
-                                decoration: InputDecoration(hintText: BdL10n.current.profileEnterUserName)),
+                                decoration:
+                                    InputDecoration(hintText: BdL10n.current.profileEnterUserName)),
                             actions: [
                               TextButton(
                                   child: Text(BdL10n.current.cancel),
@@ -111,17 +112,38 @@ class _UserProfilePageState extends State<UserProfilePage> {
           const SizedBox(height: 16),
           // User ID row
           ListTile(
-              leading: const Icon(Icons.face_rounded),
-              title: Text(BdL10n.current.profileUserID),
-              subtitle: Text(UserProfile.id.toString().padLeft(6, '0'))),
+            leading: const Icon(Icons.face_rounded),
+            title: Text(BdL10n.current.profileUserID),
+            subtitle: Text(UserProfile.id),
+          ),
           const Divider(),
           // Email row
           ListTile(
-              leading: const Icon(Icons.email),
-              title: Text(BdL10n.current.profileEmail),
-              subtitle: Text(UserProfile.email)),
+            leading: const Icon(Icons.email),
+            title: Text(BdL10n.current.profileEmail),
+            subtitle: Text(UserProfile.email),
+          ),
           const Divider(),
+          ListTile(
+            leading: const Icon(Icons.settings_cell),
+            title: Text(BdL10n.current.profilePhone),
+            subtitle: Text(UserProfile.phone),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.supervised_user_circle),
+            title: Text(BdL10n.current.profileRole),
+            subtitle: Text(UserRole.values[UserProfile.role].name),
+          ),
           // Status row
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.check_circle),
+            title: Text(BdL10n.current.profileStatus),
+            subtitle: Text(UserStatus.values[UserProfile.status].name),
+          ),
+          // Status row
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.power_settings_new_rounded),
             title: Text(BdL10n.current.profileLogout),
