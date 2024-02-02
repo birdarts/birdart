@@ -1,9 +1,9 @@
 import 'package:shared/model/user.dart';
 
-import '../l10n/l10n.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../entity/server.dart';
 import '../entity/user_profile.dart';
 
