@@ -21,12 +21,12 @@ Future<Response> onRequest(RequestContext context) async {
     return Responses.badRequest('Please provide phone or email and sms code, password.');
   }
 
-  // TODO: uncomment it in production.
-  // if (fields['sms_code'] != session.data['sms_code']) {
-  //   Responses.badRequest('Verification code mismatch.');
-  // }
-
   final session = await getSessionOrNew(request);
+
+  if (fields['sms_code'] != session.data['sms_code']) {
+    Responses.badRequest('Verification code mismatch.');
+  }
+
   final user = fields['phone'] != null
       ? await DbManager.db.userDao.getByPhone(fields['phone']!)
       : await DbManager.db.userDao.getByEmail(fields['email']!);

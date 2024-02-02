@@ -20,8 +20,8 @@ Future<Response> onRequest(RequestContext context) async {
       .map((e) => data.fields.containsKey(e))
       .reduce((e1, e2) => e1 && e2);
   if (!dataCheck) {
-    return Responses.badRequest('Please provide all the following fields in your formdata: '
-        "'phone', 'name', 'email', 'password', 'sms_code'");
+    return Responses.badRequest('Please provide all the following fields in '
+        "your formdata: 'phone', 'name', 'email', 'password', 'sms_code'");
   }
 
   final fields = data.fields;
@@ -32,10 +32,9 @@ Future<Response> onRequest(RequestContext context) async {
     Responses.badRequest('Email address invalid.');
   }
 
-  // TODO: uncomment it in production.
-  // if (fields['sms_code'] != session.data['sms_code']) {
-  //   Responses.badRequest('Verification code mismatch.');
-  // }
+  if (fields['sms_code'] != session.data['sms_code']) {
+    Responses.badRequest('Verification code mismatch.');
+  }
 
   final currentUsers = await DbManager.db.userDao.getAll();
 
