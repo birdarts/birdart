@@ -11,7 +11,6 @@ import 'fragments/home_fragment.dart';
 import 'fragments/map_fragment.dart';
 import 'fragments/mine_fragment.dart';
 import 'fragments/list_fragment.dart';
-import 'db/db_manager.dart';
 import 'entity/app_dir.dart';
 import 'entity/server.dart';
 import 'entity/sharedpref.dart';
