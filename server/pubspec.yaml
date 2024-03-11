@@ -14,13 +14,13 @@ dependencies:
       path: packages/dart_frog
 
   drift_postgres: ^1.2.0
+  image: ^4.1.7
   session_shelf:
     path: ../../session_shelf/
 
   shared:
     path: ../shared
 
-  image: ^4.1.7
 
 dev_dependencies:
   mocktail: ^1.0.3

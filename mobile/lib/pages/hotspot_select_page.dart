@@ -40,21 +40,21 @@ class HotspotSelectPage extends StatelessWidget {
                 children: [
                   ...BirdartTiles.agolTile(context),
                   MarkerLayer(
-                      markers: data.map((e) => Marker(point: e, child: Icon(Icons.add))).toList()
+                      markers: data.map((e) => Marker(point: e, child: const Icon(Icons.add))).toList()
                   )
                 ],
               );
             }
           }
 
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
   }
 
   Future<List<LatLng>> getSpots() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     return [
       LatLng(initLatLng.lat! - Random().nextDouble() * 0.1, initLatLng.lon! - Random().nextDouble() * 0.1),
       LatLng(initLatLng.lat! - Random().nextDouble() * 0.1, initLatLng.lon! + Random().nextDouble() * 0.1),
