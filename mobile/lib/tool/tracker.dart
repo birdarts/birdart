@@ -92,7 +92,7 @@ class Tracker {
   permissionRequesterIos(String name, String usage) async {
     final avail = await locationAvailabilityChecker(context);
     if (avail == LocationPermission.whileInUse) {
-      if (mounted) {
+      if (context.mounted) {
         showDialog(
           context: context,
           builder: (dContext) {
@@ -123,7 +123,7 @@ class Tracker {
 
   permissionRequester(Permission permission, String name, String usage) async {
     if (await permission.isDenied) {
-      if (mounted) {
+      if (context.mounted) {
         showDialog(
           context: context,
           builder: (dContext) {
@@ -306,7 +306,7 @@ class Tracker {
                         File(track.filePath).openRead().transform(utf8.decoder));
                     List<LatLng> latlngList = List.generate(geoxml.wpts.length,
                         (index) => LatLng(geoxml.wpts[index].lat!, geoxml.wpts[index].lon!));
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(

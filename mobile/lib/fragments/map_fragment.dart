@@ -16,7 +16,7 @@ import '../tool/location_tool.dart';
 import '../widget/location_marker_layer.dart';
 
 class MapFragment extends StatefulWidget {
-  const MapFragment({Key? key}) : super(key: key);
+  const MapFragment({super.key});
 
   @override
   State<MapFragment> createState() => _MapFragmentState();
@@ -244,16 +244,16 @@ class _MapFragmentState extends State<MapFragment>
   }
 
   void _setMapLocation(Position locationData, {animate = false}) {
-    setState(() => {
+    setState(() {
           _locationText = BdL10n.current.mapCoordinate(
               CoordinateTool.degreeToDms(locationData.longitude.toString()),
               CoordinateTool.degreeToDms(locationData.latitude.toString()),
-              locationData.altitude.toStringAsFixed(3)),
-          _currentLocationLayer = LocationMarker(locationData: locationData),
+              locationData.altitude.toStringAsFixed(3));
+          _currentLocationLayer = LocationMarker(locationData: locationData);
           if (animate)
             {
               _mapController.move(
-                  LatLng(locationData.latitude, locationData.longitude), 15)
+                  LatLng(locationData.latitude, locationData.longitude), 15);
             }
         });
   }

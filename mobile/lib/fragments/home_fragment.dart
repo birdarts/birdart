@@ -8,7 +8,7 @@ import '../pages/checklist_page.dart';
 import '../tool/list_tool.dart';
 
 class HomeFragment extends StatefulWidget {
-  const HomeFragment({Key? key, required this.update}) : super(key: key);
+  const HomeFragment({super.key, required this.update});
   
   final VoidCallback update;
 

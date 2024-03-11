@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EmptyBox extends StatelessWidget {
-  const EmptyBox({Key? key}) : super(key: key);
+  const EmptyBox({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class EmptyBox extends StatelessWidget {
 }
 
 class PleaseSelectSpecies extends StatelessWidget {
-  const PleaseSelectSpecies({Key? key}) : super(key: key);
+  const PleaseSelectSpecies({super.key});
 
   @override
   Widget build(BuildContext context) {

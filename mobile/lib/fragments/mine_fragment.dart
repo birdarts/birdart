@@ -9,7 +9,7 @@ import '../pages/settings_page.dart';
 import '../pages/profile_page.dart';
 
 class MineFragment extends StatefulWidget {
-  const MineFragment({Key? key}) : super(key: key);
+  const MineFragment({super.key});
 
   @override
   State<MineFragment> createState() => _MineFragmentState();

@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class TrackCircleAnimation extends StatefulWidget {
-  const TrackCircleAnimation({Key? key}) : super(key: key);
+  const TrackCircleAnimation({super.key});
 
   @override
   State<TrackCircleAnimation> createState() => _TrackCircleAnimationState();

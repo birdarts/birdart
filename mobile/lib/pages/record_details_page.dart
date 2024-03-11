@@ -11,7 +11,7 @@ class RecordDetail extends StatefulWidget {
   final DbRecordData record;
   final String project;
 
-  const RecordDetail({Key? key, required this.record, required this.project}) : super(key: key);
+  const RecordDetail({super.key, required this.record, required this.project});
 
   @override
   State<RecordDetail> createState() => _RecordDetailState();

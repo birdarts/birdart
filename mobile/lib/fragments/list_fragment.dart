@@ -13,7 +13,7 @@ import '../entity/app_dir.dart';
 import '../entity/server.dart';
 
 class ListFragment extends StatefulWidget {
-  const ListFragment({Key? key}) : super(key: key);
+  const ListFragment({super.key});
 
   @override
   State<ListFragment> createState() => _ListFragmentState();
@@ -190,7 +190,7 @@ class _ListFragmentState extends State<ListFragment>
         Map<String, dynamic> data = jsonDecode(response.toString()); //3
         if (data['success'] = true) {
           String shareId = data['data']['_id'];
-          if (context.mounted) {
+          if (mounted) {
             showDialog<String>(
                 context: context,
                 builder: (BuildContext dContext) =>

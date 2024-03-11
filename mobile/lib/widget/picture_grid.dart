@@ -3,7 +3,7 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
 class PictureGrid extends StatefulWidget {
-  const PictureGrid({Key? key, this.initialImages}) : super(key: key);
+  const PictureGrid({super.key, this.initialImages});
 
   final List<AssetEntity>? initialImages;
 
@@ -137,7 +137,7 @@ class PictureGridState extends State<PictureGrid> {
 }
 
 class CameraPickerIcon extends StatelessWidget {
-  const CameraPickerIcon({Key? key}) : super(key: key);
+  const CameraPickerIcon({super.key});
 
   @override
   Widget build(BuildContext context) {
